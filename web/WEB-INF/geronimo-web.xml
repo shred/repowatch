@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns8:web-app xmlns="http://geronimo.apache.org/xml/ns/deployment-1.2" xmlns:ns2="http://geronimo.apache.org/xml/ns/j2ee/connector-1.2" xmlns:ns3="http://geronimo.apache.org/xml/ns/naming-1.2" xmlns:ns4="http://openejb.apache.org/xml/ns/openejb-jar-2.2" xmlns:ns5="http://openejb.apache.org/xml/ns/pkgen-2.1" xmlns:ns6="http://geronimo.apache.org/xml/ns/j2ee/application-2.0" xmlns:ns7="http://geronimo.apache.org/xml/ns/security-2.0" xmlns:ns8="http://geronimo.apache.org/xml/ns/j2ee/web-2.0.1" xmlns:ns9="http://java.sun.com/xml/ns/persistence" xmlns:ns10="http://geronimo.apache.org/xml/ns/j2ee/application-client-2.0">
+    <environment>
+        <moduleId>
+            <groupId>repowatch</groupId>
+            <artifactId>repowatch</artifactId>
+            <version>1.0</version>
+            <type>car</type>
+        </moduleId>
+        <dependencies>
+            <dependency>
+                <groupId>console.dbpool</groupId>
+                <artifactId>repowatch</artifactId>
+            </dependency>
+        </dependencies>
+
+        <!-- Prevent Geronimo from using the Spring jars provided by Jetty -->
+        <hidden-classes>
+            <filter>org.springframework</filter>
+            <filter>META-INF/spring</filter>
+        </hidden-classes>
+    
+    </environment>
+    <ns8:context-root>/repowatch</ns8:context-root>
+    <ns3:resource-ref>
+        <ns3:ref-name>jdbc/RepowatchDS</ns3:ref-name>
+        <ns3:resource-link>repowatch</ns3:resource-link>
+    </ns3:resource-ref>
+    
+</ns8:web-app>

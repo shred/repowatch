@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <mapping class="org.shredzone.repowatch.model.BaseModel"/>
+    <mapping class="org.shredzone.repowatch.model.Change"/>
+    <mapping class="org.shredzone.repowatch.model.Domain"/>
+    <mapping class="org.shredzone.repowatch.model.Package"/>
+    <mapping class="org.shredzone.repowatch.model.Repository"/>
+    <mapping class="org.shredzone.repowatch.model.Version"/>
+  </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="locations">
+      <list>
+        <value>WEB-INF/jdbc.properties</value>
+      </list>
+    </property>
+  </bean>
+  
+  <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/RepowatchDS"/>
+
+<!--   
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+      p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
+      p:password="${jdbc.password}"/>  -->
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
+    <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml"/>
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+        <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+        <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl}</prop>
+      </props>
+    </property>
+    <property name="eventListeners">
+      <map>
+        <entry key="merge">
+          <bean class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener"/>
+        </entry>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+      p:sessionFactory-ref="sessionFactory"/>
+
+  <context:annotation-config/>
+  <tx:annotation-driven/>
+
+  <bean id="changeDao"     class="org.shredzone.repowatch.repository.hib.ChangeDAOHibImpl"/>
+  <bean id="domainDao"     class="org.shredzone.repowatch.repository.hib.DomainDAOHibImpl"/>
+  <bean id="packageDao"    class="org.shredzone.repowatch.repository.hib.PackageDAOHibImpl"/>
+  <bean id="repositoryDao" class="org.shredzone.repowatch.repository.hib.RepositoryDAOHibImpl"/>
+  <bean id="versionDao"    class="org.shredzone.repowatch.repository.hib.VersionDAOHibImpl"/>
+
+</beans>
