@@ -1,0 +1,74 @@
+<%--
+  Repowatch -- A repository watcher
+    (C) 2007 Richard "Shred" Körber
+    http://www.shredzone.net/go/repowatch
+ -----------------------------------------------------------------------
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+  $Id: browser.jspf 177 2008-07-18 20:56:18Z shred $
+--%>
+<%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
+
+<c:if test="${browser.pagecount gt 1}">
+
+<div class="browse">
+<c:choose>
+  <c:when test="${browser.page gt 0}">
+  	<a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page-1}"/></c:url>"><fmt:message key="browser.previous"/></a>
+  </c:when>
+  <c:otherwise>
+    <span class="browsedisabled"><fmt:message key="browser.previous"/></span>
+  </c:otherwise>
+</c:choose>
+
+<c:if test="${browser.pagecount lt 2000}">
+  <c:set target="${browser}" property="dotted" value="true"/>
+  <c:forEach var="pcount" begin="0" end="${browser.pagecount-1}">
+    <c:choose>
+      <c:when test="${pcount eq browser.page}">
+        <span class="browsecurrent"><c:out value="${pcount+1}"/></span>
+        <c:set target="${browser}" property="dotted" value="true"/>
+      </c:when>
+      <c:when test="${(browser.pagecount lt 30) or (pcount lt 1) or (pcount gt browser.pagecount-2) or (pcount % browser.pagesteps eq (browser.pagesteps-1)) or (pcount > browser.page and pcount-browser.page < 5)  or (pcount < browser.page and browser.page-pcount < 5) }">
+        <a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${pcount}"/></c:url>"><c:out value="${pcount+1}"/></a>
+        <c:set target="${browser}" property="dotted" value="true"/>
+      </c:when>
+      <c:otherwise>
+        <c:if test="${browser.dotted}">..<c:set target="${browser}" property="dotted" value="false"/></c:if>
+      </c:otherwise>
+    </c:choose>
+  </c:forEach>
+</c:if>
+
+<c:choose>
+  <c:when test="${browser.page lt browser.pagecount-1}">
+  	<a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page+1}"/></c:url>"><fmt:message key="browser.next"/></a>
+  </c:when>
+  <c:otherwise>
+    <span class="browsedisabled"><fmt:message key="browser.next"/></span>
+  </c:otherwise>
+</c:choose>
+
+<c:if test="${browser.resultcount gt 0}">
+  <span class="browseinfo">&mdash;
+    <fmt:message key="browser.result">
+      <fmt:param value="${browser.resultcount}"/>
+      <fmt:param value="${browser.pagecount}"/>
+      <fmt:param value="${browser.page+1}"/>
+    </fmt:message>
+  </span>
+</c:if>
+
+</div>
+</c:if>
