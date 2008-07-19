@@ -19,6 +19,11 @@
     <url-pattern>*.html</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>repowatch</servlet-name>
+    <url-pattern>*.rss</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
