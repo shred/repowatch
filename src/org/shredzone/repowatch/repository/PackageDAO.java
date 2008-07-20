@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAO.java 175 2008-07-17 23:14:30Z shred $
+ * $Id: PackageDAO.java 179 2008-07-20 23:01:33Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -31,7 +31,7 @@ import org.shredzone.repowatch.model.Repository;
  * Gives access to the repository part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 175 $
+ * @version $Revision: 179 $
  */
 public interface PackageDAO extends BaseDAO<Package> {
     
@@ -48,5 +48,9 @@ public interface PackageDAO extends BaseDAO<Package> {
     public List<Package> findAllPackages(Domain domain, int start, int limit);
     
     public List<Object[]> findAllPackages(int start, int limit);
+
+    public long countSearchResult(SearchDTO data);
+    
+    public List<Package> findSearchResult(SearchDTO data, int start, int limit);
 
 }

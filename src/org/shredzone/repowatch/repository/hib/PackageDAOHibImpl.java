@@ -8,6 +8,7 @@ import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.PackageDAO;
+import org.shredzone.repowatch.repository.SearchDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,5 +119,61 @@ public class PackageDAOHibImpl implements PackageDAO {
         
         return (List<Package>) q.list();
     }
+ 
+    
+    @Transactional(readOnly = true)
+    public long countSearchResult(SearchDTO data) {
+        Query q = createQuery(data, "SELECT COUNT(*)", null);
+        return ((Long) q.iterate().next()).longValue();
+    }
+    
+    @Transactional(readOnly = true)
+    @SuppressWarnings("unchecked")
+    public List<Package> findSearchResult(SearchDTO data, int start, int limit) {
+        Query q = createQuery(data, null, "ORDER BY p.name, p.domain.name, p.domain.release DESC");
+
+        if (limit >= 0) {
+            q.setFirstResult(start).setMaxResults(limit);
+        }
+        
+        return (List<Package>) q.list();
+    }
+
+    /**
+     * Creates a {@link Query} from the parameters stored in {@link SearchDTO}.
+     * 
+     * @param data
+     *            {@link SearchDTO} containing the search parameters.
+     * @param prefix
+     *            String to be prefixed to the query (e.g. "SELECT COUNT(*)"),
+     *            or <tt>null</tt>.
+     * @param suffix
+     *            String to be suffixed to the query (e.g. "ORDER BY ..."), or
+     *            <tt>null</tt>.
+     * @return {@link Query} object.
+     */
+    private Query createQuery(SearchDTO data, String prefix, String suffix) {
+        StringBuilder builder = new StringBuilder();
+        if (prefix != null) builder.append(prefix).append(' ');
+        
+        String liketerm = data.getTerm();
+        liketerm = liketerm.replaceAll("(%|_)", "\\\\$1");
+        liketerm = '%' + liketerm + '%';
+        
+        builder.append("FROM Package AS p WHERE");
+        builder.append(" (p.name LIKE :namelike)");
+        if (data.isDescriptions()) {
+            builder.append(" OR (p.summary LIKE :namelike)");
+            builder.append(" OR (p.description LIKE :namelike)");
+        }
+        
+        if (suffix != null) builder.append(' ').append(suffix);
+        
+        Query q = sessionFactory.getCurrentSession().createQuery(builder.toString());
+        q.setParameter("namelike", liketerm);
+
+        return q;
+    }
+
     
 }
