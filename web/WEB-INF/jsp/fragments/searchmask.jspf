@@ -1,0 +1,39 @@
+<%--
+  Repowatch -- A repository watcher
+    (C) 2007 Richard "Shred" Körber
+    http://www.shredzone.net/go/repowatch
+ -----------------------------------------------------------------------
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+  $Id: searchmask.jspf 180 2008-07-20 23:01:50Z shred $
+--%>
+<%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
+
+<form action="<c:url value="/search.html"/>" method="get">
+<table class="grid">
+  <tr class="gridrow">
+    <td class="gridlabel" style="vertical-align:middle"><fmt:message key="search.term"/></td>
+    <td><input class="fancy" type="text" maxlength="100" name="term" value="<c:out value="${searchData.term}"/>" /></td>
+  </tr>
+  <tr class="gridrow">
+    <td class="gridlabel"><fmt:message key="search.options"/></td>
+    <td><input type="checkbox" name="desc" <c:if test="${searchData.descriptions}">checked="checked"</c:if> /><fmt:message key="search.opt.desc"/></td>
+  </tr>
+  <tr class="gridrow">
+    <td class="gridlabel">&nbsp;</td>
+    <td><input type="submit" value="<fmt:message key="search.search"/>" /></td>
+  </tr>
+</table>
+<input type="hidden" name="do" value="1" />
+</form>

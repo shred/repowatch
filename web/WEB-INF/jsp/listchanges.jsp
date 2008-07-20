@@ -1,7 +1,10 @@
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
-<%@ include file="/WEB-INF/jsp/fragments/header.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
 <% pageContext.setAttribute("sequence", new Sequencer("gridodd", "grideven")); %>
+
+<fmt:message scope="request" var="title" key="chg.title"/>
+<c:set scope="request" var="rsslink" value="${rsslink}"/>
+<c:import url="/WEB-INF/jsp/fragments/header.jspf"/>
 
 <h2><fmt:message key="chg.changes">
       <fmt:param value="${domain.name} ${domain.release} ${repository.name} (${repository.architecture})"/>
@@ -68,4 +71,4 @@
   </c:forEach>
 </table>
 
-<%@ include file="/WEB-INF/jsp/fragments/footer.jspf" %>
+<c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>

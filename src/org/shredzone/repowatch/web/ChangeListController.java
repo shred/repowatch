@@ -2,7 +2,6 @@ package org.shredzone.repowatch.web;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.DateFormatter;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -25,6 +23,7 @@ import org.shredzone.repowatch.web.util.BrowserData;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,9 +41,12 @@ public class ChangeListController {
     @Autowired
     private ChangeDAO changeDao;
     
+    @Autowired
+    private MessageSource messageSource;
+    
     /*TODO: Configure this by injection. */
     private int entriesPerPage = 25;    // A sensible default
-    private int maxNumberOfDays = 500;
+    private int maxNumberOfDays = 5;
     private int maxNumberOfEntries = 50;
     
     private final static String LISTCHANGES_PATTERN = "/changes/*/*/*/*.html";
@@ -113,6 +115,8 @@ public class ChangeListController {
             sb.append("?updates=1");
         }
         mav.addObject("rsslink", sb.toString());
+        
+        mav.addObject("selfurl", req.getRequestURI());      //TODO: create on a central place
 
         return mav;
     }
@@ -139,8 +143,6 @@ public class ChangeListController {
         String repoArch   = parts.getPart(3);
         boolean includeUpdates = (updateFlag != null && updateFlag.booleanValue() == true);
 
-        ModelAndView mav = new ModelAndView("listchanges");
-
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
             /*TODO: 404 */
@@ -153,8 +155,7 @@ public class ChangeListController {
 
         Date limit = new Date();
         limit.setTime(limit.getTime() - (maxNumberOfDays * 24 * 60 * 60 * 1000));
-//        List<Change> changes = changeDao.findAllChangesUntil(repository, includeUpdates, limit, maxNumberOfEntries);
-        List<Change> changes = changeDao.findAllChanges(repository, true, 0, 50);
+        List<Change> changes = changeDao.findAllChangesUntil(repository, includeUpdates, limit, maxNumberOfEntries);
 
         StringBuilder basepath = new StringBuilder();
         basepath.append(req.getScheme()).append("://").append(req.getServerName());
@@ -170,6 +171,7 @@ public class ChangeListController {
         DateFormat dateFormatTimestamp = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
         
         resp.setContentType("application/xml");
+        resp.setCharacterEncoding("utf-8");
         XMLOutputFactory xof = XMLOutputFactory.newInstance();
         XMLStreamWriter xw = xof.createXMLStreamWriter(resp.getWriter());
         xw.writeStartDocument();
@@ -179,7 +181,7 @@ public class ChangeListController {
             xw.writeStartElement("channel");
             {
                 xw.writeStartElement("title");
-                xw.writeCharacters("rss.title");
+                xw.writeCharacters(messageSource.getMessage("rss.title", null, resp.getLocale()));
                 xw.writeEndElement();
                 
                 xw.writeStartElement("link");
@@ -187,12 +189,15 @@ public class ChangeListController {
                 xw.writeEndElement();
                 
                 xw.writeStartElement("description");
-                xw.writeCharacters(MessageFormat.format(
+                xw.writeCharacters(messageSource.getMessage(
                         "rss.description",
-                        domain.getName(),
-                        domain.getRelease(),
-                        repository.getName(),
-                        repository.getArchitecture()
+                        new Object[] {
+                            domain.getName(),
+                            domain.getRelease(),
+                            repository.getName(),
+                            repository.getArchitecture(),
+                        },
+                        resp.getLocale()
                 ));
                 xw.writeEndElement();
                 
@@ -203,20 +208,19 @@ public class ChangeListController {
                 for (Change change : changes) {
                     xw.writeStartElement("item");
                     {
-                        /*TODO: Use MessageFormat! */
-                        StringBuilder title = new StringBuilder();
-                        title.append(dateFormatYmd.format(change.getTimestamp()));
-                        if (change.getChange().equals("ADDED")) {
-                            title.append("rss.added");
-                        } else if (change.getChange().equals("REMOVED")) {
-                            title.append("rss.removed");
-                        } else {
-                            title.append("rss.updated");
-                        }
-                        title.append(change.getPackage().getName());
+                        Object[] args = new Object[] {
+                                dateFormatYmd.format(change.getTimestamp()),
+                                change.getPackage().getName(),
+                        };
                         
                         xw.writeStartElement("title");
-                        xw.writeCharacters(title.toString());
+                        if (change.getChange().equals("ADDED")) {
+                            xw.writeCharacters(messageSource.getMessage("rss.added", args, resp.getLocale()));
+                        } else if (change.getChange().equals("REMOVED")) {
+                            xw.writeCharacters(messageSource.getMessage("rss.removed", args, resp.getLocale()));
+                        } else {
+                            xw.writeCharacters(messageSource.getMessage("rss.updated", args, resp.getLocale()));
+                        }
                         xw.writeEndElement();
                         
                         StringBuilder link = new StringBuilder();

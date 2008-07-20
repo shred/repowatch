@@ -1,7 +1,9 @@
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
-<%@ include file="/WEB-INF/jsp/fragments/header.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
 <% pageContext.setAttribute("sequence", new Sequencer("gridodd", "grideven")); %>
+
+<fmt:message scope="request" var="title" key="repos.title"/>
+<c:import url="/WEB-INF/jsp/fragments/header.jspf"/>
 
 <h2><fmt:message key="repos.repositories"/></h2>
 <table class="grid">
@@ -25,4 +27,4 @@
   </c:forEach>
 </table>
 
-<%@ include file="/WEB-INF/jsp/fragments/footer.jspf" %>
+<c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>

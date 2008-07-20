@@ -6,8 +6,10 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Version;
+import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
@@ -26,6 +28,9 @@ public class PackageDetailController {
     
     @Autowired
     private VersionDAO versionDao;
+    
+    @Autowired
+    private DomainDAO domainDao;
     
     /*TODO: Configure this by injection. */
     private int entriesPerPage = 25;    // A sensible default
@@ -55,5 +60,43 @@ public class PackageDetailController {
         return mav;
     }
     
+    private final static String SHOWSINGLEPACKAGE_PATTERN = "/package/*/*/*.html";
+    private final static RequestMappingResolver showSinglePackageResolver = 
+            new RequestMappingResolver(SHOWSINGLEPACKAGE_PATTERN);
+
+    @RequestMapping(SHOWSINGLEPACKAGE_PATTERN)
+    public ModelAndView showSinglePackageHandler(
+            HttpServletRequest req
+    ) {
+        RequestParts parts = showSinglePackageResolver.getRequestParts(req);
+        if (! parts.hasParts()) {
+            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
+        }
+        
+        ModelAndView mav = new ModelAndView("showpackage");
+        String domName = parts.getPart(0);
+        String domRelease = parts.getPart(1);
+        String packName = parts.getPart(2);
+        
+        Domain domain = domainDao.findDomain(domName, domRelease);
+        if (domain == null) {
+            /*TODO: 404 */
+        }
+        
+        Package pack = packageDao.findPackage(domain, packName);
+        if (pack == null) {
+            /*TODO: 404 */
+        }
+        
+        List<Version> alternatives = versionDao.findAllVersionsExcept(packName, pack);
+        List<Version> versions = versionDao.findAllVersions(pack);
+
+        mav.addObject("domain", domain);
+        mav.addObject("package", pack);
+        mav.addObject("versionList", versions);
+        mav.addObject("alternativeList", alternatives);
+        
+        return mav;
+    }
 
 }
