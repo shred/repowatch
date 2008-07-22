@@ -1,7 +1,7 @@
 /* 
  * Repowatch -- A repository watcher
- *   (C) 2007 Richard "Shred" Körber
- *   http://www.shredzone.net/go/repowatch
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
  *-----------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: Change.java 175 2008-07-17 23:14:30Z shred $
+ * $Id: Change.java 181 2008-07-22 11:35:11Z shred $
  */
 
 package org.shredzone.repowatch.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -41,11 +40,11 @@ import org.hibernate.annotations.Index;
  * Represents a changelog entry.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 175 $
+ * @version $Revision: 181 $
  */
 @Entity
 @Table(name="Changelog")
-public class Change extends BaseModel implements Serializable {
+public class Change extends BaseModel {
     private static final long serialVersionUID = 8648618861114240913L;
     
     public static enum Type { ADDED, UPDATED, REMOVED };
@@ -62,7 +61,7 @@ public class Change extends BaseModel implements Serializable {
      * Timestamp of the event.
      */
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="ts")
+    @Column(name="ts")      // "timestamp" would be an invalid column name!
     @Basic(optional=false)
     public Date getTimestamp()              { return timestamp; }
     public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }

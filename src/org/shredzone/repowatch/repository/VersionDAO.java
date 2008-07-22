@@ -1,7 +1,7 @@
 /* 
  * Repowatch -- A repository watcher
- *   (C) 2007 Richard "Shred" Körber
- *   http://www.shredzone.net/go/repowatch
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
  *-----------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionDAO.java 175 2008-07-17 23:14:30Z shred $
+ * $Id: VersionDAO.java 181 2008-07-22 11:35:11Z shred $
  */
 
 package org.shredzone.repowatch.repository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
@@ -33,22 +32,62 @@ import org.shredzone.repowatch.model.Version;
  * Gives access to the repository part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 175 $
+ * @version $Revision: 181 $
  */
 public interface VersionDAO extends BaseDAO<Version> {
     
+    /**
+     * Returns all versions of a {@link Repository}.
+     * 
+     * @param repo      {@link Repository}
+     * @return  A list of all {@link Version} entities.
+     */
     public List<Version> findAllVersions(Repository repo);
 
+    /**
+     * Returns all versions of a {@link Repository}.
+     * 
+     * @param repo      {@link Repository}
+     * @param start     First index to be returned
+     * @param limit     Maximum number of entities to be returned
+     * @return  A list of all {@link Version} entities.
+     */
     public List<Version> findAllVersions(Repository repo, int start, int limit);
-    
+
+    /**
+     * Returns all versions for a {@link Package}.
+     * 
+     * @param pack      {@link Package}
+     * @return  A list of all {@link Version} entities.
+     */
     public List<Version> findAllVersions(Package pack);
 
-    public Map<String,Version> findAllVersionsAsMap(Repository repo);
-
+    /**
+     * Finds all versions for a given package name.
+     * 
+     * @param name      Package name
+     * @return  A list of all {@link Version} entities.
+     */
     public List<Version> findAllVersionsForName(String name);
 
+    /**
+     * Finds all versions for a given package name, but keeps out the given
+     * package.
+     * 
+     * @param name      Package name
+     * @param pack      {@link Package} to be ignored
+     * @return  A list of all {@link Version} entities.
+     */
     public List<Version> findAllVersionsExcept(String name, Package pack);
     
-    public List<Version> findDeleted(Repository repo, Date now);
+    /**
+     * Finds all versions for a given {@link Repository} which are not
+     * deleted and were last seen before the given date.
+     * 
+     * @param repo      {@link Repository}
+     * @param now       Date limit
+     * @return  A list of all {@link Version} entities.
+     */
+    public List<Version> findLastSeenBefore(Repository repo, Date now);
     
 }

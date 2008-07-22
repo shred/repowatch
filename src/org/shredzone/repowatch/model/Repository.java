@@ -1,7 +1,7 @@
 /* 
  * Repowatch -- A repository watcher
- *   (C) 2007 Richard "Shred" Körber
- *   http://www.shredzone.net/go/repowatch
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
  *-----------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: Repository.java 175 2008-07-17 23:14:30Z shred $
+ * $Id: Repository.java 181 2008-07-22 11:35:11Z shred $
  */
 
 package org.shredzone.repowatch.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
@@ -33,15 +32,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-
 /**
- * Represents a repository.
+ * Represents a yum repository.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 175 $
+ * @version $Revision: 181 $
  */
 @Entity
-public class Repository extends BaseModel implements Serializable {
+public class Repository extends BaseModel {
     private static final long serialVersionUID = 4678802328900240584L;
     
     private Domain domain;

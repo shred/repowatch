@@ -1,7 +1,7 @@
 <%--
   Repowatch -- A repository watcher
     (C) 2008 Richard "Shred" Körber
-    http://www.shredzone.net/go/repowatch
+    http://repowatch.shredzone.org/
  -----------------------------------------------------------------------
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: index.jsp 175 2008-07-17 23:14:30Z shred $
+  $Id: index.jsp 181 2008-07-22 11:35:11Z shred $
 --%>
 <%@ page language="java" session="false" contentType="text/html; charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 

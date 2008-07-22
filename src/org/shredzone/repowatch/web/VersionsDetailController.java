@@ -1,13 +1,31 @@
+/* 
+ * Repowatch -- A repository watcher
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
+ *-----------------------------------------------------------------------
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $Id: VersionsDetailController.java 181 2008-07-22 11:35:11Z shred $
+ */
+
 package org.shredzone.repowatch.web;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.shredzone.repowatch.model.Domain;
-import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
 import org.shredzone.repowatch.repository.DomainDAO;
@@ -21,9 +39,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * This controller takes care of showing details of a package version.
+ * 
+ * @author Richard "Shred" Körber
+ * @version $Revision: 181 $
+ */
 @Controller
 public class VersionsDetailController {
     
@@ -42,14 +65,22 @@ public class VersionsDetailController {
     /*TODO: Configure this by injection. */
     private int entriesPerPage = 25;    // A sensible default
     
+    
     private final static String LISTVERSIONS_PATTERN = "/repo/*/*/*/*.html";
     private final static RequestMappingResolver listVersionsResolver = 
             new RequestMappingResolver(LISTVERSIONS_PATTERN);
 
+    /**
+     * Lists all package versions of a repository.
+     *  
+     * @param req           {@link HttpServletRequest}
+     * @param page          Browser page to be shown, or <code>null</code>
+     * @return  {@link ModelAndView} for rendering.
+     */
     @RequestMapping(LISTVERSIONS_PATTERN)
     public ModelAndView listVersionsHandler(
-            @RequestParam(value="page", required=false) Integer page,
-            HttpServletRequest req
+            HttpServletRequest req,
+            @RequestParam(value="page", required=false) Integer page
     ) {
         RequestParts parts = listVersionsResolver.getRequestParts(req);
         if (! parts.hasParts()) {
@@ -75,6 +106,8 @@ public class VersionsDetailController {
         }
 
         BrowserData browser = new BrowserData();
+        browser.setBaseurl(req.getServletPath());
+
         long count = packageDao.countPackages(repository);
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));

@@ -1,3 +1,24 @@
+/* 
+ * Repowatch -- A repository watcher
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
+ *-----------------------------------------------------------------------
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $Id: ChangeDAOHibImpl.java 181 2008-07-22 11:35:11Z shred $
+ */
+
 package org.shredzone.repowatch.repository.hib;
 
 import java.util.Date;
@@ -11,7 +32,13 @@ import org.shredzone.repowatch.repository.ChangeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-@org.springframework.stereotype.Repository      // dang, a name collision
+/**
+ * A Hibernate implementation of {@link ChangeDAO}.
+ * 
+ * @author Richard "Shred" Körber
+ * @version $Revision: 181 $
+ */
+@org.springframework.stereotype.Repository      // class name collision!
 @Transactional
 public class ChangeDAOHibImpl implements ChangeDAO {
     
@@ -19,21 +46,25 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     private SessionFactory sessionFactory;
 
     /**
-     * Adds a {@link Change} to the changelog.
-     * 
-     * @param change
-     *            {@link Change} to be added.
+     * {@inheritDoc}
      */
     @Override
-    public void create(Change data) {
+    public void insert(Change data) {
+        // Requires Spring's IdTransferringMergeEventListener
         sessionFactory.getCurrentSession().merge(data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void delete(Change data) {
         sessionFactory.getCurrentSession().delete(data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional(readOnly = true)
     @Override
     public Change fetch(long id) {
@@ -41,28 +72,19 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     }
 
     /**
-     * Counts all changes logged for a {@link Repository}. Updates are counted.
-     * 
-     * @param repo
-     *            Repository to count the changes of.
-     * @return Number of changes
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
+    @Override
     public long countChanges(Repository repo) {
         return countChanges(repo, true);
     }
 
     /**
-     * Counts all changes logged for a {@link Repository}. Only additions and
-     * removals are counted unless the updates option is set.
-     * 
-     * @param repo
-     *            Repository to count the changes of.
-     * @param updates
-     *            Also count Updates
-     * @return Number of changes
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
+    @Override
     public long countChanges(Repository repo, boolean updates) {
         Query q = sessionFactory.getCurrentSession()
                 .createQuery(
@@ -77,53 +99,29 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     }
 
     /**
-     * Finds all changes logged for a {@link Repository}.
-     * 
-     * @param repo
-     *            Repository to find changes for.
-     * @return List of {@link Change} objects containing all changes.
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChanges(Repository repo) {
         return findAllChanges(repo, 0, -1);
     }
 
     /**
-     * Finds all changes logged for a {@link Repository}. Only the given range
-     * is returned. Updates are included.
-     * 
-     * @param repo
-     *            Repository to find changes for.
-     * @param start
-     *            First record to be returned
-     * @param limit
-     *            Maximum number of records to be returned. A negative value
-     *            returns all records.
-     * @return List of {@link Change} objects containing all changes.
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChanges(Repository repo, int start, int limit) {
         return findAllChanges(repo, true, start, limit);
     }
 
     /**
-     * Finds all changes logged for a {@link Repository}. Only the given range
-     * is returned. Only additions and removals are returned unless the updates
-     * option is set.
-     * 
-     * @param repo
-     *            Repository to find changes for.
-     * @param updates
-     *            Also show Updates
-     * @param start
-     *            First record to be returned
-     * @param limit
-     *            Maximum number of records to be returned. A negative value
-     *            returns all records.
-     * @return List of {@link Change} objects containing all changes.
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Change> findAllChanges(Repository repo, boolean updates, int start, int limit) {
         Query q = sessionFactory.getCurrentSession()
                 .createQuery(
@@ -143,41 +141,20 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     }
 
     /**
-     * Finds all changes logged since a certain date. No more than a maximum
-     * number of rows will be returned. Updates are included.
-     * 
-     * @param repo
-     *            Repository to find changes for.
-     * @param limit
-     *            First date (inclusive) to return records from.
-     * @param maxrows
-     *            Maximum number of records to be returned. A negative value
-     *            returns all records.
-     * @return List of {@link Change} objects containing all changes.
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChangesUntil(Repository repo, Date limit, int maxrows) {
         return findAllChangesUntil(repo, true, limit, maxrows);
     }
 
     /**
-     * Finds all changes logged since a certain date. No more than a maximum
-     * number of rows will be returned. Only additions and removals are returned
-     * unless the updates option is set.
-     * 
-     * @param repo
-     *            Repository to find changes for.
-     * @param updates
-     *            Also show Updates
-     * @param limit
-     *            First date (inclusive) to return records from.
-     * @param maxrows
-     *            Maximum number of records to be returned. A negative value
-     *            returns all records.
-     * @return List of {@link Change} objects containing all changes.
+     * {@inheritDoc}
      */
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Change> findAllChangesUntil(Repository repo, boolean updates, Date limit, int maxrows) {
         Query q = sessionFactory.getCurrentSession()
                 .createQuery(

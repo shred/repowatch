@@ -1,6 +1,29 @@
+/* 
+ * Repowatch -- A repository watcher
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
+ *-----------------------------------------------------------------------
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $Id: PackageListController.java 181 2008-07-22 11:35:11Z shred $
+ */
+
 package org.shredzone.repowatch.web;
 
-import java.util.List;
+import java.util.SortedMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.web.util.BrowserData;
@@ -8,9 +31,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * This controller takes care of listing packages.
+ * 
+ * @author Richard "Shred" Körber
+ * @version $Revision: 181 $
+ */
 @Controller
 public class PackageListController {
     
@@ -20,21 +48,30 @@ public class PackageListController {
     /*TODO: Configure this by injection. */
     private int entriesPerPage = 25;    // A sensible default
     
+
+    /**
+     * Lists all known packages.
+     *  
+     * @param req           {@link HttpServletRequest}
+     * @param page          Browser page to be shown, or <code>null</code>
+     * @return  {@link ModelAndView} for rendering.
+     */
     @RequestMapping("/packages.html")
     public ModelAndView packagesHandler(
-            @RequestParam(value="page", required=false) Integer page,
-            WebRequest webrequest
+            HttpServletRequest req,
+            @RequestParam(value="page", required=false) Integer page
     ) {
         ModelAndView mav = new ModelAndView("listpackages");
         
         BrowserData browser = new BrowserData();
+        browser.setBaseurl(req.getServletPath());
         
         long count = packageDao.countAllPackages();
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));
         browser.setPage(page != null ? page : 0);
         
-        List<Object[]> packages = packageDao.findAllPackages(
+        SortedMap<String,String> packages = packageDao.findAllPackages(
                 browser.getPage() * entriesPerPage,
                 entriesPerPage);
         
@@ -43,5 +80,4 @@ public class PackageListController {
         return mav;
     }
     
-
 }

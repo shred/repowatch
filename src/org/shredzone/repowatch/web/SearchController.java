@@ -1,7 +1,29 @@
+/* 
+ * Repowatch -- A repository watcher
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
+ *-----------------------------------------------------------------------
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * $Id: SearchController.java 181 2008-07-22 11:35:11Z shred $
+ */
+
 package org.shredzone.repowatch.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.shredzone.repowatch.model.Package;
@@ -13,7 +35,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
+/**
+ * This controller takes care of all search operations.
+ * 
+ * @author Richard "Shred" Körber
+ * @version $Revision: 181 $
+ */
 @Controller
 public class SearchController {
     
@@ -24,27 +53,34 @@ public class SearchController {
     private int entriesPerPage = 25;    // A sensible default
     private int searchTermMinLength = 3;
 
+    /**
+     * Lists all changes of a repository, in a human readable form.
+     *  
+     * @param req           {@link HttpServletRequest}
+     * @param session       {@link HttpSession}
+     * @param do            Flag asking to perform a new search
+     * @param term          Search term, or <code>null</code>
+     * @param desc          Flag to search in descriptions, or <code>null</code>
+     * @param page          Page number in the browser, or <code>null</code>
+     * @return  {@link ModelAndView} for rendering.
+     */
     @RequestMapping("/search.html")
     public ModelAndView repoHandler(
+            HttpServletRequest req,
+            HttpSession session,
             @RequestParam(value="do", required=false) Boolean doFlag,
             @RequestParam(value="term", required=false) String term,
             @RequestParam(value="desc", required=false) Boolean descFlag,
-            @RequestParam(value="page", required=false) Integer page,
-            HttpSession session
+            @RequestParam(value="page", required=false) Integer page
     ) {
         ModelAndView mav = new ModelAndView("search");
         
-        SearchDTO search = (SearchDTO) session.getAttribute("searchData");
-        if (search == null && doFlag == null) {
+        if (doFlag == null) {
             return mav;
         }
-        
-        BrowserData browser = new BrowserData();
-        
-        if (search == null) {
-            search = new SearchDTO();
-            session.setAttribute("searchData", search);
-        }
+       
+        SearchDTO search =  (SearchDTO) WebUtils.getOrCreateSessionAttribute(
+                session, "searchData", SearchDTO.class);
         mav.addObject("searchData", search);
         
         if (doFlag != null && doFlag.booleanValue() == true) {
@@ -72,6 +108,8 @@ public class SearchController {
             return mav;
         }
         
+        BrowserData browser = new BrowserData();
+        browser.setBaseurl(req.getServletPath());
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));
         browser.setPage(search.getPage());

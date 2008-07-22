@@ -1,7 +1,7 @@
 /* 
  * Repowatch -- A repository watcher
- *   (C) 2007 Richard "Shred" Körber
- *   http://www.shredzone.net/go/repowatch
+ *   (C) 2008 Richard "Shred" Körber
+ *   http://repowatch.shredzone.org/
  *-----------------------------------------------------------------------
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,18 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: BrowserData.java 177 2008-07-18 20:56:18Z shred $
+ * $Id: BrowserData.java 181 2008-07-22 11:35:11Z shred $
  */
 
 package org.shredzone.repowatch.web.util;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Contains all data required to show a page browser.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 177 $
+ * @version $Revision: 181 $
  */
 public class BrowserData {
     private int pagecount;
@@ -42,8 +40,11 @@ public class BrowserData {
      * 
      * @return Number of pages
      */
-    public int getPagecount()                   { return pagecount; }
-    public void setPagecount(int pagecount)     { this.pagecount = pagecount; }
+    public int getPagecount() { return pagecount; }
+    public void setPagecount(int pagecount) {
+        this.pagecount = pagecount;
+        if (page >= pagecount) page = pagecount-1;
+    }
 
     /**
      * Gets a good guess for large step increments. This implementation depends
@@ -53,7 +54,7 @@ public class BrowserData {
      * Examples: pagecount=14, pagesteps=10. pagecount=321, pagesteps=100.
      * pagecount=812312, pagesteps=100000.
      * <p>
-     * For a pagecount of 0, 0 will also be returned.
+     * For a pagecount of 0, 0 is be returned.
      * 
      * @return Large step increments.
      */
@@ -67,28 +68,15 @@ public class BrowserData {
      * 
      * @return Page number currently displayed.
      */
-    public int getPage()                        { return page; }
-    public void setPage(int page)               { this.page = page; }
-
-    /**
-     * Sets the page number dependent on the page parameter of the
-     * {@link HttpServletRequest}.
-     * 
-     * @param req {@link HttpServletRequest} to get the page number from.
-     */
-    public void setPage(HttpServletRequest req) {
-        page = 0;
-        String param = req.getParameter(getPageparam());
-        if (param != null) {
-            try {
-                page = Integer.parseInt(param);
-            } catch (NumberFormatException ex) {
-                page = 0;       // make no fuss about it...
-            }
-        }
+    public int getPage() { return page; }
+    public void setPage(int page) {
         if (page >= pagecount) {
             page = pagecount - 1;
         }
+        if (page < 0) {
+            page = 0;
+        }
+        this.page = page;
     }
 
     /**
