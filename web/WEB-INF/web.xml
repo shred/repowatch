@@ -18,13 +18,18 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: web.xml 181 2008-07-22 11:35:11Z shred $
+  $Id: web.xml 182 2008-07-23 13:57:39Z shred $
 -->
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   
   <display-name>repowatch</display-name>
   <description>yum repository watcher reloaded</description>
+  
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/applicationContext.xml /WEB-INF/schedulingContext.xml</param-value>
+  </context-param>
   
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

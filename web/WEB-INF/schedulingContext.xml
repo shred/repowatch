@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Repowatch - A repository watcher
+    (C) 2008 Richard "Shred" Körber
+    http://repowatch.shredzone.org/
+ 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+ 
+  $Id: schedulingContext.xml 182 2008-07-23 13:57:39Z shred $
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+  <bean id="repositorySyncJob" class="org.shredzone.repowatch.job.RepositorySyncJob"/>
+  
+  <bean id="repositorySyncJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="repositorySyncJob"/>
+    <property name="targetMethod" value="doSynchronization"/>
+    <property name="concurrent" value="false"/>
+  </bean>
+
+  <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="repositorySyncJobDetail"/>
+    <!-- sec min hour DoM month DoW -->
+	<property name="cronExpression" value="0 * * * * ?"/>
+	<!-- property name="cronExpression" value="0 0 */6 * * ?"/ -->
+  </bean>
+
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+      <list>
+        <ref bean="cronTrigger"/>
+      </list>
+    </property>
+  </bean>
+
+</beans>
