@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDetailController.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: PackageDetailController.java 183 2008-07-23 13:58:40Z shred $
  */
 
 package org.shredzone.repowatch.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
@@ -42,7 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of showing details of packages.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 183 $
  */
 @Controller
 public class PackageDetailController {
@@ -65,21 +67,30 @@ public class PackageDetailController {
      * Shows the details of a package.
      *  
      * @param req           {@link HttpServletRequest}
+     * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.
+     * @throws IOException
      */
     @RequestMapping(SHOWPACKAGE_PATTERN)
     public ModelAndView showPackageHandler(
-            HttpServletRequest req
-    ) {
+            HttpServletRequest req,
+            HttpServletResponse resp
+    ) throws IOException {
         RequestParts parts = showpackageResolver.getRequestParts(req);
         if (! parts.hasParts()) {
-            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         ModelAndView mav = new ModelAndView("showpackage");
         String packname = parts.getPart(0);
         
         Package pack = packageDao.findLatestPackage(packname);
+        if (pack == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
+        
         List<Version> alternatives = versionDao.findAllVersionsForName(packname);
         
         mav.addObject("package", pack);
@@ -97,15 +108,19 @@ public class PackageDetailController {
      * Shows the details of a package, in the context of a certain domain.
      *  
      * @param req           {@link HttpServletRequest}
+     * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.
+     * @throws IOException
      */
     @RequestMapping(SHOWSINGLEPACKAGE_PATTERN)
     public ModelAndView showSinglePackageHandler(
-            HttpServletRequest req
-    ) {
+            HttpServletRequest req,
+            HttpServletResponse resp
+    ) throws IOException {
         RequestParts parts = showSinglePackageResolver.getRequestParts(req);
         if (! parts.hasParts()) {
-            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         ModelAndView mav = new ModelAndView("showpackage");
@@ -115,12 +130,14 @@ public class PackageDetailController {
         
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         Package pack = packageDao.findPackage(domain, packName);
         if (pack == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         List<Version> alternatives = versionDao.findAllVersionsExcept(packName, pack);

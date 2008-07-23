@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeListController.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: ChangeListController.java 183 2008-07-23 13:58:40Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -55,7 +55,7 @@ import org.springframework.web.servlet.ModelAndView;
  * repositories.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 183 $
  */
 @Controller
 public class ChangeListController {
@@ -86,20 +86,23 @@ public class ChangeListController {
      * Lists all changes of a repository, in a human readable form.
      *  
      * @param req           {@link HttpServletRequest}
+     * @param resp          {@link HttpServletResponse}
      * @param page          Browser page to be shown, or <code>null</code>
      * @param updateFlag    Also show updates, or <code>null</code>
      * @return  {@link ModelAndView} for rendering.
+     * @throws IOException
      */
     @RequestMapping(LISTCHANGES_PATTERN)
     public ModelAndView listChangesHandler(
             HttpServletRequest req,
+            HttpServletResponse resp,
             @RequestParam(value="page", required=false) Integer page,
             @RequestParam(value="updates", required=false) Boolean updateFlag
-    ) {
+    ) throws IOException {
         RequestParts parts = listChangesResolver.getRequestParts(req);
         if (! parts.hasParts()) {
-            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         String domName    = parts.getPart(0);
@@ -112,12 +115,14 @@ public class ChangeListController {
 
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         Repository repository = repositoryDao.findRepository(domain, repoName, repoArch);
         if (repository == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         BrowserData browser = new BrowserData();
@@ -170,6 +175,8 @@ public class ChangeListController {
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @param updateFlag    Also show updates, or <code>null</code>
+     * @throws XMLStreamException
+     * @throws IOException
      */
     @RequestMapping(LISTCHANGESRSS_PATTERN)
     public void listChangesRssHandler(
@@ -179,8 +186,8 @@ public class ChangeListController {
     ) throws XMLStreamException, IOException {
         RequestParts parts = listChangesRssResolver.getRequestParts(req);
         if (! parts.hasParts()) {
-            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
         
         String domName    = parts.getPart(0);
@@ -191,13 +198,14 @@ public class ChangeListController {
 
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
 
         Repository repository = repositoryDao.findRepository(domain, repoName, repoArch);
         if (repository == null) {
-//            throw new HttpStatusException();
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
 
         Date limit = new Date();

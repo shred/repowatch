@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionsDetailController.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: VersionsDetailController.java 183 2008-07-23 13:58:40Z shred $
  */
 
 package org.shredzone.repowatch.web;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
@@ -45,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of showing details of a package version.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 183 $
  */
 @Controller
 public class VersionsDetailController {
@@ -74,18 +76,21 @@ public class VersionsDetailController {
      * Lists all package versions of a repository.
      *  
      * @param req           {@link HttpServletRequest}
+     * @param resp          {@link HttpServletResponse}
      * @param page          Browser page to be shown, or <code>null</code>
      * @return  {@link ModelAndView} for rendering.
+     * @throws IOException
      */
     @RequestMapping(LISTVERSIONS_PATTERN)
     public ModelAndView listVersionsHandler(
             HttpServletRequest req,
+            HttpServletResponse resp,
             @RequestParam(value="page", required=false) Integer page
-    ) {
+    ) throws IOException {
         RequestParts parts = listVersionsResolver.getRequestParts(req);
         if (! parts.hasParts()) {
-            throw new IllegalArgumentException(req.getContextPath() + ":" + req.getRequestURI() + " does not match");
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
         
         String domName    = parts.getPart(0);
@@ -97,12 +102,14 @@ public class VersionsDetailController {
 
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         Repository repository = repositoryDao.findRepository(domain, repoName, repoArch);
         if (repository == null) {
-            /*TODO: 404 */
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return null;
         }
 
         BrowserData browser = new BrowserData();
