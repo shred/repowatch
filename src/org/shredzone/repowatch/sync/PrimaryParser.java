@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 182 2008-07-23 13:57:39Z shred $
+ * $Id: PrimaryParser.java 184 2008-07-23 22:57:56Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -62,25 +62,26 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 182 $
+ * @version $Revision: 184 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
     // Element QName constants
-    private final QName QN_PACKAGE = new QName("package");
-    private final QName QN_VERSION = new QName("version");
-    private final QName QN_TIME = new QName("time");
-    private final QName QN_LOCATION = new QName("location");
-    private final QName QN_NAME = new QName("name");
-    private final QName QN_SUMMARY = new QName("summary");
-    private final QName QN_DESCRIPTION = new QName("description");
-    private final QName QN_URL = new QName("url");
+    private final QName QN_PACKAGE = new QName("http://linux.duke.edu/metadata/repo", "package");
+    private final QName QN_VERSION = new QName("http://linux.duke.edu/metadata/repo", "version");
+    private final QName QN_TIME = new QName("http://linux.duke.edu/metadata/repo", "time");
+    private final QName QN_LOCATION = new QName("http://linux.duke.edu/metadata/repo", "location");
+    private final QName QN_NAME = new QName("http://linux.duke.edu/metadata/repo", "name");
+    private final QName QN_SUMMARY = new QName("http://linux.duke.edu/metadata/repo", "summary");
+    private final QName QN_DESCRIPTION = new QName("http://linux.duke.edu/metadata/repo", "description");
+    private final QName QN_URL = new QName("http://linux.duke.edu/metadata/repo", "url");
     private final QName QN_RPM_GROUP = new QName("http://linux.duke.edu/metadata/rpm", "group");
-    private final QName QN_EPOCH = new QName("epoch");
-    private final QName QN_VER = new QName("ver");
-    private final QName QN_REL = new QName("rel");
-    private final QName QN_FILE = new QName("file");
-    private final QName QN_HREF = new QName("href");
+ 
+    private final QName QNA_EPOCH = new QName("epoch");
+    private final QName QNA_VER = new QName("ver");
+    private final QName QNA_REL = new QName("rel");
+    private final QName QNA_FILE = new QName("file");
+    private final QName QNA_HREF = new QName("href");
     
     private final DatabaseLocation location;
     private final Repository repository;
@@ -229,15 +230,15 @@ public class PrimaryParser implements Iterable<Version> {
         } else if (tag.equals(QN_VERSION)) {
             assert currentVersion != null;
             
-            Attribute attr = element.getAttributeByName(QN_EPOCH);
+            Attribute attr = element.getAttributeByName(QNA_EPOCH);
             if (attr != null) currentVersion.setEpoch(attr.getValue());
-            attr = element.getAttributeByName(QN_VER);
+            attr = element.getAttributeByName(QNA_VER);
             if (attr != null) currentVersion.setVer(attr.getValue());
-            attr = element.getAttributeByName(QN_REL);
+            attr = element.getAttributeByName(QNA_REL);
             if (attr != null) currentVersion.setRel(attr.getValue());
 
         } else if (tag.equals(QN_TIME)) {
-            Attribute attr = element.getAttributeByName(QN_FILE);
+            Attribute attr = element.getAttributeByName(QNA_FILE);
             if (attr != null) {
                 try {
                     long filetime = Long.parseLong(attr.getValue());
@@ -246,7 +247,7 @@ public class PrimaryParser implements Iterable<Version> {
             }
 
         } else if (tag.equals(QN_LOCATION)) {
-            Attribute attr = element.getAttributeByName(QN_HREF);
+            Attribute attr = element.getAttributeByName(QNA_HREF);
             if (attr != null) currentVersion.setFileLocation(attr.getValue());
         }
     }

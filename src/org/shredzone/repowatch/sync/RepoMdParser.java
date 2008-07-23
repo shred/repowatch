@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepoMdParser.java 182 2008-07-23 13:57:39Z shred $
+ * $Id: RepoMdParser.java 184 2008-07-23 22:57:56Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -41,7 +41,7 @@ import javax.xml.stream.events.XMLEvent;
  * Parses the repomd.xml file of a repository.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 182 $
+ * @version $Revision: 184 $
  */
 public class RepoMdParser {
 
@@ -49,12 +49,13 @@ public class RepoMdParser {
     private final URL baseUrl;
 
     // Element QName constants
-    private final QName QN_DATA = new QName("data");
-    private final QName QN_LOCATION = new QName("location");
-    private final QName QN_CHECKSUM = new QName("checksum");
-    private final QName QN_TIMESTAMP = new QName("timestamp");
-    private final QName QN_TYPE = new QName("type");
-    private final QName QN_HREF = new QName("href");
+    private final QName QN_DATA = new QName("http://linux.duke.edu/metadata/repo", "data");
+    private final QName QN_LOCATION = new QName("http://linux.duke.edu/metadata/repo", "location");
+    private final QName QN_CHECKSUM = new QName("http://linux.duke.edu/metadata/repo", "checksum");
+    private final QName QN_TIMESTAMP = new QName("http://linux.duke.edu/metadata/repo", "timestamp");
+    
+    private final QName QNA_TYPE = new QName("type");
+    private final QName QNA_HREF = new QName("href");
 
     /**
      * Creates a RepoMdParser. No network connection is opened yet.
@@ -105,7 +106,7 @@ public class RepoMdParser {
                     QName tag = element.getName();
                     
                     if (tag.equals(QN_DATA)) {
-                        Attribute attr = element.getAttributeByName(QN_TYPE);
+                        Attribute attr = element.getAttributeByName(QNA_TYPE);
                         if (attr != null) {
                             assert currentLocation == null;
                             currentLocation = new DatabaseLocation();
@@ -113,7 +114,7 @@ public class RepoMdParser {
                         }
                         
                     } else if (tag.equals(QN_LOCATION)) {
-                        Attribute attr = element.getAttributeByName(QN_HREF);
+                        Attribute attr = element.getAttributeByName(QNA_HREF);
                         if (currentLocation != null && attr != null) {
                             String href = attr.getValue();
                             currentLocation.setLocation(href);
@@ -121,7 +122,7 @@ public class RepoMdParser {
                         }
                         
                     } else if (tag.equals(QN_CHECKSUM)) {
-                        Attribute attr = element.getAttributeByName(QN_TYPE);
+                        Attribute attr = element.getAttributeByName(QNA_TYPE);
                         if (currentLocation != null && attr != null) {
                             currentLocation.setChecksumType(attr.getValue());
                         }
