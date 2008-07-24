@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizer.java 182 2008-07-23 13:57:39Z shred $
+ * $Id: RepositorySynchronizer.java 186 2008-07-24 22:49:54Z shred $
  */
 package org.shredzone.repowatch.sync;
 
@@ -45,7 +45,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * new and ready to use RepositorySynchronizer objects.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 182 $
+ * @version $Revision: 186 $
  */
 public class RepositorySynchronizer {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -117,6 +117,7 @@ public class RepositorySynchronizer {
      * @throws SynchronizerException
      */
     private void readPrimary() throws SynchronizerException {
+        logger.fine("Reading primary.xml");
         boolean firstTime = false;
         
         DatabaseLocation location = repomd.getDatabaseLocation("primary");
@@ -194,7 +195,6 @@ public class RepositorySynchronizer {
      *      their Package names.
      * @return  Change entity, or null if the version was unchanged.
      */
-    /*TODO: Refactorize in smaller methods */
     private Change syncVersion(Version version, Map<String,Version> versionCache) {
         //--- Create a Change entity ---
         Change change = new Change();

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepoMdParserTest.java 185 2008-07-24 12:04:15Z shred $
+ * $Id: RepoMdParserTest.java 186 2008-07-24 22:49:54Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -33,7 +33,7 @@ import org.junit.Test;
  * Unit tests for {@link RepoMdParser}
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 185 $
+ * @version $Revision: 186 $
  */
 public class RepoMdParserTest {
 
@@ -53,8 +53,8 @@ public class RepoMdParserTest {
         assertTrue(dbLocation.isCompressed());
         assertEquals("c225ad761f4299103a0b65fcb83bf986e5005bc5", dbLocation.getChecksum());
         assertEquals("sha", dbLocation.getChecksumType());
-        assertEquals(1216447007, dbLocation.getTimestamp());
-        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
+        assertEquals(1216447007000L, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007000L), dbLocation.getTimestampAsDate());
 
         dbLocation = parser.getDatabaseLocation("other");
         assertNotNull(dbLocation);
@@ -63,8 +63,8 @@ public class RepoMdParserTest {
         assertFalse(dbLocation.isCompressed());
         assertEquals("e85590ccf9b8777d2714ac7c62731d4e", dbLocation.getChecksum());
         assertEquals("md5", dbLocation.getChecksumType());
-        assertEquals(1216447007, dbLocation.getTimestamp());
-        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
+        assertEquals(1216447007000L, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007000L), dbLocation.getTimestampAsDate());
         
         dbLocation = parser.getDatabaseLocation("filelists");
         assertNotNull(dbLocation);
@@ -73,8 +73,8 @@ public class RepoMdParserTest {
         assertTrue(dbLocation.isCompressed());
         assertNull(dbLocation.getChecksum());
         assertNull(dbLocation.getChecksumType());
-        assertEquals(1216447007, dbLocation.getTimestamp());
-        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
+        assertEquals(1216447007000L, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007000L), dbLocation.getTimestampAsDate());
         
         dbLocation = parser.getDatabaseLocation("foobar");
         assertNull(dbLocation);

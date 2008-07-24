@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: DatabaseLocation.java 185 2008-07-24 12:04:15Z shred $
+ * $Id: DatabaseLocation.java 186 2008-07-24 22:49:54Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -27,7 +27,7 @@ import java.util.Date;
  * Contains all information about a repository database and it's location.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 185 $
+ * @version $Revision: 186 $
  */
 public class DatabaseLocation {
 
@@ -71,7 +71,7 @@ public class DatabaseLocation {
     public void setChecksumType(String checksumType) { this.checksumType = checksumType; }
 
     /**
-     * Gets the timestamp of the last modification (seconds since epoch).
+     * Gets the timestamp of the last modification (milliseconds since epoch).
      * 
      * @return Timestamp
      */
@@ -84,7 +84,7 @@ public class DatabaseLocation {
      * @return Timestamp as {@link Date}
      */
     public Date getTimestampAsDate() {
-        return new Date(getTimestamp() * 1000L);
+        return new Date(getTimestamp());
     }
 
     /**

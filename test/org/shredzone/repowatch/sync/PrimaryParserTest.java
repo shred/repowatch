@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParserTest.java 185 2008-07-24 12:04:15Z shred $
+ * $Id: PrimaryParserTest.java 186 2008-07-24 22:49:54Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -41,7 +41,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * Unit tests for {@link PrimaryParser}
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 185 $
+ * @version $Revision: 186 $
  */
 public class PrimaryParserTest {
 
@@ -170,7 +170,7 @@ public class PrimaryParserTest {
         assertEquals("0", version.getEpoch());
         assertEquals("1.2.3", version.getVer());
         assertEquals("4.mock", version.getRel());
-        assertEquals(new Date(1214421558 * 1000L), version.getFileDate());
+        assertEquals(new Date(1214421558000L), version.getFileDate());
         assertEquals("foo-1.2.3-4.mock.i386.rpm", version.getFileLocation());
     }
 

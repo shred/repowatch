@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepoMdParser.java 184 2008-07-23 22:57:56Z shred $
+ * $Id: RepoMdParser.java 186 2008-07-24 22:49:54Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -41,7 +41,7 @@ import javax.xml.stream.events.XMLEvent;
  * Parses the repomd.xml file of a repository.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 184 $
+ * @version $Revision: 186 $
  */
 public class RepoMdParser {
 
@@ -149,7 +149,7 @@ public class RepoMdParser {
                         
                     } else if (tag.equals(QN_TIMESTAMP)) {
                         assert stringbuilder != null;
-                        currentLocation.setTimestamp(Long.parseLong(stringbuilder.toString().trim()));
+                        currentLocation.setTimestamp(Long.parseLong(stringbuilder.toString().trim()) * 1000L);
                         stringbuilder = null;
                     }
                     
