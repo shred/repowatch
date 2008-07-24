@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepoMdParserTest.java 184 2008-07-23 22:57:56Z shred $
+ * $Id: RepoMdParserTest.java 185 2008-07-24 12:04:15Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -33,7 +33,7 @@ import org.junit.Test;
  * Unit tests for {@link RepoMdParser}
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 184 $
+ * @version $Revision: 185 $
  */
 public class RepoMdParserTest {
 
@@ -48,33 +48,33 @@ public class RepoMdParserTest {
             
         dbLocation = parser.getDatabaseLocation("primary");
         assertNotNull(dbLocation);
-        assertEquals(dbLocation.getType(), "primary");
-        assertEquals(dbLocation.getLocation(), "repodata/primary.xml.gz");
+        assertEquals("primary", dbLocation.getType());
+        assertEquals("repodata/primary.xml.gz", dbLocation.getLocation());
         assertTrue(dbLocation.isCompressed());
-        assertEquals(dbLocation.getChecksum(), "c225ad761f4299103a0b65fcb83bf986e5005bc5");
-        assertEquals(dbLocation.getChecksumType(), "sha");
-        assertEquals(dbLocation.getTimestamp(), 1216447007);
-        assertEquals(dbLocation.getTimestampAsDate(), new Date(1216447007));
+        assertEquals("c225ad761f4299103a0b65fcb83bf986e5005bc5", dbLocation.getChecksum());
+        assertEquals("sha", dbLocation.getChecksumType());
+        assertEquals(1216447007, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
 
         dbLocation = parser.getDatabaseLocation("other");
         assertNotNull(dbLocation);
-        assertEquals(dbLocation.getType(), "other");
-        assertEquals(dbLocation.getLocation(), "repodata/other.xml");
+        assertEquals("other", dbLocation.getType());
+        assertEquals("repodata/other.xml", dbLocation.getLocation());
         assertFalse(dbLocation.isCompressed());
-        assertEquals(dbLocation.getChecksum(), "e85590ccf9b8777d2714ac7c62731d4e");
-        assertEquals(dbLocation.getChecksumType(), "md5");
-        assertEquals(dbLocation.getTimestamp(), 1216447007);
-        assertEquals(dbLocation.getTimestampAsDate(), new Date(1216447007));
+        assertEquals("e85590ccf9b8777d2714ac7c62731d4e", dbLocation.getChecksum());
+        assertEquals("md5", dbLocation.getChecksumType());
+        assertEquals(1216447007, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
         
         dbLocation = parser.getDatabaseLocation("filelists");
         assertNotNull(dbLocation);
-        assertEquals(dbLocation.getType(), "filelists");
-        assertEquals(dbLocation.getLocation(), "repodata/filelists.xml.gz");
+        assertEquals("filelists", dbLocation.getType());
+        assertEquals("repodata/filelists.xml.gz", dbLocation.getLocation());
         assertTrue(dbLocation.isCompressed());
         assertNull(dbLocation.getChecksum());
         assertNull(dbLocation.getChecksumType());
-        assertEquals(dbLocation.getTimestamp(), 1216447007);
-        assertEquals(dbLocation.getTimestampAsDate(), new Date(1216447007));
+        assertEquals(1216447007, dbLocation.getTimestamp());
+        assertEquals(new Date(1216447007 * 1000L), dbLocation.getTimestampAsDate());
         
         dbLocation = parser.getDatabaseLocation("foobar");
         assertNull(dbLocation);

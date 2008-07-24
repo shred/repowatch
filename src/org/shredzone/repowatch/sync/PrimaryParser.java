@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 184 2008-07-23 22:57:56Z shred $
+ * $Id: PrimaryParser.java 185 2008-07-24 12:04:15Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -62,19 +62,19 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 184 $
+ * @version $Revision: 185 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
     // Element QName constants
-    private final QName QN_PACKAGE = new QName("http://linux.duke.edu/metadata/repo", "package");
-    private final QName QN_VERSION = new QName("http://linux.duke.edu/metadata/repo", "version");
-    private final QName QN_TIME = new QName("http://linux.duke.edu/metadata/repo", "time");
-    private final QName QN_LOCATION = new QName("http://linux.duke.edu/metadata/repo", "location");
-    private final QName QN_NAME = new QName("http://linux.duke.edu/metadata/repo", "name");
-    private final QName QN_SUMMARY = new QName("http://linux.duke.edu/metadata/repo", "summary");
-    private final QName QN_DESCRIPTION = new QName("http://linux.duke.edu/metadata/repo", "description");
-    private final QName QN_URL = new QName("http://linux.duke.edu/metadata/repo", "url");
+    private final QName QN_PACKAGE = new QName("http://linux.duke.edu/metadata/common", "package");
+    private final QName QN_VERSION = new QName("http://linux.duke.edu/metadata/common", "version");
+    private final QName QN_TIME = new QName("http://linux.duke.edu/metadata/common", "time");
+    private final QName QN_LOCATION = new QName("http://linux.duke.edu/metadata/common", "location");
+    private final QName QN_NAME = new QName("http://linux.duke.edu/metadata/common", "name");
+    private final QName QN_SUMMARY = new QName("http://linux.duke.edu/metadata/common", "summary");
+    private final QName QN_DESCRIPTION = new QName("http://linux.duke.edu/metadata/common", "description");
+    private final QName QN_URL = new QName("http://linux.duke.edu/metadata/common", "url");
     private final QName QN_RPM_GROUP = new QName("http://linux.duke.edu/metadata/rpm", "group");
  
     private final QName QNA_EPOCH = new QName("epoch");
@@ -178,10 +178,20 @@ public class PrimaryParser implements Iterable<Version> {
         }
 
         if (digest != null) {
-            String checksum = digest.toString();
-            if (! checksum.equals(location.getChecksum())) {
+            byte[] hash = digest.digest();
+            String cmp = location.getChecksum().toLowerCase();
+            if (hash.length * 2 != cmp.length()) {
                 throw new SynchronizerException("Bad digest checksum!");
             }
+            
+            for (int ix = 0; ix < hash.length; ix++) {
+                String hex = String.format("%02x", hash[ix]);
+                if (! cmp.startsWith(hex)) {
+                    throw new SynchronizerException("Bad digest checksum!");
+                }
+                cmp = cmp.substring(2);
+            }
+            assert cmp.length() == 0;
         }
         
         return null;
@@ -191,14 +201,12 @@ public class PrimaryParser implements Iterable<Version> {
      * Frees all resources bound by the parser. Always invoke this method
      * when you are done reading the xml file. You can safely invoke it
      * multiple times.
-     * 
-     * @throws SynchronizerException
      */
-    public void discard() throws SynchronizerException {
+    public void discard() {
         try {
             if (in != null) in.close();
         } catch (IOException ex) {
-            throw new SynchronizerException("While discarding", ex);
+            throw new RuntimeException("While discarding", ex);
         } finally {
             in = null;
             xmlreader = null;
@@ -242,7 +250,7 @@ public class PrimaryParser implements Iterable<Version> {
             if (attr != null) {
                 try {
                     long filetime = Long.parseLong(attr.getValue());
-                    currentVersion.setFileDate(new Date(filetime * 1000));
+                    currentVersion.setFileDate(new Date(filetime * 1000L));
                 } catch (NumberFormatException ex) {}
             }
 

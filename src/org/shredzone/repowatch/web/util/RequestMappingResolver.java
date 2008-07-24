@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RequestMappingResolver.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: RequestMappingResolver.java 185 2008-07-24 12:04:15Z shred $
  */
 
 package org.shredzone.repowatch.web.util;
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * the official solution.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 185 $
  */
 public class RequestMappingResolver {
     /*TODO: Check if this class can be removed because Spring brings
@@ -53,7 +53,7 @@ public class RequestMappingResolver {
      *      {@link RequestMapping} annotation.
      */
     public RequestMappingResolver(String url) {
-        String regexp = url.replace("*", "(.*?)");
+        String regexp = url.replace("*", "([^/]*?)");
         regexp += "(?:[?#;].*)?";       // Ignore jsession attachments and more
         pattern = Pattern.compile(regexp);
     }
@@ -62,7 +62,7 @@ public class RequestMappingResolver {
      * Gets the {@link RequestParts} object for the given request.
      * 
      * @param req   {@link HttpServletRequest}
-     * @return  {@łink RequestParts} with the results
+     * @return  {@link RequestParts} with the results
      */
     public RequestParts getRequestParts(HttpServletRequest req) {
         String context = req.getContextPath();
@@ -73,6 +73,16 @@ public class RequestMappingResolver {
             request = request.substring(context.length());
         }
         
+        return getRequestParts(request);
+    }
+
+    /**
+     * Gets the {@link RequestParts} object for the given request.
+     * 
+     * @param request   Request part (requestURI minus contextPath).
+     * @return  {@link RequestParts} with the results
+     */
+    public RequestParts getRequestParts(String request) {
         Matcher m = pattern.matcher(request);
         if (m.matches()) {
             String[] result = new String[m.groupCount()];
@@ -107,7 +117,7 @@ public class RequestMappingResolver {
          * @return  true: Request matched, false: Request did not match
          */
         public boolean hasParts() {
-            return parts != null;
+            return partCount() > 0;
         }
 
         /**
@@ -116,7 +126,7 @@ public class RequestMappingResolver {
          * @return  Number of parts
          */
         public int partCount() {
-            return parts.length;
+            return (parts != null ? parts.length : 0);
         }
 
         /**
