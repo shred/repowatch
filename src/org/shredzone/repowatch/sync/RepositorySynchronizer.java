@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizer.java 186 2008-07-24 22:49:54Z shred $
+ * $Id: RepositorySynchronizer.java 190 2008-07-27 20:02:02Z shred $
  */
 package org.shredzone.repowatch.sync;
 
@@ -45,7 +45,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * new and ready to use RepositorySynchronizer objects.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 186 $
+ * @version $Revision: 190 $
  */
 public class RepositorySynchronizer {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -149,6 +149,7 @@ public class RepositorySynchronizer {
         }
         
         //--- Iterate through the elements ---
+        logger.info("Repository " + repository.toString() + " is due for an update");
         PrimaryParser parser = new PrimaryParser(repository, location);
         try {
             parser.parse();
@@ -185,6 +186,7 @@ public class RepositorySynchronizer {
         
         //--- Successfully scanned ---
         repository.setLastScanned(now);
+        logger.info("Repository " + repository.toString() + " successfully updated");
     }
     
     /**
