@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: applicationContext.xml 182 2008-07-23 13:57:39Z shred $
+  $Id: applicationContext.xml 187 2008-07-27 13:40:08Z shred $
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -76,6 +76,13 @@
   <bean id="packageDao"    class="org.shredzone.repowatch.repository.hib.PackageDAOHibImpl"/>
   <bean id="repositoryDao" class="org.shredzone.repowatch.repository.hib.RepositoryDAOHibImpl"/>
   <bean id="versionDao"    class="org.shredzone.repowatch.repository.hib.VersionDAOHibImpl"/>
+  
+  <bean id="repowatchConfiguration" class="org.shredzone.repowatch.config.PropertyConfigurationBean">
+  	<property name="entriesPerPage" value="25"/>
+	<property name="rssMaxNumberOfDays" value="5"/>
+	<property name="rssMaxNumberOfEntries" value="50"/>
+	<property name="searchTermMinLength" value="3"/>
+  </bean>
 
   <bean id="syncService"   class="org.shredzone.repowatch.service.impl.SyncServiceImpl"/>
 

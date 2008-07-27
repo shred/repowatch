@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: schedulingContext.xml 182 2008-07-23 13:57:39Z shred $
+  $Id: schedulingContext.xml 187 2008-07-27 13:40:08Z shred $
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -41,8 +41,7 @@
   <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="repositorySyncJobDetail"/>
     <!-- sec min hour DoM month DoW -->
-	<property name="cronExpression" value="0 * * * * ?"/>
-	<!-- property name="cronExpression" value="0 0 */6 * * ?"/ -->
+	<property name="cronExpression" value="0 0 */6 * * ?"/>
   </bean>
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

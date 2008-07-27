@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageListController.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: PackageListController.java 187 2008-07-27 13:40:08Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -25,6 +25,7 @@ import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.shredzone.repowatch.config.Configuration;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.web.util.BrowserData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of listing packages.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 187 $
  */
 @Controller
 public class PackageListController {
@@ -45,8 +46,8 @@ public class PackageListController {
     @Autowired
     private PackageDAO packageDao;
     
-    /*TODO: Configure this by injection. */
-    private int entriesPerPage = 25;    // A sensible default
+    @Autowired
+    private Configuration config;
     
 
     /**
@@ -66,6 +67,7 @@ public class PackageListController {
         BrowserData browser = new BrowserData();
         browser.setBaseurl(req.getServletPath());
         
+        int entriesPerPage = config.getEntriesPerPage();
         long count = packageDao.countAllPackages();
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));

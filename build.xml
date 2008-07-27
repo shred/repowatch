@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Repowatch - A repository watcher
+    (C) 2007 Richard "Shred" Körber
+    http://www.shredzone.net/go/repowatch
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+  $Id: build.xml 187 2008-07-27 13:40:08Z shred $
+-->
+
+<!-- Repowatch Ant Build File -->
+
+<project name="repowatch" default="build" basedir=".">
+  <description>
+  	A yum repository watcher.
+  </description>
+  
+  <!-- Global Properties -->
+  <property name="src"   value="src"/>
+  <property name="lib"   value="lib"/>
+  <property name="site"  value="site"/>
+  <property name="web"   value="WEB-INF"/>
+  <property name="meta"  value="META-INF"/>
+  <property name="build" value="bin"/>
+  <property name="target" value="target"/>
+  <property name="javadoc" value="${target}/docs/apidocs"/>
+  <property name="app.path" value="/${ant.project.name}"/>
+  <property file="build.properties"/>
+
+  <!-- Classpath -->
+  <path id="build.class.path">
+    <fileset dir="${web}/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+    </fileset>
+    <pathelement location="${build}"/>
+    <pathelement path="${java.class.path}/"/>
+  </path>
+
+  <!-- Targets -->
+  <target name="init" description="Initialize project">
+    <tstamp/>
+  	<mkdir dir="${build}"/>
+  	<mkdir dir="${target}"/>
+    <mkdir dir="${javadoc}"/>
+  </target>
+
+  <target name="build" depends="init" description="Build project">
+  	<javac srcdir="${src}" destdir="${build}" deprecation="on" optimize="on" source="1.5" target="1.5">
+      <classpath refid="build.class.path"/>
+  	</javac>
+    <copy todir="${build}">
+      <fileset dir="${src}" excludes="**/*.java"/>
+    </copy>
+  </target>
+  		
+  <target name="dist" depends="build" description="Distribute project">
+    <war destfile="${target}/${ant.project.name}.war" webxml="web.xml">
+      <classes dir="${build}"/>
+      <webinf dir="${web}"/>
+      <metainf dir="${meta}"/>
+      <fileset dir="${site}"/>
+      <manifest>
+        <attribute name="Main-Class" value="net.shredzone.repowatch.scanner.Scanner"/>
+      </manifest>
+    </war>
+  </target>
+
+  <target name="javadoc" depends="init" description="Build Javadoc">
+    <javadoc packagenames="net.shredzone.*"
+             sourcepath="${src}"
+             destdir="${javadoc}"
+    	     classpathref="build.class.path"
+             author="true"
+             version="true"
+             charset="UTF-8"
+             windowtitle="${ant.project.name}">
+      <doctitle><![CDATA[<h1>]]${ant.project.name}<![CDATA[</h1>]]></doctitle>
+      <bottom><![CDATA[<i>Copyright &copy; Richard "Shred" Körber</i>]]></bottom>
+    </javadoc>
+  </target>
+
+  <target name="clean" description="Cleanup">
+    <delete dir="${build}"/>
+    <delete dir="${target}"/>
+  </target>
+  
+</project>

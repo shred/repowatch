@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeListController.java 183 2008-07-23 13:58:40Z shred $
+ * $Id: ChangeListController.java 187 2008-07-27 13:40:08Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -34,6 +34,7 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.shredzone.repowatch.config.Configuration;
 import org.shredzone.repowatch.model.Change;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
@@ -55,7 +56,7 @@ import org.springframework.web.servlet.ModelAndView;
  * repositories.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 183 $
+ * @version $Revision: 187 $
  */
 @Controller
 public class ChangeListController {
@@ -72,10 +73,8 @@ public class ChangeListController {
     @Autowired
     private MessageSource messageSource;
     
-    /*TODO: Configure this by injection. */
-    private int entriesPerPage = 25;    // A sensible default
-    private int maxNumberOfDays = 5;
-    private int maxNumberOfEntries = 50;
+    @Autowired
+    private Configuration config;
     
     
     private final static String LISTCHANGES_PATTERN = "/changes/*/*/*/*.html";
@@ -130,6 +129,7 @@ public class ChangeListController {
         if (includeUpdates) base += "?updates=1";
         browser.setBaseurl(base);
         
+        int entriesPerPage = config.getEntriesPerPage();
         long counter = changeDao.countChanges(repository, includeUpdates);
         browser.setResultcount(counter);
         browser.setPagecount((int) Math.ceil((double)counter / entriesPerPage));
@@ -209,8 +209,9 @@ public class ChangeListController {
         }
 
         Date limit = new Date();
-        limit.setTime(limit.getTime() - (maxNumberOfDays * 24 * 60 * 60 * 1000));
-        List<Change> changes = changeDao.findAllChangesUntil(repository, includeUpdates, limit, maxNumberOfEntries);
+        limit.setTime(limit.getTime() - (config.getRssMaxNumberOfDays() * 24 * 60 * 60 * 1000));
+        List<Change> changes = 
+            changeDao.findAllChangesUntil(repository, includeUpdates, limit, config.getRssMaxNumberOfEntries());
 
         StringBuilder basepath = new StringBuilder();
         basepath.append(req.getScheme()).append("://").append(req.getServerName());
@@ -219,7 +220,6 @@ public class ChangeListController {
         }
         basepath.append(req.getContextPath()).append("/");
         
-        /*TODO: This one will require JDK6...*/
         /*TODO: Strongly requires some refactorization! */
         
         DateFormat dateFormatYmd = new SimpleDateFormat("yyyy-MM-dd", resp.getLocale());

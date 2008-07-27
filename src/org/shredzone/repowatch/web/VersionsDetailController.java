@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionsDetailController.java 183 2008-07-23 13:58:40Z shred $
+ * $Id: VersionsDetailController.java 187 2008-07-27 13:40:08Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -27,6 +27,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.shredzone.repowatch.config.Configuration;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
@@ -47,7 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of showing details of a package version.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 183 $
+ * @version $Revision: 187 $
  */
 @Controller
 public class VersionsDetailController {
@@ -64,8 +65,8 @@ public class VersionsDetailController {
     @Autowired
     private VersionDAO versionDao;
     
-    /*TODO: Configure this by injection. */
-    private int entriesPerPage = 25;    // A sensible default
+    @Autowired
+    private Configuration config;
     
     
     private final static String LISTVERSIONS_PATTERN = "/repo/*/*/*/*.html";
@@ -115,6 +116,7 @@ public class VersionsDetailController {
         BrowserData browser = new BrowserData();
         browser.setBaseurl(req.getServletPath());
 
+        int entriesPerPage = config.getEntriesPerPage();
         long count = packageDao.countPackages(repository);
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));
