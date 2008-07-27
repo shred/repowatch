@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: SearchController.java 187 2008-07-27 13:40:08Z shred $
+ * $Id: SearchController.java 188 2008-07-27 14:31:59Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -42,7 +42,7 @@ import org.springframework.web.util.WebUtils;
  * This controller takes care of all search operations.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 187 $
+ * @version $Revision: 188 $
  */
 @Controller
 public class SearchController {
@@ -59,9 +59,9 @@ public class SearchController {
      *  
      * @param req           {@link HttpServletRequest}
      * @param session       {@link HttpSession}
-     * @param do            Flag asking to perform a new search
+     * @param doFlag        Flag asking to perform a new search
      * @param term          Search term, or <code>null</code>
-     * @param desc          Flag to search in descriptions, or <code>null</code>
+     * @param descFlag      Flag to search in descriptions, or <code>null</code>
      * @param page          Page number in the browser, or <code>null</code>
      * @return  {@link ModelAndView} for rendering.
      */

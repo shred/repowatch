@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Repowatch - A repository watcher
-    (C) 2007 Richard "Shred" Körber
+    (C) 2008 Richard "Shred" Körber
     http://www.shredzone.net/go/repowatch
 
   This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: build.xml 187 2008-07-27 13:40:08Z shred $
+  $Id: build.xml 188 2008-07-27 14:31:59Z shred $
 -->
 
 <!-- Repowatch Ant Build File -->
@@ -29,25 +29,18 @@
   
   <!-- Global Properties -->
   <property name="src"   value="src"/>
-  <property name="lib"   value="lib"/>
-  <property name="site"  value="site"/>
-  <property name="web"   value="WEB-INF"/>
-  <property name="meta"  value="META-INF"/>
-  <property name="build" value="bin"/>
-  <property name="target" value="target"/>
-  <property name="javadoc" value="${target}/docs/apidocs"/>
-  <property name="app.path" value="/${ant.project.name}"/>
-  <property file="build.properties"/>
+  <property name="test"  value="test"/>
+  <property name="build" value="build"/>
+  <property name="web"   value="web"/>
+  	
+  <property name="javadoc" value="${build}/apidocs"/>
 
   <!-- Classpath -->
   <path id="build.class.path">
-    <fileset dir="${web}/lib">
+    <fileset dir="${web}/WEB-INF/lib">
       <include name="**/*.jar"/>
     </fileset>
-    <fileset dir="${lib}">
-      <include name="**/*.jar"/>
-    </fileset>
-    <pathelement location="${build}"/>
+    <pathelement location="${build}/classes"/>
     <pathelement path="${java.class.path}/"/>
   </path>
 
@@ -55,33 +48,30 @@
   <target name="init" description="Initialize project">
     <tstamp/>
   	<mkdir dir="${build}"/>
-  	<mkdir dir="${target}"/>
-    <mkdir dir="${javadoc}"/>
   </target>
 
   <target name="build" depends="init" description="Build project">
-  	<javac srcdir="${src}" destdir="${build}" deprecation="on" optimize="on" source="1.5" target="1.5">
+  	<mkdir dir="${build}/classes"/>
+  	<javac srcdir="${src}" destdir="${build}/classes" deprecation="on" optimize="on" source="1.5" target="1.5">
       <classpath refid="build.class.path"/>
   	</javac>
-    <copy todir="${build}">
+    <copy todir="${build}/classes">
       <fileset dir="${src}" excludes="**/*.java"/>
     </copy>
   </target>
-  		
-  <target name="dist" depends="build" description="Distribute project">
-    <war destfile="${target}/${ant.project.name}.war" webxml="web.xml">
-      <classes dir="${build}"/>
-      <webinf dir="${web}"/>
-      <metainf dir="${meta}"/>
-      <fileset dir="${site}"/>
-      <manifest>
-        <attribute name="Main-Class" value="net.shredzone.repowatch.scanner.Scanner"/>
-      </manifest>
-    </war>
+
+  <target name="buildtest" depends="init" description="Build test classes">
+    <mkdir dir="${build}/tests"/>
+  	<javac srcdir="${test}" destdir="${build}/tests" deprecation="on" optimize="on" source="1.5" target="1.5">
+      <classpath refid="build.class.path"/>
+  	</javac>
+    <copy todir="${build}/tests">
+      <fileset dir="${test}" excludes="**/*.java"/>
+    </copy>
   </target>
 
   <target name="javadoc" depends="init" description="Build Javadoc">
-    <javadoc packagenames="net.shredzone.*"
+    <javadoc packagenames="org.shredzone.*"
              sourcepath="${src}"
              destdir="${javadoc}"
     	     classpathref="build.class.path"
@@ -89,14 +79,19 @@
              version="true"
              charset="UTF-8"
              windowtitle="${ant.project.name}">
-      <doctitle><![CDATA[<h1>]]${ant.project.name}<![CDATA[</h1>]]></doctitle>
-      <bottom><![CDATA[<i>Copyright &copy; Richard "Shred" Körber</i>]]></bottom>
+      <doctitle><![CDATA[<h1>${ant.project.name}</h1>]]></doctitle>
     </javadoc>
+  </target>
+
+  <target name="war" depends="build" description="Create a WAR file">
+    <war destfile="${build}/${ant.project.name}.war">
+      <classes dir="${build}/classes"/>
+      <fileset dir="${web}"/>
+    </war>
   </target>
 
   <target name="clean" description="Cleanup">
     <delete dir="${build}"/>
-    <delete dir="${target}"/>
   </target>
   
 </project>

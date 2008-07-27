@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: DatabaseLocation.java 186 2008-07-24 22:49:54Z shred $
+ * $Id: DatabaseLocation.java 188 2008-07-27 14:31:59Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -27,7 +27,7 @@ import java.util.Date;
  * Contains all information about a repository database and it's location.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 186 $
+ * @version $Revision: 188 $
  */
 public class DatabaseLocation {
 
@@ -65,7 +65,8 @@ public class DatabaseLocation {
 
     /**
      * Gets the checksum type ("sha")
-     * @return
+     * 
+     * @return Checksum type
      */
     public String getChecksumType() { return checksumType; }
     public void setChecksumType(String checksumType) { this.checksumType = checksumType; }

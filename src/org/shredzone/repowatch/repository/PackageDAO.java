@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAO.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: PackageDAO.java 188 2008-07-27 14:31:59Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -32,7 +32,7 @@ import org.shredzone.repowatch.model.Repository;
  * Gives access to the package management.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 188 $
  */
 public interface PackageDAO extends BaseDAO<Package> {
     
@@ -92,7 +92,6 @@ public interface PackageDAO extends BaseDAO<Package> {
      * Finds all packages for a {@link Domain}, within certain limits. Returns
      * the package name along with a package description.
      * 
-     * @param domain    A {@link Domain}
      * @param start     The first entity to start with
      * @param limit     The maximum number of returned entities
      * @return  A sorted map of all {@link Package} names belonging to that
