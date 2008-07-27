@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: CHANGES.xml 182 2008-07-23 13:57:39Z shred $
+  $Id: CHANGES.xml 189 2008-07-27 14:33:40Z shred $
 -->
 
 <changes title="History of Changes">
@@ -40,7 +40,7 @@
     <action type="fix" dev="shred">Static image URL got wrong path. Fixed.</action>
   </release>
   
-  <release version="0.12">
+  <release version="0.12" date="27 July 2008">
     <action type="update" dev="shred">Major change: moved to the Spring framework.</action>
     <action type="fix" dev="shred">RSS feed looked ugly on Firefox 3, and probably also other feed readers.</action>
     <action type="update" dev="shred">Major rework of the synchronizer. It now honors the repomd.xml file and computes the database checksums.</action>
