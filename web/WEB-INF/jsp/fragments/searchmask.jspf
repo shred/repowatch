@@ -16,19 +16,33 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: searchmask.jspf 181 2008-07-22 11:35:11Z shred $
+  $Id: searchmask.jspf 198 2008-07-28 22:31:17Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 
-<form action="<c:url value="/search.html"/>" method="get">
+<form action="<c:url value="/search.html"/>" method="post">
 <table class="grid">
   <tr class="gridrow">
-    <td class="gridlabel" style="vertical-align:middle"><fmt:message key="search.term"/></td>
-    <td><input class="fancy" type="text" maxlength="100" name="term" value="<c:out value="${searchData.term}"/>" /></td>
+    <td class="gridlabel" style="vertical-align:middle"><label for="term"><fmt:message key="search.term"/></label></td>
+    <td><input class="fancy" type="text" maxlength="100" name="term" id="term" value="<c:out value="${searchData.term}"/>" /></td>
   </tr>
   <tr class="gridrow">
-    <td class="gridlabel"><fmt:message key="search.options"/></td>
-    <td><input type="checkbox" name="desc" <c:if test="${searchData.descriptions}">checked="checked"</c:if> /><fmt:message key="search.opt.desc"/></td>
+    <td class="gridlabel" rowspan="2"><fmt:message key="search.options"/></td>
+    <td>
+      <input type="checkbox" name="desc" id="desc" <c:if test="${searchData.descriptions}">checked="checked"</c:if> />
+      <label for="desc"><fmt:message key="search.opt.desc"/></label>
+    </td>
+  </tr>
+  <tr class="gridrow">
+    <td>
+      <input type="checkbox" name="domainonly" id="domainonly" onchange="form['domainid'].disabled = !checked" <c:if test="${searchData.domainOnly ne null}">checked="checked"</c:if> />
+      <label for="domainonly"><fmt:message key="search.opt.domonly"/></label>
+      <select name="domainid" id="domainid" <c:if test="${searchData.domainOnly eq null}">disabled="disabled"</c:if>>
+        <c:forEach var="domain" items="${domainList}">
+          <option value="${domain.id}" <c:if test="${domain eq searchData.domainOnly}">selected="selected"</c:if>><c:out value="${domain.name} ${domain.release}"/></option>
+        </c:forEach>
+      </select>
+    </td>
   </tr>
   <tr class="gridrow">
     <td class="gridlabel">&nbsp;</td>

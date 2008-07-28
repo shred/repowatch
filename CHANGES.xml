@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: CHANGES.xml 189 2008-07-27 14:33:40Z shred $
+  $Id: CHANGES.xml 198 2008-07-28 22:31:17Z shred $
 -->
 
 <changes title="History of Changes">
@@ -45,6 +45,12 @@
     <action type="fix" dev="shred">RSS feed looked ugly on Firefox 3, and probably also other feed readers.</action>
     <action type="update" dev="shred">Major rework of the synchronizer. It now honors the repomd.xml file and computes the database checksums.</action>
     <action type="update" dev="shred">The synchronizer is now invoked using Quartz.</action>
+  </release>
+
+  <release version="0.13" date="28 July 2008">
+    <action type="fix" dev="shred">Primary scanner failed on some XML files.</action>
+    <action type="add" dev="shred">Search can be limited on domains.</action>
+    <action type="update" dev="shred">Search now uses Hibernate's Criteria API.</action>
   </release>
   
 </changes>
