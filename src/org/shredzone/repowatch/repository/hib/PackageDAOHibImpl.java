@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAOHibImpl.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: PackageDAOHibImpl.java 197 2008-07-28 22:31:00Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -25,8 +25,13 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
@@ -39,7 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link PackageDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 197 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -202,8 +207,9 @@ public class PackageDAOHibImpl implements PackageDAO {
     @Transactional(readOnly = true)
     @Override
     public long countSearchResult(SearchDTO data) {
-        Query q = createQuery(data, "SELECT COUNT(*)", null);
-        return ((Long) q.iterate().next()).longValue();
+        Criteria crit = createCriteria(data);
+        crit.setProjection(Projections.rowCount());
+        return ((Number) crit.uniqueResult()).longValue();
     }
     
     /**
@@ -213,13 +219,17 @@ public class PackageDAOHibImpl implements PackageDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<Package> findSearchResult(SearchDTO data, int start, int limit) {
-        Query q = createQuery(data, null, "ORDER BY p.name, p.domain.name, p.domain.release DESC");
-
+        Criteria crit = createCriteria(data);
+        crit.addOrder(Order.asc("name"));
+        crit.createCriteria("domain")
+            .addOrder(Order.asc("name"))
+            .addOrder(Order.desc("release"));
+        
         if (limit >= 0) {
-            q.setFirstResult(start).setMaxResults(limit);
+            crit.setFirstResult(start).setMaxResults(limit);
         }
         
-        return (List<Package>) q.list();
+        return (List<Package>) crit.list();
     }
 
     /**
@@ -227,35 +237,30 @@ public class PackageDAOHibImpl implements PackageDAO {
      * 
      * @param data
      *            {@link SearchDTO} containing the search parameters.
-     * @param prefix
-     *            String to be prefixed to the query (e.g. "SELECT COUNT(*)"),
-     *            or <tt>null</tt>.
-     * @param suffix
-     *            String to be suffixed to the query (e.g. "ORDER BY ..."), or
-     *            <tt>null</tt>.
-     * @return {@link Query} object.
+     * @return {@link Criteria} object.
      */
-    private Query createQuery(SearchDTO data, String prefix, String suffix) {
-        StringBuilder builder = new StringBuilder();
-        if (prefix != null) builder.append(prefix).append(' ');
+    private Criteria createCriteria(SearchDTO data) {
+        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Package.class);
         
-        String liketerm = data.getTerm();
-        liketerm = liketerm.replaceAll("(%|_)", "\\\\$1");
-        liketerm = '%' + liketerm + '%';
-        
-        builder.append("FROM Package AS p WHERE");
-        builder.append(" (p.name LIKE :namelike)");
+        String liketerm = data.getTerm().replaceAll("(%|_)", "\\\\$1");
         if (data.isDescriptions()) {
-            builder.append(" OR (p.summary LIKE :namelike)");
-            builder.append(" OR (p.description LIKE :namelike)");
+            crit.add(Restrictions.or(
+                Restrictions.ilike("name", liketerm, MatchMode.ANYWHERE),
+                Restrictions.or(
+                    Restrictions.ilike("summary", liketerm, MatchMode.ANYWHERE),
+                    Restrictions.ilike("description", liketerm, MatchMode.ANYWHERE)
+                )
+            ));
+        } else {
+            crit.add(Restrictions.ilike("name", liketerm, MatchMode.ANYWHERE));
         }
         
-        if (suffix != null) builder.append(' ').append(suffix);
+        Domain dom = data.getDomainOnly();
+        if (dom != null) {
+            crit.add(Restrictions.eq("domain", dom));
+        }
         
-        Query q = sessionFactory.getCurrentSession().createQuery(builder.toString());
-        q.setParameter("namelike", liketerm);
-
-        return q;
+        return crit;
     }
     
 }

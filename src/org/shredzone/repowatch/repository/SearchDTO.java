@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: SearchDTO.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: SearchDTO.java 197 2008-07-28 22:31:00Z shred $
  */
 
 package org.shredzone.repowatch.repository;
 
 import java.io.Serializable;
 
+import org.shredzone.repowatch.model.Domain;
+
 /**
  * A <i>Data Transport Object</i> for search parameters.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 197 $
  */
 public class SearchDTO implements Serializable {
     private static final long serialVersionUID = 1311197118497286370L;
@@ -35,6 +37,7 @@ public class SearchDTO implements Serializable {
     private String term;
     private int page;
     private boolean desc;
+    private Domain domainOnly;
 
     /**
      * Gets the page currently shown in the search result.
@@ -59,5 +62,13 @@ public class SearchDTO implements Serializable {
      */
     public boolean isDescriptions()         { return desc; }
     public void setDescriptions(boolean desc) { this.desc = desc; }
-    
+   
+    /**
+     * Limits the search to the given {@link Domain}. If <code>null</code>,
+     * all domains will be searched.
+     * 
+     * @return  {@link Domain} to limit the search to
+     */
+    public Domain getDomainOnly()           { return domainOnly; }
+    public void setDomainOnly(Domain dom)   { this.domainOnly = dom; }
 }

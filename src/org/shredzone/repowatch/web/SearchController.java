@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: SearchController.java 188 2008-07-27 14:31:59Z shred $
+ * $Id: SearchController.java 197 2008-07-28 22:31:00Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -27,7 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.shredzone.repowatch.config.Configuration;
+import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
+import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.SearchDTO;
 import org.shredzone.repowatch.web.util.BrowserData;
@@ -42,13 +44,16 @@ import org.springframework.web.util.WebUtils;
  * This controller takes care of all search operations.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 188 $
+ * @version $Revision: 197 $
  */
 @Controller
 public class SearchController {
     
     @Autowired
     private PackageDAO packageDao;
+    
+    @Autowired
+    private DomainDAO domainDao;
     
     @Autowired
     private Configuration config;
@@ -63,6 +68,8 @@ public class SearchController {
      * @param term          Search term, or <code>null</code>
      * @param descFlag      Flag to search in descriptions, or <code>null</code>
      * @param page          Page number in the browser, or <code>null</code>
+     * @param domainonlyFlag  Flag to limit the search to the domainId only
+     * @param domainId      Domain ID to limit the search at
      * @return  {@link ModelAndView} for rendering.
      */
     @RequestMapping("/search.html")
@@ -72,9 +79,12 @@ public class SearchController {
             @RequestParam(value="do", required=false) Boolean doFlag,
             @RequestParam(value="term", required=false) String term,
             @RequestParam(value="desc", required=false) Boolean descFlag,
-            @RequestParam(value="page", required=false) Integer page
+            @RequestParam(value="page", required=false) Integer page,
+            @RequestParam(value="domainonly", required=false) Boolean domainonlyFlag,
+            @RequestParam(value="domainid", required=false) Long domainId
     ) {
         ModelAndView mav = new ModelAndView("search");
+        mav.addObject("domainList", domainDao.findAllDomains());
         
         if (doFlag == null) {
             return mav;
@@ -95,6 +105,16 @@ public class SearchController {
         
         if (page != null) {
             search.setPage(page);
+        }
+        
+        if (domainonlyFlag != null && domainonlyFlag.booleanValue() == true && domainId != null) {
+            Domain dom = domainDao.fetch(domainId);
+            // If the domain was not found, null is returned, which is a valid
+            // value that automatically turns off the domain only search. Thus,
+            // we don't need to throw an error here.
+            search.setDomainOnly(dom);
+        } else {
+            search.setDomainOnly(null);
         }
         
         //--- Validate search ---
