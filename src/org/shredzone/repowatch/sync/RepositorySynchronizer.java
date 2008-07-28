@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizer.java 190 2008-07-27 20:02:02Z shred $
+ * $Id: RepositorySynchronizer.java 196 2008-07-28 22:30:21Z shred $
  */
 package org.shredzone.repowatch.sync;
 
@@ -45,7 +45,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * new and ready to use RepositorySynchronizer objects.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 190 $
+ * @version $Revision: 196 $
  */
 public class RepositorySynchronizer {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -150,19 +150,31 @@ public class RepositorySynchronizer {
         
         //--- Iterate through the elements ---
         logger.info("Repository " + repository.toString() + " is due for an update");
+        int versionCounter = 0;
+        int changeCounter = 0;
+        int deleteCounter = 0;
+        
         PrimaryParser parser = new PrimaryParser(repository, location);
         try {
             parser.parse();
             
             for (Version version : parser) {
+                versionCounter++;
+                
+                Date fileDate = version.getFileDate();
+                if (fileDate == null || fileDate.after(now)) {
+                    fileDate = now;
+                }
+                
                 if (! firstTime) {
-                    version.setFirstSeen(now);
+                    version.setFirstSeen(fileDate);
                 }
                 version.setLastSeen(now);
 
                 Change change = syncVersion(version, versionCache);
                 if (change != null && !firstTime) {
-                    change.setTimestamp(now);
+                    changeCounter++;
+                    change.setTimestamp(fileDate);
                     changeDao.insert(change);
                 }
             }
@@ -182,11 +194,16 @@ public class RepositorySynchronizer {
             change.setRel(version.getRel());
             changeDao.insert(change);
             version.setDeleted(true);
+            deleteCounter++;
         }
         
         //--- Successfully scanned ---
         repository.setLastScanned(now);
-        logger.info("Repository " + repository.toString() + " successfully updated");
+        logger.info("Repository " + repository.toString() +
+                " successfully updated (" +
+        		versionCounter + " seen, " +
+        		changeCounter + " changed, " +
+        		deleteCounter + " deleted)");
     }
     
     /**

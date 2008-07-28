@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 185 2008-07-24 12:04:15Z shred $
+ * $Id: PrimaryParser.java 196 2008-07-28 22:30:21Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -62,7 +62,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 185 $
+ * @version $Revision: 196 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -169,7 +169,9 @@ public class PrimaryParser implements Iterable<Version> {
                     
                 } else if (event.isCharacters()) {
                     Characters characters = (Characters) event;
-                    stringStack.get(0).append(characters.getData());
+                    if (! stringStack.isEmpty()) {
+                        stringStack.get(0).append(characters.getData());
+                    }
 
                 }
             }
