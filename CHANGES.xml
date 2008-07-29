@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: CHANGES.xml 198 2008-07-28 22:31:17Z shred $
+  $Id: CHANGES.xml 200 2008-07-29 21:39:54Z shred $
 -->
 
 <changes title="History of Changes">
@@ -53,4 +53,8 @@
     <action type="update" dev="shred">Search now uses Hibernate's Criteria API.</action>
   </release>
   
+  <release version="0.14">
+    <action type="update" dev="shred">The result browser now also handles large results.</action>
+  </release>
+
 </changes>

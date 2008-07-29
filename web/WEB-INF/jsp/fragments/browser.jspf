@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: browser.jspf 181 2008-07-22 11:35:11Z shred $
+  $Id: browser.jspf 200 2008-07-29 21:39:54Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 
@@ -32,24 +32,19 @@
   </c:otherwise>
 </c:choose>
 
-<c:if test="${browser.pagecount lt 2000}">
-  <c:set target="${browser}" property="dotted" value="true"/>
-  <c:forEach var="pcount" begin="0" end="${browser.pagecount-1}">
-    <c:choose>
-      <c:when test="${pcount eq browser.page}">
-        <span class="browsecurrent"><c:out value="${pcount+1}"/></span>
-        <c:set target="${browser}" property="dotted" value="true"/>
-      </c:when>
-      <c:when test="${(browser.pagecount lt 30) or (pcount lt 1) or (pcount gt browser.pagecount-2) or (pcount % browser.pagesteps eq (browser.pagesteps-1)) or (pcount > browser.page and pcount-browser.page < 5)  or (pcount < browser.page and browser.page-pcount < 5) }">
-        <a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${pcount}"/></c:url>"><c:out value="${pcount+1}"/></a>
-        <c:set target="${browser}" property="dotted" value="true"/>
-      </c:when>
-      <c:otherwise>
-        <c:if test="${browser.dotted}">..<c:set target="${browser}" property="dotted" value="false"/></c:if>
-      </c:otherwise>
-    </c:choose>
-  </c:forEach>
-</c:if>
+<c:set var="lastpage" value="0"/>
+<c:forEach var="pcurrent" items="${browser.pageIterator}">
+  <c:if test="${pcurrent gt lastpage+1}">..</c:if>
+  <c:choose>
+    <c:when test="${pcurrent eq browser.page+1}">
+      <span class="browsecurrent"><c:out value="${pcurrent}"/></span>
+    </c:when>
+    <c:otherwise>
+      <a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${pcurrent-1}"/></c:url>"><c:out value="${pcurrent}"/></a>
+    </c:otherwise>
+  </c:choose>
+  <c:set var="lastpage" value="${pcurrent}"/>
+</c:forEach>
 
 <c:choose>
   <c:when test="${browser.page lt browser.pagecount-1}">
