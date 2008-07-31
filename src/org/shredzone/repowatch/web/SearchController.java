@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: SearchController.java 197 2008-07-28 22:31:00Z shred $
+ * $Id: SearchController.java 201 2008-07-31 21:54:51Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -44,7 +44,7 @@ import org.springframework.web.util.WebUtils;
  * This controller takes care of all search operations.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 197 $
+ * @version $Revision: 201 $
  */
 @Controller
 public class SearchController {
@@ -86,35 +86,36 @@ public class SearchController {
         ModelAndView mav = new ModelAndView("search");
         mav.addObject("domainList", domainDao.findAllDomains());
         
-        if (doFlag == null) {
-            return mav;
-        }
-       
         SearchDTO search =  (SearchDTO) WebUtils.getOrCreateSessionAttribute(
                 session, "searchData", SearchDTO.class);
         mav.addObject("searchData", search);
         
         if (doFlag != null && doFlag.booleanValue() == true) {
             search.setPage(0);
-            search.setDescriptions(descFlag != null && descFlag.booleanValue() == true);
-        }
 
-        if (term != null) {
-            search.setTerm(term.trim());
+            search.setDescriptions(descFlag != null && descFlag.booleanValue() == true);
+            
+            if (domainonlyFlag != null && domainonlyFlag.booleanValue() == true && domainId != null) {
+                Domain dom = domainDao.fetch(domainId);
+                // If the domain was not found, null is returned, which is a valid
+                // value that automatically turns off the domain only search. Thus,
+                // we don't need to throw an error here.
+                search.setDomainOnly(dom);
+            } else {
+                search.setDomainOnly(null);
+            }
+
+            if (term != null) {
+                search.setTerm(term.trim());
+            }
+        }
+        
+        if (search.getTerm() == null) {
+            return mav;
         }
         
         if (page != null) {
             search.setPage(page);
-        }
-        
-        if (domainonlyFlag != null && domainonlyFlag.booleanValue() == true && domainId != null) {
-            Domain dom = domainDao.fetch(domainId);
-            // If the domain was not found, null is returned, which is a valid
-            // value that automatically turns off the domain only search. Thus,
-            // we don't need to throw an error here.
-            search.setDomainOnly(dom);
-        } else {
-            search.setDomainOnly(null);
         }
         
         //--- Validate search ---

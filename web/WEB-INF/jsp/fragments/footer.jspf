@@ -16,10 +16,10 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: footer.jspf 198 2008-07-28 22:31:17Z shred $
+  $Id: footer.jspf 201 2008-07-31 21:54:51Z shred $
 --%>
 </div>
 </div>
-<address>Repowatch v0.13 beta &mdash; &copy; Richard "Shred" Körber</address>
+<address>Repowatch v0.14 beta &mdash; &copy; Richard "Shred" Körber</address>
 </body>
 </html>
