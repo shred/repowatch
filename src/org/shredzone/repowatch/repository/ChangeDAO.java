@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeDAO.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: ChangeDAO.java 205 2008-10-07 22:51:07Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -26,13 +26,15 @@ import java.util.List;
 
 import org.shredzone.repowatch.model.Change;
 import org.shredzone.repowatch.model.Repository;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the changelog part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 205 $
  */
+@Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface ChangeDAO extends BaseDAO<Change> {
 	
     /**

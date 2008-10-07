@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: DomainDAO.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: DomainDAO.java 205 2008-10-07 22:51:07Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -24,13 +24,15 @@ package org.shredzone.repowatch.repository;
 import java.util.List;
 
 import org.shredzone.repowatch.model.Domain;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the domain management.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 205 $
  */
+@Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface DomainDAO extends BaseDAO<Domain> {
  
     /**

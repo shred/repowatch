@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: CHANGES.xml 201 2008-07-31 21:54:51Z shred $
+  $Id: CHANGES.xml 205 2008-10-07 22:51:07Z shred $
 -->
 
 <changes title="History of Changes">
@@ -56,6 +56,10 @@
   <release version="0.14" date="31 July 2008">
     <action type="update" dev="shred">The result browser now also handles large results.</action>
     <action type="fix" dev="shred">Browsing the search result was broken. (Bug #9)</action>
+  </release>
+  
+  <release version="0.15">
+    <action type="add" dev="shred">Added Spring Security.</action>
   </release>
 
 </changes>

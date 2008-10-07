@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAO.java 188 2008-07-27 14:31:59Z shred $
+ * $Id: PackageDAO.java 205 2008-10-07 22:51:07Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -27,13 +27,15 @@ import java.util.SortedMap;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the package management.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 188 $
+ * @version $Revision: 205 $
  */
+@Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface PackageDAO extends BaseDAO<Package> {
     
     /**

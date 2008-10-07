@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: header.jspf 181 2008-07-22 11:35:11Z shred $
+  $Id: header.jspf 205 2008-10-07 22:51:07Z shred $
 --%>
 
 <%@ page session="false" contentType="text/html; charset=utf-8" %>
@@ -49,5 +49,6 @@
     <a href="<c:url value="/repo.html"/>"><fmt:message key="frame.overview"/></a>
   | <a href="<c:url value="/packages.html"/>"><fmt:message key="frame.allpackages"/></a>
   | <a href="<c:url value="/search.html"/>"><fmt:message key="frame.search"/></a>
+  | <a href="<c:url value="/admin/index.html"/>"><fmt:message key="frame.admin"/></a>
 </div>
 <div class="content">

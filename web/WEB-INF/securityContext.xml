@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Repowatch - A repository watcher
+    (C) 2008 Richard "Shred" Körber
+    http://repowatch.shredzone.org/
+ 
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  any later version.
+ 
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+ 
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see http://www.gnu.org/licenses/
+ 
+  $Id: securityContext.xml 205 2008-10-07 22:51:07Z shred $
+-->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+
+    <http auto-config="true">
+        <intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    </http>
+
+    <global-method-security secured-annotations="enabled" jsr250-annotations="enabled"/>
+
+    <!--
+    Usernames/Passwords are
+        rod/koala
+    -->
+    <authentication-provider>
+        <password-encoder hash="md5"/>
+        <user-service>
+            <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_ADMIN" />
+	    </user-service>
+	</authentication-provider>
+
+</beans:beans>
