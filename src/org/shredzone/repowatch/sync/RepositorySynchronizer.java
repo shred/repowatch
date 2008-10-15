@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizer.java 196 2008-07-28 22:30:21Z shred $
+ * $Id: RepositorySynchronizer.java 208 2008-10-15 14:14:16Z shred $
  */
 package org.shredzone.repowatch.sync;
 
@@ -25,13 +25,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import org.shredzone.repowatch.model.Blacklist;
 import org.shredzone.repowatch.model.Change;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
+import org.shredzone.repowatch.repository.BlacklistDAO;
 import org.shredzone.repowatch.repository.ChangeDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
@@ -45,12 +49,13 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * new and ready to use RepositorySynchronizer objects.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 196 $
+ * @version $Revision: 208 $
  */
 public class RepositorySynchronizer {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     private final Repository repository;
+    private final BlacklistDAO blacklistDao;
     private final PackageDAO packageDao;
     private final VersionDAO versionDao;
     private final ChangeDAO changeDao;
@@ -67,13 +72,15 @@ public class RepositorySynchronizer {
      * @param packageDao    {@link PackageDAO} to be used
      * @param versionDao    {@link VersionDAO} to be used
      * @param changeDao     {@link ChangeDAO} to be used
+     * @param blacklistDao  {@link BlacklistDAO} to be used
      */
     public RepositorySynchronizer(Repository repository, PackageDAO packageDao,
-            VersionDAO versionDao, ChangeDAO changeDao) {
+            VersionDAO versionDao, ChangeDAO changeDao, BlacklistDAO blacklistDao) {
         this.repository = repository;
         this.packageDao = packageDao;
         this.versionDao = versionDao;
         this.changeDao = changeDao;
+        this.blacklistDao = blacklistDao;
     }
     
     /**
@@ -148,6 +155,12 @@ public class RepositorySynchronizer {
             versionCache.put(version.getPackage().getName(), version);
         }
         
+        //--- Get the Blacklist ---
+        Set<String> blacklist = new HashSet<String>();
+        for (Blacklist bl : blacklistDao.findAllBlacklists()) {
+            blacklist.put(bl.getName());
+        }
+
         //--- Iterate through the elements ---
         logger.info("Repository " + repository.toString() + " is due for an update");
         int versionCounter = 0;
@@ -159,6 +172,10 @@ public class RepositorySynchronizer {
             parser.parse();
             
             for (Version version : parser) {
+                if (blacklist.contains(version.getPackage().getName()) {
+                    continue;
+                }
+
                 versionCounter++;
                 
                 Date fileDate = version.getFileDate();
