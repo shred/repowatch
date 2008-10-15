@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizer.java 208 2008-10-15 14:14:16Z shred $
+ * $Id: RepositorySynchronizer.java 209 2008-10-15 22:24:51Z shred $
  */
 package org.shredzone.repowatch.sync;
 
@@ -49,7 +49,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * new and ready to use RepositorySynchronizer objects.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 208 $
+ * @version $Revision: 209 $
  */
 public class RepositorySynchronizer {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -75,7 +75,8 @@ public class RepositorySynchronizer {
      * @param blacklistDao  {@link BlacklistDAO} to be used
      */
     public RepositorySynchronizer(Repository repository, PackageDAO packageDao,
-            VersionDAO versionDao, ChangeDAO changeDao, BlacklistDAO blacklistDao) {
+            VersionDAO versionDao, ChangeDAO changeDao,
+            BlacklistDAO blacklistDao) {
         this.repository = repository;
         this.packageDao = packageDao;
         this.versionDao = versionDao;
@@ -158,7 +159,7 @@ public class RepositorySynchronizer {
         //--- Get the Blacklist ---
         Set<String> blacklist = new HashSet<String>();
         for (Blacklist bl : blacklistDao.findAllBlacklists()) {
-            blacklist.put(bl.getName());
+            blacklist.add(bl.getName());
         }
 
         //--- Iterate through the elements ---
@@ -172,7 +173,7 @@ public class RepositorySynchronizer {
             parser.parse();
             
             for (Version version : parser) {
-                if (blacklist.contains(version.getPackage().getName()) {
+                if (blacklist.contains(version.getPackage().getName())) {
                     continue;
                 }
 

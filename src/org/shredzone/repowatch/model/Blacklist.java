@@ -22,7 +22,6 @@
 package org.shredzone.repowatch.model;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -34,6 +33,7 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Blacklist extends BaseModel {
+    private static final long serialVersionUID = 2177832459706690711L;
     
     private String name;
     

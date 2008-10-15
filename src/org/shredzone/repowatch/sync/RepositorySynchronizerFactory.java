@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizerFactory.java 182 2008-07-23 13:57:39Z shred $
+ * $Id: RepositorySynchronizerFactory.java 209 2008-10-15 22:24:51Z shred $
  */
 
 package org.shredzone.repowatch.sync;
 
 import org.shredzone.repowatch.model.Repository;
+import org.shredzone.repowatch.repository.BlacklistDAO;
 import org.shredzone.repowatch.repository.ChangeDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
@@ -32,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * in a Spring context. Let Spring inject this factory to your class.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 182 $
+ * @version $Revision: 209 $
  */
 public class RepositorySynchronizerFactory {
 
@@ -44,6 +45,9 @@ public class RepositorySynchronizerFactory {
     
     @Autowired
     private ChangeDAO changeDao;
+    
+    @Autowired
+    private BlacklistDAO blacklistDao;
 
     /**
      * Creates a new {@link RepositorySynchronizer} for a {@link Repository}.
@@ -56,7 +60,8 @@ public class RepositorySynchronizerFactory {
                 repository,
                 packageDao,
                 versionDao,
-                changeDao
+                changeDao,
+                blacklistDao
         );
     }
     
