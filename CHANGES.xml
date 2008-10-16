@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: CHANGES.xml 208 2008-10-15 14:14:16Z shred $
+  $Id: CHANGES.xml 210 2008-10-16 22:31:46Z shred $
 -->
 
 <changes title="History of Changes">
@@ -58,7 +58,7 @@
     <action type="fix" dev="shred">Browsing the search result was broken. (Bug #9)</action>
   </release>
 
-  <release version="0.15">
+  <release version="0.15" date="17 October 2008">
     <action type="add" dev="shred">Added package blacklist.</action>
   </release>
 

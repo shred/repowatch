@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: hibernate.cfg.xml 181 2008-07-22 11:35:11Z shred $
+  $Id: hibernate.cfg.xml 210 2008-10-16 22:31:46Z shred $
 -->
 
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -33,5 +33,6 @@
     <mapping class="org.shredzone.repowatch.model.Package"/>
     <mapping class="org.shredzone.repowatch.model.Repository"/>
     <mapping class="org.shredzone.repowatch.model.Version"/>
+    <mapping class="org.shredzone.repowatch.model.Blacklist"/>
   </session-factory>
 </hibernate-configuration>
