@@ -21,7 +21,7 @@
 
 package org.shredzone.repowatch.repository;
 
-import java.util.Set;
+import java.util.List;
 
 import org.shredzone.repowatch.model.Blacklist;
 import org.springframework.security.annotation.Secured;
@@ -38,9 +38,9 @@ public interface BlacklistDAO extends BaseDAO<Blacklist> {
     /**
      * Returns a set of all blacklists.
      * 
-     * @return  Set of all {@link Blacklist} entities.
+     * @return  List of all {@link Blacklist} entities.
      */
-    public Set<Blacklist> findAllBlacklists();
+    public List<Blacklist> findAllBlacklists();
 
 }
 

@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: BlacklistDAOHibImpl.java 210 2008-10-16 22:31:46Z shred $
+ * $Id: BlacklistDAOHibImpl.java 211 2008-10-16 23:28:50Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
 
-import java.util.Set;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link BlacklistDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 210 $
+ * @version $Revision: 211 $
  */
 @Repository
 @Transactional
@@ -75,11 +75,11 @@ public class BlacklistDAOHibImpl implements BlacklistDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     @Override
-    public Set<Blacklist> findAllBlacklists() {
+    public List<Blacklist> findAllBlacklists() {
         Query q = sessionFactory.getCurrentSession()
                 .createQuery("FROM Blacklist AS d");
 
-        return (Set<Blacklist>) q.list();
+        return (List<Blacklist>) q.list();
     }
 
 }
