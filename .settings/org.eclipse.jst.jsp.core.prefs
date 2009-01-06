@@ -1,0 +1,4 @@
+#Tue Jan 06 21:55:30 CET 2009
+eclipse.preferences.version=1
+validateFragments//src/main/webapp/WEB-INF/jsp/fragments/footer.jspf=false
+validateFragments//src/main/webapp/WEB-INF/jsp/fragments/header.jspf=false

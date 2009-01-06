@@ -1,5 +1,5 @@
-#Tue Jan 06 11:09:37 CET 2009
-org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
+#Tue Jan 06 22:20:32 CET 2009
+org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6
 eclipse.preferences.version=1
-org.eclipse.jdt.core.compiler.source=1.5
-org.eclipse.jdt.core.compiler.compliance=1.5
+org.eclipse.jdt.core.compiler.source=1.6
+org.eclipse.jdt.core.compiler.compliance=1.6
