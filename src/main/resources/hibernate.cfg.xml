@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: hibernate.cfg.xml 210 2008-10-16 22:31:46Z shred $
+  $Id: hibernate.cfg.xml 225 2009-01-06 20:05:32Z shred $
 -->
 
 <!DOCTYPE hibernate-configuration PUBLIC
