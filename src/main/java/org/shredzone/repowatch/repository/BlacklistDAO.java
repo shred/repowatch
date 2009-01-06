@@ -23,8 +23,8 @@ package org.shredzone.repowatch.repository;
 
 import java.util.List;
 
-import org.acegisecurity.annotation.Secured;
 import org.shredzone.repowatch.model.Blacklist;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the domain management.

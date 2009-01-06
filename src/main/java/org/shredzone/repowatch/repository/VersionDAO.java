@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionDAO.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: VersionDAO.java 226 2009-01-06 20:33:19Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -24,16 +24,16 @@ package org.shredzone.repowatch.repository;
 import java.util.Date;
 import java.util.List;
 
-import org.acegisecurity.annotation.Secured;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
+import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the repository part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 226 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface VersionDAO extends BaseDAO<Version> {
