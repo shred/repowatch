@@ -7,8 +7,8 @@
   <version>0.15.1-SNAPSHOT</version>
   <description>A yum repository watcher</description>
   <build>
-  	<resources>
-  	</resources>
+    <resources>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -36,8 +36,32 @@
       	<groupId>org.apache.maven.plugins</groupId>
       	<artifactId>maven-changes-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>7.0.0pre3</version>
+        <configuration>
+          <scanIntervalSeconds>5</scanIntervalSeconds>
+          <jettyEnvConfig>${basedir}/src/test/resources/jetty-env-hsqldb.xml</jettyEnvConfig>
+          <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+              <port>8090</port>
+              <host>0.0.0.0</host>
+            </connector>
+          </connectors>
+          <systemProperties>
+            <systemProperty>
+              <name>hibernate.dialect</name>
+              <value>org.hibernate.dialect.HSQLDialect</value>
+            </systemProperty>
+          </systemProperties>
+        </configuration>
+      </plugin> 
     </plugins>
   </build>
+  <properties>
+    <springVersion>2.5</springVersion>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -72,31 +96,31 @@
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-webmvc</artifactId>
-    	<version>2.5.6</version>
+    	<version>${springVersion}</version>
     	<scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-tx</artifactId>
-    	<version>2.5.6</version>
+    	<version>${springVersion}</version>
     	<scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-jdbc</artifactId>
-        <version>2.5.6</version>
+        <version>${springVersion}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-core</artifactId>
-    	<version>2.5.6</version>
+    	<version>${springVersion}</version>
     	<scope>compile</scope>
     </dependency>
     <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-aop</artifactId>
-        <version>2.5.6</version>
+        <version>${springVersion}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
@@ -144,7 +168,7 @@
     <dependency>
     	<groupId>org.springframework</groupId>
     	<artifactId>spring-orm</artifactId>
-    	<version>2.5.6</version>
+    	<version>${springVersion}</version>
         <scope>compile</scope>
     </dependency>
     <dependency>
