@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: web.xml 228 2009-01-08 12:25:24Z shred $
+  $Id: web.xml 230 2009-01-12 00:24:18Z shred $
 -->
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
@@ -29,9 +29,9 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-    	/WEB-INF/applicationContext.xml
-<!--     	/WEB-INF/securityContext.xml   -->
-    	/WEB-INF/schedulingContext.xml
+    	classpath:applicationContext.xml
+<!--     	classpath:securityContext.xml   -->
+    	classpath:schedulingContext.xml
     </param-value>
   </context-param>
   
@@ -80,7 +80,6 @@
     <res-ref-name>jdbc/RepowatchDS</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
-    <res-sharing-scope>Shareable</res-sharing-scope>
   </resource-ref>
 
 </web-app>

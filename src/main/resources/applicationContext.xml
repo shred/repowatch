@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: applicationContext.xml 225 2009-01-06 20:05:32Z shred $
+  $Id: applicationContext.xml 230 2009-01-12 00:24:18Z shred $
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -33,22 +33,17 @@
   <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="locations">
       <list>
-        <value>WEB-INF/jdbc.properties</value>
+        <value>classpath:jdbc.properties</value>
       </list>
     </property>
   </bean>
   
   <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/RepowatchDS"/>
 
-<!--   
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-      p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.url}" p:username="${jdbc.username}"
-      p:password="${jdbc.password}"/>  -->
-
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
-    <property name="configLocation" value="/WEB-INF/hibernate.cfg.xml"/>
+    <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
     <property name="hibernateProperties">
       <props>
         <prop key="hibernate.dialect">${hibernate.dialect}</prop>

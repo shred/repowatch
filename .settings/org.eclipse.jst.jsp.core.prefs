@@ -1,4 +1,6 @@
-#Tue Jan 06 21:55:30 CET 2009
+#Sat Jan 10 21:08:50 CET 2009
 eclipse.preferences.version=1
 validateFragments//src/main/webapp/WEB-INF/jsp/fragments/footer.jspf=false
 validateFragments//src/main/webapp/WEB-INF/jsp/fragments/header.jspf=false
+validateFragments//target/repowatch-0.15.1-SNAPSHOT/WEB-INF/jsp/fragments/footer.jspf=false
+validateFragments//target/repowatch-0.15.1-SNAPSHOT/WEB-INF/jsp/fragments/header.jspf=false
