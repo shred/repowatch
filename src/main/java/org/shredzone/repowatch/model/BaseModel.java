@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: BaseModel.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: BaseModel.java 231 2009-01-12 23:43:31Z shred $
  */
 
 package org.shredzone.repowatch.model;
@@ -32,11 +32,13 @@ import javax.persistence.MappedSuperclass;
  * primary key.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 231 $
  */
 @MappedSuperclass
 public abstract class BaseModel implements Serializable {
-    protected long id;
+	private static final long serialVersionUID = 5425419410430446701L;
+	
+	protected long id;
 
     /**
      * Primary key.
