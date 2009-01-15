@@ -61,17 +61,16 @@
 		</plugins>
 	</build>
 	<properties>
-		<junit-version>[4,)</junit-version>
-		<quartz-version>[1.5.2,)</quartz-version>
-		<spring-version>2.5</spring-version>
-		<spring-security-version>2.0.4</spring-security-version>
+		<junit.version>[4,)</junit.version>
+		<quartz.version>[1.5.2,)</quartz.version>
+		<spring.version>2.5</spring.version>
+		<springsecurity.version>2.0.4</springsecurity.version>
 	</properties>
 	<profiles>
 		<profile>
 			<id>postgres</id>
 			<properties>
 				<jetty.env.file>${basedir}/src/test/resources/jetty-env-postgres.xml</jetty.env.file>
-				<hibernate.dialect>org.hibernate.dialect.PostgreSQLDialect</hibernate.dialect>
 			</properties>
 			<dependencies>
                 <dependency>
@@ -92,7 +91,6 @@
 			<id>hsqldb</id>
 			<properties>
 				<jetty.env.file>${basedir}/src/test/resources/jetty-env-hsqldb.xml</jetty.env.file>
-				<hibernate.dialect>org.hibernate.dialect.HSQLDialect</hibernate.dialect>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -114,7 +112,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -144,37 +142,37 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>quartz</artifactId>
-			<version>${quartz-version}</version>
+			<version>${quartz.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -186,13 +184,13 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring-security-version}</version>
+			<version>${springsecurity.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core-tiger</artifactId>
-			<version>${spring-security-version}</version>
+			<version>${springsecurity.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -214,9 +212,15 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>string</artifactId>
+			<version>[1.1,)</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${spring-version}</version>
+			<version>${spring.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 

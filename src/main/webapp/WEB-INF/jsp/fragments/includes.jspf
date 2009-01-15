@@ -16,10 +16,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: includes.jspf 181 2008-07-22 11:35:11Z shred $
+  $Id: includes.jspf 233 2009-01-15 16:01:20Z shred $
 --%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="str" uri="http://jakarta.apache.org/taglibs/string-1.1" %>
 <fmt:setBundle basename="messages"/>

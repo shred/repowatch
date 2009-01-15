@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: showpackage.jsp 181 2008-07-22 11:35:11Z shred $
+  $Id: showpackage.jsp 233 2009-01-15 16:01:20Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -45,7 +45,7 @@
   </tr>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="pack.description"/></td>
-    <td><c:out value="${package.description}"/></td>
+    <td><str:replace replace="NL" with="&lt;br /&gt;NL" newlineToken="NL" ><c:out value="${package.description}"/></str:replace></td>
   </tr>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="pack.group"/></td>
