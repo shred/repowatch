@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: applicationContext.xml 232 2009-01-14 00:32:12Z shred $
+  $Id: applicationContext.xml 234 2009-01-15 16:01:32Z shred $
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -31,18 +31,13 @@
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
   <jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/RepowatchDS"/>
+  <jee:jndi-lookup id="dataSourceProperties" jndi-name="java:comp/env/hibernate/RepowatchDS"/>
 
   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
     <property name="dataSource" ref="dataSource"/>
     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
     <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-    <property name="hibernateProperties">
-      <props>
-        <!-- <prop key="hibernate.dialect">${hibernate.dialect}</prop> -->
-        <prop key="hibernate.show_sql">false</prop>
-        <prop key="hibernate.hbm2ddl.auto">update</prop>
-      </props>
-    </property>
+    <property name="hibernateProperties" ref="dataSourceProperties"/>
     <property name="eventListeners">
       <map>
         <entry key="merge">

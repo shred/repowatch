@@ -13,5 +13,14 @@
       </New>
     </Arg>
   </New>
+  <New id="repowatchprops" class="org.mortbay.jetty.plus.naming.EnvEntry">
+    <Arg>hibernate/RepowatchDS</Arg>
+    <Arg>
+      <New class="java.util.Properties">
+        <Put name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</Put>
+        <Put name="hibernate.hbm2ddl.auto">update</Put>
+      </New>
+    </Arg>
+  </New>
 </Configure> 
 
