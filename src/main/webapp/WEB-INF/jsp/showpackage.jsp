@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: showpackage.jsp 235 2009-01-16 00:50:35Z shred $
+  $Id: showpackage.jsp 236 2009-01-16 16:17:46Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -55,6 +55,12 @@
     <tr class="gridrow">
       <td class="gridlabel"><fmt:message key="pack.homepage"/></td>
       <td><c:out value="${package.homeUrl}"/></td>
+    </tr>
+  </c:if>
+  <c:if test="${not empty package.repoviewUrl}">
+    <tr class="gridrow">
+      <td class="gridlabel"><fmt:message key="pack.repoview"/></td>
+      <td><a href="<c:out value="${package.repoviewUrl}"/>/<c:out value="${package.name}"/>.html">Repoview</a>
     </tr>
   </c:if>
 </table>

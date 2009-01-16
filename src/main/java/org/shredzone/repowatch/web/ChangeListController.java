@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeListController.java 187 2008-07-27 13:40:08Z shred $
+ * $Id: ChangeListController.java 236 2009-01-16 16:17:46Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -56,7 +56,7 @@ import org.springframework.web.servlet.ModelAndView;
  * repositories.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 187 $
+ * @version $Revision: 236 $
  */
 @Controller
 public class ChangeListController {
@@ -269,9 +269,9 @@ public class ChangeListController {
                         };
                         
                         xw.writeStartElement("title");
-                        if (change.getChange().equals("ADDED")) {
+                        if (change.getChange() == Change.Type.ADDED) {
                             xw.writeCharacters(messageSource.getMessage("rss.added", args, resp.getLocale()));
-                        } else if (change.getChange().equals("REMOVED")) {
+                        } else if (change.getChange() == Change.Type.REMOVED) {
                             xw.writeCharacters(messageSource.getMessage("rss.removed", args, resp.getLocale()));
                         } else {
                             xw.writeCharacters(messageSource.getMessage("rss.updated", args, resp.getLocale()));
