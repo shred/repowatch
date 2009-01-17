@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: style.css 225 2009-01-06 20:05:32Z shred $
+ * $Id: style.css 238 2009-01-17 08:43:50Z shred $
  */
 
 body {
@@ -90,6 +90,16 @@ address {
   background: #ffffff url(../img/shadow.png) repeat-x;
   text-align: left;
   font-size: 1.1em;
+  clear: both;
+}
+
+.navsearch {
+  white-space: nowrap;
+  float: right;	
+}
+
+.navsearch input {
+  border: 1px solid #c0c0c0;
 }
 
 .content {

@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: listchanges.jsp 181 2008-07-22 11:35:11Z shred $
+  $Id: listchanges.jsp 238 2009-01-17 08:43:50Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -42,6 +42,12 @@
     <td class="gridlabel"><fmt:message key="chg.baseurl"/></td>
     <td><a href="<c:url value="${repository.baseUrl}"/>" class="ext"><c:out value="${repository.baseUrl}"/></a></td>
   </tr>
+  <c:if test="${not empty repository.repoviewUrl}">
+    <tr class="gridrow">
+      <td class="gridlabel"><fmt:message key="chg.repoviewurl"/></td>
+      <td><a href="<c:url value="${repository.repoviewUrl}index.html"/>" class="ext"><c:out value="${repository.repoviewUrl}index.html"/></a></td>
+    </tr>
+  </c:if>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="chg.since"/></td>
     <td><fmt:formatDate value="${repository.firstScanned}" type="both" dateStyle="full"/></td>

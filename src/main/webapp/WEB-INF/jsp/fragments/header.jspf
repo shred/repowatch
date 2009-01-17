@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: header.jspf 210 2008-10-16 22:31:46Z shred $
+  $Id: header.jspf 238 2009-01-17 08:43:50Z shred $
 --%>
 
 <%@ page session="false" contentType="text/html; charset=utf-8" %>
@@ -44,8 +44,9 @@
 </head>
 <body>
 <div class="frame">
-<h1>Repowatch (beta)</h1>
+<h1>Repowatch</h1>
 <div class="navigation">
+  <form class="navsearch" action="<c:url value="/search.html"/>" method="post"><input type="text" maxlength="100" name="term" id="term" title="<fmt:message key="frame.quicksearch"/>" /><input type="submit" style="padding:0px" value="&gt;" /><input type="hidden" name="do" value="1" /></form>
     <a href="<c:url value="/repo.html"/>"><fmt:message key="frame.overview"/></a>
   | <a href="<c:url value="/packages.html"/>"><fmt:message key="frame.allpackages"/></a>
   | <a href="<c:url value="/search.html"/>"><fmt:message key="frame.search"/></a>

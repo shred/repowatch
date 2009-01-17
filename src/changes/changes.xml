@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: changes.xml 236 2009-01-16 16:17:46Z shred $
+  $Id: changes.xml 238 2009-01-17 08:43:50Z shred $
 -->
 
 <changes title="History of Changes">
@@ -62,10 +62,12 @@
     <action type="add" dev="shred">Added package blacklist.</action>
   </release>
 
-  <release version="0.16" date="16 Januar 2009">
+  <release version="0.16" date="17 Januar 2009">
     <action type="update" dev="shred">Changed to Maven</action>
     <action type="fix" dev="shred">RSS feed always showed packages as "updated"</action>
     <action type="update" dev="shred">Package description now shows paragraphs</action>
+    <action type="add" dev="shred">Added repoview links</action>
+    <action type="add" dev="shred">Added quick search</action>
   </release>
 
 </changes>
