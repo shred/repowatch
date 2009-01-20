@@ -5,8 +5,27 @@
 	<artifactId>repowatch</artifactId>
 	<packaging>war</packaging>
 	<name>Repowatch</name>
-	<version>0.15.1-SNAPSHOT</version>
+	<version>0.16.0-SNAPSHOT</version>
 	<description>A yum repository watcher</description>
+	<url>http://repowatch.shredzone.org</url>
+	<inceptionYear>2007</inceptionYear>
+	<issueManagement>
+		<system>Redmine</system>
+		<url>http://www.shredzone.org/projects/repowtach/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Continuum</system>
+		<url>http://continuum.shredzone.org</url>
+	</ciManagement>
+	<scm>
+		<connection>scm:svn:http://svn.shredzone.org/trunk/repowatch/</connection>
+		<developerConnection>scm:svn:https://svn.shredzone.org/trunk/repowatch/</developerConnection>
+		<url>http://svn.shredzone.org/</url>
+	</scm>
+	<organization>
+		<name>shredzone.org</name>
+		<url>http://www.shredzone.org</url>
+	</organization>
 	<build>
 		<resources>
 		</resources>
