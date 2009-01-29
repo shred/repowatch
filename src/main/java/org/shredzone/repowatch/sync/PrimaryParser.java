@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 254 2009-01-29 15:11:36Z shred $
+ * $Id: PrimaryParser.java 255 2009-01-29 15:57:47Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -62,7 +62,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 254 $
+ * @version $Revision: 255 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -220,21 +220,18 @@ public class PrimaryParser implements Iterable<Version> {
     }
 
     /**
-     * Converts the createrepo digest code to a {@link MessageDigest} digest code.
+     * Converts a Python-esque digest code to a {@link MessageDigest} digest code.
      * 
      * @param digest
-     *            digest code as delivered by createrepo
+     *            digest code as used in Python's {@code hashlib}
      * @return {@link MessageDigest} compliant digest code
      */
     private String convertDigest(String digestcode) {
-        if (digestcode.equalsIgnoreCase("SHA256")) {
-            return "SHA-256";
-        } else if (digestcode.equalsIgnoreCase("SHA512")) {
-            return "SHA-512";
-        } else if (digestcode.equalsIgnoreCase("SHA1") || digestcode.equalsIgnoreCase("SHA")) {
-            return "SHA-1";
+        String uppercode = digestcode.trim().toUpperCase();
+        if (uppercode.matches("^SHA(\\d+)$")) {
+            return "SHA-" + uppercode.substring(3);
         } else {
-            return digestcode.toUpperCase();
+            return uppercode;
         }
     }
     
