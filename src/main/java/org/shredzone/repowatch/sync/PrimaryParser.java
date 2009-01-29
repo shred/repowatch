@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: PrimaryParser.java 254 2009-01-29 15:11:36Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -52,7 +52,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
 /**
  * This beast parses a <tt>primary.xml</tt> file. It also takes care for
  * gunzipping the file and computing the checksum, if desired. The single
- * {@link Version} objects found in the xml file are available via 
+ * {@link Version} objects found in the xml file are available via
  * {@link #readNextVersion()}, but this class also implements the
  * {@link Iterable} interface, so it can be simply used in a for loop.
  * <p>
@@ -62,7 +62,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 254 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -122,7 +122,7 @@ public class PrimaryParser implements Iterable<Version> {
             URL url = new URL(baseUrl, location.getLocation());
             in = url.openStream();
             if (location.getChecksumType() != null) {
-                digest = MessageDigest.getInstance(location.getChecksumType().toUpperCase());
+                digest = MessageDigest.getInstance(convertDigest(location.getChecksumType()));
                 in = new DigestInputStream(in, digest);
             }
             if (location.isCompressed()) {
@@ -218,6 +218,25 @@ public class PrimaryParser implements Iterable<Version> {
             stringStack.clear();
         }
     }
+
+    /**
+     * Converts the createrepo digest code to a {@link MessageDigest} digest code.
+     * 
+     * @param digest
+     *            digest code as delivered by createrepo
+     * @return {@link MessageDigest} compliant digest code
+     */
+    private String convertDigest(String digestcode) {
+        if (digestcode.equalsIgnoreCase("SHA256")) {
+            return "SHA-256";
+        } else if (digestcode.equalsIgnoreCase("SHA512")) {
+            return "SHA-512";
+        } else if (digestcode.equalsIgnoreCase("SHA1") || digestcode.equalsIgnoreCase("SHA")) {
+            return "SHA-1";
+        } else {
+            return digestcode.toUpperCase();
+        }
+    }
     
     /**
      * A starting element was found in the XML stream.
@@ -306,24 +325,24 @@ public class PrimaryParser implements Iterable<Version> {
     public Iterator<Version> iterator() {
         return new Iterator<Version>() {
             private boolean retrieved = true;
-            private Version currentVersion = null;
+            private Version iteratorCurrentVersion = null;
             
             public boolean hasNext() {
                 if (retrieved) {
                     retrieved = false;
                     try {
-                        currentVersion = readNextVersion();
+                        iteratorCurrentVersion = readNextVersion();
                     } catch (SynchronizerException ex) {
                         throw new RuntimeException("While iterating XML", ex);
                     }
                 }
-                return currentVersion != null;
+                return iteratorCurrentVersion != null;
             }
 
             public Version next() {
                 if (hasNext()) {
                     retrieved = true;
-                    return currentVersion;
+                    return iteratorCurrentVersion;
                 } else {
                     throw new NoSuchElementException();
                 }
