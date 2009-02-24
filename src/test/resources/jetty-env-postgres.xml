@@ -21,6 +21,7 @@
         <Put name="hibernate.hbm2ddl.auto">update</Put>
       </New>
     </Arg>
+    <Arg type="boolean">false</Arg>
   </New>
 </Configure> 
 
