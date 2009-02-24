@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: web.xml 230 2009-01-12 00:24:18Z shred $
+  $Id: web.xml 264 2009-02-24 23:38:39Z shred $
 -->
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
@@ -30,7 +30,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>
     	classpath:applicationContext.xml
-<!--     	classpath:securityContext.xml   -->
+     	classpath:securityContext.xml
     	classpath:schedulingContext.xml
     </param-value>
   </context-param>
@@ -64,7 +64,6 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-<!--
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -74,7 +73,6 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
- -->
  
   <resource-ref>
     <res-ref-name>jdbc/RepowatchDS</res-ref-name>

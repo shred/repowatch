@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySyncJob.java 182 2008-07-23 13:57:39Z shred $
+ * $Id: RepositorySyncJob.java 264 2009-02-24 23:38:39Z shred $
  */
 
 package org.shredzone.repowatch.job;
@@ -27,12 +27,16 @@ import java.util.logging.Logger;
 import org.shredzone.repowatch.service.SyncService;
 import org.shredzone.repowatch.service.SynchronizerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.Authentication;
+import org.springframework.security.AuthenticationManager;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 
 /**
  * A scheduler job for synchronizing the repository database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 182 $
+ * @version $Revision: 264 $
  */
 public class RepositorySyncJob {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -40,16 +44,46 @@ public class RepositorySyncJob {
     @Autowired
     private SyncService syncService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    
+    private String authUser, authPwd;
+
+    /**
+     * Sets the user name for cronjob authentication.
+     * 
+     * @param authUser
+     */
+    public void setAuthUser(String authUser) {
+        this.authUser = authUser;
+    }
+
+    /**
+     * Sets the password for cronjob authentication.
+     * 
+     * @param authPwd
+     */
+    public void setAuthPwd(String authPwd) {
+        this.authPwd = authPwd;
+    }
+
     /**
      * Perform the synchronization process.
      */
     public void doSynchronization() {
         logger.info("Synchronization job started");
+        
+        Authentication auth = new UsernamePasswordAuthenticationToken(authUser, authPwd);
+        auth = authenticationManager.authenticate(auth);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        
         try {
             syncService.syncAllRepositories();
             logger.info("Synchronization job completed");
         } catch (SynchronizerException ex) {
             logger.log(Level.WARNING, "Synchronization job failed", ex);
+        } finally {
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
     
