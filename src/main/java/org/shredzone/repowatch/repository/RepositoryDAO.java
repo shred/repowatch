@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositoryDAO.java 226 2009-01-06 20:33:19Z shred $
+ * $Id: RepositoryDAO.java 263 2009-02-24 23:38:08Z shred $
  */
 package org.shredzone.repowatch.repository;
 
@@ -30,7 +30,7 @@ import org.springframework.security.annotation.Secured;
  * Gives access to the repository part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 226 $
+ * @version $Revision: 263 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface RepositoryDAO extends BaseDAO<Repository> {
@@ -53,5 +53,13 @@ public interface RepositoryDAO extends BaseDAO<Repository> {
      * @return  List of all {@link Repository} entities.
      */
     public List<Repository> findAllRepositories();
+
+    /**
+     * Returns a list of all repositories for the given {@link Domain}.
+     *
+     * @param domain        {@link Domain} to find all {@link Repository} for
+     * @return  List of all {@link Repository} entities for that {@link Domain}.
+     */
+    public List<Repository> findRepositories(Domain domain);
 
 }

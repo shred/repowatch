@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositoryDAOHibImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: RepositoryDAOHibImpl.java 263 2009-02-24 23:38:08Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -24,7 +24,6 @@ package org.shredzone.repowatch.repository.hib;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
@@ -36,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link RepositoryDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 263 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -74,15 +73,23 @@ public class RepositoryDAOHibImpl implements RepositoryDAO {
     
     @SuppressWarnings("unchecked")
     public List<Repository> findAllRepositories() {
-        if (sessionFactory == null) throw new NullPointerException("sessionFactory is null");
-        Session s = sessionFactory.getCurrentSession();
-        if (s == null) throw new NullPointerException("session is null");
-        
-        Query q = s
+        Query q = sessionFactory.getCurrentSession()
                 .createQuery(
                         "FROM Repository AS r" +
                         " ORDER BY r.domain.name, r.domain.release," +
                         " r.name, r.architecture");
+
+        return q.list();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Repository> findRepositories(Domain domain) {
+        Query q = sessionFactory.getCurrentSession()
+                .createQuery(
+                        "FROM Repository AS r WHERE r.domain=:domain" +
+                        " ORDER BY r.domain.name, r.domain.release," +
+                        " r.name, r.architecture")
+                .setParameter("domain", domain);
 
         return q.list();
     }
