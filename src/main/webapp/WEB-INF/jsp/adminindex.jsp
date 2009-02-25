@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminindex.jsp 265 2009-02-24 23:39:03Z shred $
+  $Id: adminindex.jsp 270 2009-02-25 23:06:14Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -49,7 +49,7 @@
     </c:forEach>
     <tr class="${sequence.next}">
       <td>&nbsp;</td>
-      <td><a href="<c:url value="/admin/repo/add.html"/>"><fmt:message key="admin.add"/></a></td>
+      <td><a href="<c:url value="/admin/repo/add/${domain.id}.html"/>"><fmt:message key="admin.add"/></a></td>
       <td>&nbsp;</td>
     </tr>
   </c:forEach>
