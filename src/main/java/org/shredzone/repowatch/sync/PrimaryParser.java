@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PrimaryParser.java 255 2009-01-29 15:57:47Z shred $
+ * $Id: PrimaryParser.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -62,7 +62,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 255 $
+ * @version $Revision: 269 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -164,7 +164,7 @@ public class PrimaryParser implements Iterable<Version> {
                     String str = stringStack.remove(0).toString().trim();
                     
                     EndElement element = (EndElement) event;
-                    Version v = parseEndElement(element, element.getName(), str);
+                    Version v = parseEndElement(element.getName(), str);
                     if (v != null) return v;
                     
                 } else if (event.isCharacters()) {
@@ -186,8 +186,8 @@ public class PrimaryParser implements Iterable<Version> {
                 throw new SynchronizerException("Bad digest checksum!");
             }
             
-            for (int ix = 0; ix < hash.length; ix++) {
-                String hex = String.format("%02x", hash[ix]);
+            for (byte element : hash) {
+                String hex = String.format("%02x", element);
                 if (! cmp.startsWith(hex)) {
                     throw new SynchronizerException("Bad digest checksum!");
                 }
@@ -280,12 +280,11 @@ public class PrimaryParser implements Iterable<Version> {
     /**
      * An ending element was found in the XML stream.
      * 
-     * @param element   Element that was found
      * @param tag       QName of the element's tag.
      * @param body      Text found in the element's body.
      * @throws XMLStreamException
      */
-    private Version parseEndElement(EndElement element, QName tag, String body) {
+    private Version parseEndElement(QName tag, String body) {
         if (currentPackage == null) return null;
         
         if (tag.equals(QN_PACKAGE)) {

@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeDAOHibImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: ChangeDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -25,38 +25,24 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Change;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.ChangeDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link ChangeDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 269 $
  */
 @org.springframework.stereotype.Repository      // class name collision!
 @Transactional
-public class ChangeDAOHibImpl implements ChangeDAO {
+public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDAO {
     
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public void insert(Change data) {
-        // Requires Spring's IdTransferringMergeEventListener
-        sessionFactory.getCurrentSession().merge(data);
-    }
-
-    public void delete(Change data) {
-        sessionFactory.getCurrentSession().delete(data);
-    }
-
     @Transactional(readOnly = true)
     public Change fetch(long id) {
-        return (Change) sessionFactory.getCurrentSession().get(Change.class, id);
+        return (Change) getCurrentSession().get(Change.class, id);
     }
 
     @Transactional(readOnly = true)
@@ -66,8 +52,7 @@ public class ChangeDAOHibImpl implements ChangeDAO {
 
     @Transactional(readOnly = true)
     public long countChanges(Repository repo, boolean updates) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(*) FROM Change" +
                 		" WHERE repository=:repo" +
                         " AND (:updates=true OR change<>:typeupdated)")
@@ -91,8 +76,7 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Change> findAllChanges(Repository repo, boolean updates, int start, int limit) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Change AS c" +
                         " WHERE c.repository=:repository" +
                         " AND (:updates=true OR change<>:typeupdated)" +
@@ -116,8 +100,7 @@ public class ChangeDAOHibImpl implements ChangeDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Change> findAllChangesUntil(Repository repo, boolean updates, Date limit, int maxrows) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Change AS c" +
                         " WHERE c.repository=:repository" +
                         " AND c.timestamp>=:limit" +

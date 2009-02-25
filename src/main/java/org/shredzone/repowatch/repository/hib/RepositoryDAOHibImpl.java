@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositoryDAOHibImpl.java 263 2009-02-24 23:38:08Z shred $
+ * $Id: RepositoryDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -24,43 +24,29 @@ package org.shredzone.repowatch.repository.hib;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.RepositoryDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link RepositoryDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 263 $
+ * @version $Revision: 269 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
-public class RepositoryDAOHibImpl implements RepositoryDAO {
-
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public void insert(Repository data) {
-        sessionFactory.getCurrentSession().merge(data);
-    }
-
-    public void delete(Repository data) {
-        sessionFactory.getCurrentSession().delete(data);
-    }
+public class RepositoryDAOHibImpl extends BaseDAOHibImpl<Repository> implements RepositoryDAO {
 
     @Transactional(readOnly = true)
     public Repository fetch(long id) {
-        return (Repository) sessionFactory.getCurrentSession().get(Repository.class, id);
+        return (Repository) getCurrentSession().get(Repository.class, id);
     }
     
     @Transactional(readOnly = true)
     public Repository findRepository(Domain domain, String name, String architecture) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r" +
                         " WHERE r.domain=:domain AND r.name=:name" +
                         " AND r.architecture=:architecture")
@@ -73,8 +59,7 @@ public class RepositoryDAOHibImpl implements RepositoryDAO {
     
     @SuppressWarnings("unchecked")
     public List<Repository> findAllRepositories() {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r" +
                         " ORDER BY r.domain.name, r.domain.release," +
                         " r.name, r.architecture");
@@ -84,8 +69,7 @@ public class RepositoryDAOHibImpl implements RepositoryDAO {
 
     @SuppressWarnings("unchecked")
     public List<Repository> findRepositories(Domain domain) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r WHERE r.domain=:domain" +
                         " ORDER BY r.domain.name, r.domain.release," +
                         " r.name, r.architecture")

@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionDAOHibImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: VersionDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -25,38 +25,25 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
 import org.shredzone.repowatch.repository.VersionDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link VersionDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 269 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
-public class VersionDAOHibImpl implements VersionDAO {
-
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    public void insert(Version data) {
-        sessionFactory.getCurrentSession().merge(data);
-    }
-
-    public void delete(Version data) {
-        sessionFactory.getCurrentSession().delete(data);
-    }
+public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements VersionDAO {
 
     @Transactional(readOnly = true)
     public Version fetch(long id) {
-        return (Version) sessionFactory.getCurrentSession().get(Version.class, id);
+        return (Version) getCurrentSession().get(Version.class, id);
     }
     
     @Transactional(readOnly = true)
@@ -67,8 +54,7 @@ public class VersionDAOHibImpl implements VersionDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Version> findAllVersions(Repository repo, int start, int limit) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
                         " WHERE v.repository=:repository AND v.deleted=false" +
                         " ORDER BY v.package.name")
@@ -84,8 +70,7 @@ public class VersionDAOHibImpl implements VersionDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Version> findAllVersions(Package pack) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
                         " WHERE v.package=:package AND v.deleted=false" +
                         " ORDER BY v.repository.name, v.repository.architecture")
@@ -97,8 +82,7 @@ public class VersionDAOHibImpl implements VersionDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Version> findAllVersionsForName(String name) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
                         " WHERE v.package.name=:name AND v.deleted=false" +
                         " ORDER BY v.package.domain.release," +
@@ -112,8 +96,7 @@ public class VersionDAOHibImpl implements VersionDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Version> findAllVersionsExcept(String name, Package pack) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
                         " WHERE v.package<>:package AND v.package.name=:name" +
                         " AND v.deleted=false" +
@@ -129,7 +112,7 @@ public class VersionDAOHibImpl implements VersionDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Version> findLastSeenBefore(Repository repo, Date now) {
-        Query q = sessionFactory.getCurrentSession().createQuery(
+        Query q = getCurrentSession().createQuery(
                 "FROM Version AS v" +
                 " WHERE v.deleted=false" +
                   " AND v.repository=:repository" +

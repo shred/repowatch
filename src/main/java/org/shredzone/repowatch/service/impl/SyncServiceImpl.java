@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: SyncServiceImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: SyncServiceImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.service.impl;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A standard implementation of the {@link SyncService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 269 $
  */
 @Service
 @Transactional(rollbackFor=SynchronizerException.class)

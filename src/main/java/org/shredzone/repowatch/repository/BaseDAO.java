@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: BaseDAO.java 226 2009-01-06 20:33:19Z shred $
+ * $Id: BaseDAO.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -28,7 +28,7 @@ import org.springframework.security.annotation.Secured;
  * Base class of all DAOs.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 226 $
+ * @version $Revision: 269 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface BaseDAO<T extends BaseModel> {
@@ -40,6 +40,15 @@ public interface BaseDAO<T extends BaseModel> {
      */
     @Secured("ROLE_ADMIN")
 	public void insert(T data);
+    
+    /**
+     * Merges a detached entity.
+     * 
+     * @param data     Entity to merge.
+     * @return  Merged entity.
+     */
+    @Secured("ROLE_ADMIN")
+    public T merge(T data);
 	
 	/**
 	 * Fetches the entity with the given ID.

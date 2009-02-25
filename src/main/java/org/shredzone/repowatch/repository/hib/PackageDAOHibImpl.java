@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAOHibImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: PackageDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -27,7 +27,6 @@ import java.util.TreeMap;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -37,39 +36,26 @@ import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.SearchDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link PackageDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 269 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
-public class PackageDAOHibImpl implements PackageDAO {
-
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    public void insert(Package data) {
-        sessionFactory.getCurrentSession().merge(data);
-    }
-
-    public void delete(Package data) {
-        sessionFactory.getCurrentSession().delete(data);
-    }
+public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements PackageDAO {
 
     @Transactional(readOnly = true)
     public Package fetch(long id) {
-        return (Package) sessionFactory.getCurrentSession().get(Package.class, id);
+        return (Package) getCurrentSession().get(Package.class, id);
     }
 
     @Transactional(readOnly = true)
     public long countPackages(Repository repo) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(*) FROM Version" +
                         " WHERE repository=:repo AND deleted=false")
                 .setParameter("repo", repo);
@@ -79,8 +65,7 @@ public class PackageDAOHibImpl implements PackageDAO {
 
     @Transactional(readOnly = true)
     public Package findPackage(Domain domain, String name) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Package AS p" +
                         " WHERE p.domain=:domain AND p.name=:name")
                 .setParameter("domain", domain)
@@ -91,8 +76,7 @@ public class PackageDAOHibImpl implements PackageDAO {
     
     @Transactional(readOnly = true)
     public Package findLatestPackage(String name) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "SELECT p FROM Version AS v" +
                         " INNER JOIN v.package AS p" +
                         " WHERE v.deleted=false AND p.name=:name" +
@@ -105,8 +89,7 @@ public class PackageDAOHibImpl implements PackageDAO {
 
     @Transactional(readOnly = true)
     public long countAllPackages() {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(DISTINCT p.name) FROM Package AS p");
 
         return ((Long) q.iterate().next()).longValue();
@@ -119,8 +102,7 @@ public class PackageDAOHibImpl implements PackageDAO {
          * value is returned. It would be better to return the summary of
          * the package with the latest update timestamp.
          */
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "SELECT p.name, MAX(p.summary)" +
                         " FROM Package AS p" +
                         " GROUP BY p.name" +
@@ -130,7 +112,7 @@ public class PackageDAOHibImpl implements PackageDAO {
             q.setFirstResult(start).setMaxResults(limit);
         }
         
-        SortedMap<String,String> result = new TreeMap<String,String>(); 
+        SortedMap<String,String> result = new TreeMap<String,String>();
         for (Object[] data : (List<Object[]>) q.list()) {
             result.put(data[0].toString(), data[1].toString());
         }
@@ -146,8 +128,7 @@ public class PackageDAOHibImpl implements PackageDAO {
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Package> findAllPackages(Domain domain, int start, int limit) {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery(
+        Query q = getCurrentSession().createQuery(
                         "FROM Package AS p" +
                         " WHERE p.domain=:domain" +
                         " ORDER BY p.name")
@@ -191,7 +172,7 @@ public class PackageDAOHibImpl implements PackageDAO {
      * @return {@link Criteria} object.
      */
     private Criteria createCriteria(SearchDTO data) {
-        Criteria crit = sessionFactory.getCurrentSession().createCriteria(Package.class);
+        Criteria crit = getCurrentSession().createCriteria(Package.class);
         
         String liketerm = data.getTerm().replaceAll("(%|_)", "\\\\$1");
         if (data.isDescriptions()) {

@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,18 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: BlacklistDAOHibImpl.java 222 2009-01-05 23:40:44Z shred $
+ * $Id: BlacklistDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
 
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Blacklist;
 import org.shredzone.repowatch.repository.BlacklistDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,35 +32,21 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link BlacklistDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 222 $
+ * @version $Revision: 269 $
  */
 @Repository
 @Transactional
-public class BlacklistDAOHibImpl implements BlacklistDAO {
-
-    @Autowired
-    private SessionFactory sessionFactory;
-    
-    public void insert(Blacklist data) {
-        sessionFactory.getCurrentSession().merge(data);
-    }
-
-    public void delete(Blacklist data) {
-        sessionFactory.getCurrentSession().delete(data);
-    }
+public class BlacklistDAOHibImpl extends BaseDAOHibImpl<Blacklist> implements BlacklistDAO {
 
     @Transactional(readOnly = true)
     public Blacklist fetch(long id) {
-        return (Blacklist) sessionFactory.getCurrentSession().get(Blacklist.class, id);
+        return (Blacklist) getCurrentSession().get(Blacklist.class, id);
     }
     
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Blacklist> findAllBlacklists() {
-        Query q = sessionFactory.getCurrentSession()
-                .createQuery("FROM Blacklist AS d");
-
-        return q.list();
+        return getCurrentSession().createQuery("FROM Blacklist AS d").list();
     }
 
 }
