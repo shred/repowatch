@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: AdminDomainController.java 270 2009-02-25 23:06:14Z shred $
+ * $Id: AdminDomainController.java 271 2009-02-26 23:23:35Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -44,7 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of the domain admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 270 $
+ * @version $Revision: 271 $
  */
 @Controller
 @SessionAttributes("domain")
@@ -55,13 +55,9 @@ public class AdminDomainController {
     
     private final static String DOMAINADD_PATTERN = "/admin/domain/add.html";
     private final static String DOMAINEDIT_PATTERN = "/admin/domain/edit/*.html";
-    private final static String DOMAINDELETE_PATTERN = "/admin/domain/delete/*.html";
 
     private final static RequestMappingResolver adminDomainEditResolver =
         new RequestMappingResolver(DOMAINEDIT_PATTERN);
-
-    private final static RequestMappingResolver adminDomainDeleteResolver =
-        new RequestMappingResolver(DOMAINDELETE_PATTERN);
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -124,44 +120,6 @@ public class AdminDomainController {
     @RequestMapping(value=DOMAINEDIT_PATTERN, method=RequestMethod.POST)
     public String editDomainFormHandler(@ModelAttribute("domain") Domain domain) {
         domainDao.merge(domain);
-        return "forward:/admin/index.html";
-    }
-
-    /**
-     * Prepares to delete a domain.
-     */
-    @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.GET)
-    public ModelAndView deleteDomainHandler(
-            HttpServletRequest req,
-            HttpServletResponse resp
-    ) throws IOException {
-        RequestParts parts = adminDomainDeleteResolver.getRequestParts(req);
-        if (parts.partCount() != 1) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-        
-        Domain domain = domainDao.fetch(Integer.parseInt(parts.getPart(0)));
-        if (domain == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return null;
-        }
-        
-        ModelAndView mav = new ModelAndView("adminconfirmdelete");
-        mav.addObject("domain", domain);
-        return mav;
-    }
-    
-    /**
-     * Performs to delete a domain.
-     * 
-     * @param req           {@link HttpServletRequest}
-     * @param resp          {@link HttpServletResponse}
-     */
-    @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.POST)
-    public String deleteDomainFormHandler(@ModelAttribute("domain") Domain domain) {
-        // TODO : Check confirmation
-        domainDao.delete(domain);
         return "forward:/admin/index.html";
     }
     

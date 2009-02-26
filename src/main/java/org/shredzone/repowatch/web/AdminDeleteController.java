@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: AdminRepoController.java 271 2009-02-26 23:23:35Z shred $
+ * $Id: AdminDeleteController.java 271 2009-02-26 23:23:35Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -34,23 +34,22 @@ import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This controller takes care of the repository admin masks.
+ * This controller takes care of deletion.
  * 
  * @author Richard "Shred" Körber
  * @version $Revision: 271 $
  */
 @Controller
-@SessionAttributes("repo")
-public class AdminRepoController {
+@SessionAttributes({"domain", "repo"})
+public class AdminDeleteController {
     
     @Autowired
     private DomainDAO domainDao;
@@ -58,30 +57,24 @@ public class AdminRepoController {
     @Autowired
     private RepositoryDAO repositoryDao;
 
-    private final static String REPOADD_PATTERN = "/admin/repo/add/*.html";
-    private final static String REPOEDIT_PATTERN = "/admin/repo/edit/*.html";
+    private final static String REPODELETE_PATTERN = "/admin/repo/delete/*.html";
+    private final static String DOMAINDELETE_PATTERN = "/admin/domain/delete/*.html";
 
-    private final static RequestMappingResolver adminRepoAddResolver =
-        new RequestMappingResolver(REPOADD_PATTERN);
+    private final static RequestMappingResolver adminDomainDeleteResolver =
+        new RequestMappingResolver(DOMAINDELETE_PATTERN);
 
-    private final static RequestMappingResolver adminRepoEditResolver =
-        new RequestMappingResolver(REPOEDIT_PATTERN);
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setAllowedFields(new String[]{ "name", "architecture", "baseUrl", "repoviewUrl" });
-        binder.setRequiredFields(new String[]{ "name", "architecture", "baseUrl" });
-    }
+    private final static RequestMappingResolver adminRepoDeleteResolver =
+        new RequestMappingResolver(REPODELETE_PATTERN);
 
     /**
-     * Prepares to add a repository.
+     * Prepares to delete a domain.
      */
-    @RequestMapping(value=REPOADD_PATTERN, method=RequestMethod.GET)
-    public ModelAndView addRepositoryHandler(
+    @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.GET)
+    public ModelAndView deleteDomainHandler(
             HttpServletRequest req,
             HttpServletResponse resp
     ) throws IOException {
-        RequestParts parts = adminRepoAddResolver.getRequestParts(req);
+        RequestParts parts = adminDomainDeleteResolver.getRequestParts(req);
         if (parts.partCount() != 1) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
@@ -93,38 +86,37 @@ public class AdminRepoController {
             return null;
         }
         
-        Repository repo = new Repository();
-        repo.setDomain(domain);
-        
-        ModelAndView mav = new ModelAndView("adminrepo");
-        mav.addObject("repo", repo);
+        ModelAndView mav = new ModelAndView("adminconfirmdelete");
+        mav.addObject("domain", domain);
         return mav;
     }
     
     /**
-     * Performs to add a repository.
+     * Performs to delete a domain.
      * 
-     * @param repository     {@link Repository} to be added
+     * @param req           {@link HttpServletRequest}
+     * @param resp          {@link HttpServletResponse}
      */
-    @RequestMapping(value=REPOADD_PATTERN, method=RequestMethod.POST)
-    public String addRepositoryFormHandler(@ModelAttribute("repo") Repository repository) {
-        Domain dom = repository.getDomain();
-        dom = domainDao.merge(dom);
-        repository.setDomain(dom);
-
-        repositoryDao.insert(repository);
+    @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.POST)
+    public String deleteDomainFormHandler(
+            @ModelAttribute("domain") Domain domain,
+            @RequestParam("confirmed") boolean confirmed
+    ) {
+        if (confirmed) {
+            domainDao.delete(domain);
+        }
         return "forward:/admin/index.html";
     }
-
+    
     /**
-     * Prepares to edit a repository.
+     * Prepares to delete a repository.
      */
-    @RequestMapping(value=REPOEDIT_PATTERN, method=RequestMethod.GET)
-    public ModelAndView editRepositoryHandler(
+    @RequestMapping(value=REPODELETE_PATTERN, method=RequestMethod.GET)
+    public ModelAndView deleteRepositoryHandler(
             HttpServletRequest req,
             HttpServletResponse resp
     ) throws IOException {
-        RequestParts parts = adminRepoEditResolver.getRequestParts(req);
+        RequestParts parts = adminRepoDeleteResolver.getRequestParts(req);
         if (parts.partCount() != 1) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
@@ -136,21 +128,26 @@ public class AdminRepoController {
             return null;
         }
         
-        ModelAndView mav = new ModelAndView("adminrepo");
+        ModelAndView mav = new ModelAndView("adminconfirmdelete");
         mav.addObject("repo", repository);
         return mav;
     }
     
     /**
-     * Performs to edit a repository.
+     * Performs to delete a repository.
      * 
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      */
-    @RequestMapping(value=REPOEDIT_PATTERN, method=RequestMethod.POST)
-    public String editDomainFormHandler(@ModelAttribute("repo") Repository repository) {
-        repositoryDao.merge(repository);
+    @RequestMapping(value=REPODELETE_PATTERN, method=RequestMethod.POST)
+    public String deleteRepositoryFormHandler(
+            @ModelAttribute("repo") Repository repository,
+            @RequestParam("confirmed") boolean confirmed
+    ) {
+        if (confirmed) {
+            repositoryDao.delete(repository);
+        }
         return "forward:/admin/index.html";
     }
-    
+
 }
