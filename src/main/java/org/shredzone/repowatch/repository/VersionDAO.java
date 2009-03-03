@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionDAO.java 226 2009-01-06 20:33:19Z shred $
+ * $Id: VersionDAO.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -33,7 +33,7 @@ import org.springframework.security.annotation.Secured;
  * Gives access to the repository part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 226 $
+ * @version $Revision: 273 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface VersionDAO extends BaseDAO<Version> {
@@ -92,4 +92,12 @@ public interface VersionDAO extends BaseDAO<Version> {
      */
     public List<Version> findLastSeenBefore(Repository repo, Date now);
     
+    /**
+     * Deletes all versions refering to the given repository.
+     * 
+     * @param repo      {@link Repository} to delete all versions of.
+     */
+    @Secured("ROLE_ADMIN")
+    public void deleteAllVersionsForRepository(Repository repo);
+
 }

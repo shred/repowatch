@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAO.java 226 2009-01-06 20:33:19Z shred $
+ * $Id: PackageDAO.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -33,7 +33,7 @@ import org.springframework.security.annotation.Secured;
  * Gives access to the package management.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 226 $
+ * @version $Revision: 273 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface PackageDAO extends BaseDAO<Package> {
@@ -119,5 +119,13 @@ public interface PackageDAO extends BaseDAO<Package> {
      * @return  A list of all {@link Package}s matching the search.
      */
     public List<Package> findSearchResult(SearchDTO data, int start, int limit);
+    
+    /**
+     * Deletes all packages refering to the given domain.
+     * 
+     * @param domain    {@link Domain} to delete all packages of.
+     */
+    @Secured("ROLE_ADMIN")
+    public void deleteAllPackagesForDomain(Domain domain);
 
 }

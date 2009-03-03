@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: VersionDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
+ * $Id: VersionDAOHibImpl.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link VersionDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 269 $
+ * @version $Revision: 273 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -122,6 +122,12 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
                 .setParameter("now", now);
 
         return q.list();
+    }
+
+    public void deleteAllVersionsForRepository(Repository repository) {
+        getCurrentSession().createQuery(
+                "DELETE FROM Version AS v WHERE v.repository=:repository")
+                .setParameter("repository", repository);
     }
 
 }

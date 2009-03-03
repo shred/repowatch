@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeDAO.java 226 2009-01-06 20:33:19Z shred $
+ * $Id: ChangeDAO.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository;
@@ -32,7 +32,7 @@ import org.springframework.security.annotation.Secured;
  * Gives access to the changelog part of the database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 226 $
+ * @version $Revision: 273 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface ChangeDAO extends BaseDAO<Change> {
@@ -54,7 +54,7 @@ public interface ChangeDAO extends BaseDAO<Change> {
      *            Repository to count the changes of.
      * @param updates
      *            Also count Updates
-     * @return Number of changes 
+     * @return Number of changes
      */
     public long countChanges(Repository repo, boolean updates);
     
@@ -132,5 +132,13 @@ public interface ChangeDAO extends BaseDAO<Change> {
      * @return List of {@link Change} objects containing all changes.
      */
     public List<Change> findAllChangesUntil(Repository repo, boolean updates, Date limit, int maxrows);
+
+    /**
+     * Deletes all changes refering to the given repository.
+     * 
+     * @param repo      {@link Repository} to delete all changes of.
+     */
+    @Secured("ROLE_ADMIN")
+    public void deleteAllChangesForRepository(Repository repo);
 
 }

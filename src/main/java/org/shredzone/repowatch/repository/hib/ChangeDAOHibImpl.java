@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: ChangeDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
+ * $Id: ChangeDAOHibImpl.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link ChangeDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 269 $
+ * @version $Revision: 273 $
  */
 @org.springframework.stereotype.Repository      // class name collision!
 @Transactional
@@ -116,6 +116,12 @@ public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDA
         }
 
         return q.list();
+    }
+
+    public void deleteAllChangesForRepository(Repository repository) {
+        getCurrentSession().createQuery(
+                "DELETE FROM Change AS c WHERE c.repository=:repository")
+                .setParameter("repository", repository);
     }
 
 }

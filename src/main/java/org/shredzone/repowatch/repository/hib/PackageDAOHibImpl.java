@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: PackageDAOHibImpl.java 269 2009-02-25 23:05:17Z shred $
+ * $Id: PackageDAOHibImpl.java 273 2009-03-03 00:03:00Z shred $
  */
 
 package org.shredzone.repowatch.repository.hib;
@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link PackageDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 269 $
+ * @version $Revision: 273 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -195,4 +195,9 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         return crit;
     }
     
+    public void deleteAllPackagesForDomain(Domain domain) {
+        getCurrentSession().createQuery(
+                "DELETE FROM Package AS p WHERE p.domain=:domain")
+                .setParameter("domain", domain);
+    }
 }
