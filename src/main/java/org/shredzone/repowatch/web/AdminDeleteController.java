@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: AdminDeleteController.java 271 2009-02-26 23:23:35Z shred $
+ * $Id: AdminDeleteController.java 276 2009-03-03 00:05:44Z shred $
  */
 
 package org.shredzone.repowatch.web;
@@ -30,6 +30,7 @@ import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.repository.RepositoryDAO;
+import org.shredzone.repowatch.service.DeleteService;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +46,14 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of deletion.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 271 $
+ * @version $Revision: 276 $
  */
 @Controller
 @SessionAttributes({"domain", "repo"})
 public class AdminDeleteController {
+    
+    @Autowired
+    private DeleteService deleteService;
     
     @Autowired
     private DomainDAO domainDao;
@@ -103,7 +107,8 @@ public class AdminDeleteController {
             @RequestParam("confirmed") boolean confirmed
     ) {
         if (confirmed) {
-            domainDao.delete(domain);
+            Domain mergedDomain = domainDao.merge(domain);
+            deleteService.deleteDomain(mergedDomain);
         }
         return "forward:/admin/index.html";
     }
@@ -145,9 +150,10 @@ public class AdminDeleteController {
             @RequestParam("confirmed") boolean confirmed
     ) {
         if (confirmed) {
-            repositoryDao.delete(repository);
+            Repository mergedRepository = repositoryDao.merge(repository);
+            deleteService.deleteRepository(mergedRepository);
         }
         return "forward:/admin/index.html";
     }
-
+    
 }
