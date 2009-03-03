@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: admindomain.jsp 270 2009-02-25 23:06:14Z shred $
+  $Id: admindomain.jsp 277 2009-03-03 00:05:58Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -43,7 +43,8 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td colspan="2"><input type="submit" value="<fmt:message key="admin.submit"/>" /></td>
+      <td><input type="submit" value="<fmt:message key="admin.submit"/>" /></td>
+      <td><form:errors path="*" /></td>
     </tr>
   </table>
 </form:form>
