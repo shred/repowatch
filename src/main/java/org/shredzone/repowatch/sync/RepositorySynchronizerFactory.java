@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: RepositorySynchronizerFactory.java 209 2008-10-15 22:24:51Z shred $
+ * $Id: RepositorySynchronizerFactory.java 275 2009-03-03 00:05:03Z shred $
  */
 
 package org.shredzone.repowatch.sync;
@@ -27,14 +27,16 @@ import org.shredzone.repowatch.repository.ChangeDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * A factory to create new {@link RepositorySynchronizer} objects easily
  * in a Spring context. Let Spring inject this factory to your class.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 209 $
+ * @version $Revision: 275 $
  */
+@Component
 public class RepositorySynchronizerFactory {
 
     @Autowired

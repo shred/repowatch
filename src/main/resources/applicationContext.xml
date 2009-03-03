@@ -18,7 +18,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see http://www.gnu.org/licenses/
  
-  $Id: applicationContext.xml 268 2009-02-25 23:04:24Z shred $
+  $Id: applicationContext.xml 275 2009-03-03 00:05:03Z shred $
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -53,7 +53,7 @@
   <context:annotation-config/>
   <tx:annotation-driven/>
 
-  <context:component-scan base-package="org.shredzone.repowatch.repository.hib" />
+  <context:component-scan base-package="org.shredzone.repowatch" />
 
   <bean id="repowatchConfiguration" class="org.shredzone.repowatch.config.PropertyConfigurationBean">
   	<property name="entriesPerPage" value="25"/>
@@ -61,9 +61,5 @@
 	<property name="rssMaxNumberOfEntries" value="50"/>
 	<property name="searchTermMinLength" value="3"/>
   </bean>
-
-  <bean id="syncService"   class="org.shredzone.repowatch.service.impl.SyncServiceImpl"/>
-
-  <bean id="synchronizerFactory" class="org.shredzone.repowatch.sync.RepositorySynchronizerFactory"/>
 
 </beans>
