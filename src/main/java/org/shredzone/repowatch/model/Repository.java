@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: Repository.java 269 2009-02-25 23:05:17Z shred $
+ * $Id: Repository.java 272 2009-03-03 00:02:39Z shred $
  */
 
 package org.shredzone.repowatch.model;
@@ -36,7 +36,7 @@ import javax.persistence.Transient;
  * Represents a yum repository.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 269 $
+ * @version $Revision: 272 $
  */
 @Entity
 public class Repository extends BaseModel {
@@ -54,8 +54,8 @@ public class Repository extends BaseModel {
     /**
      * {@link Domain} this repository belongs to
      */
-    @ManyToOne(cascade={CascadeType.MERGE})
-    @Basic(fetch=FetchType.LAZY, optional=false)
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @Basic(fetch = FetchType.LAZY, optional = false)
     public Domain getDomain()               { return domain; }
     public void setDomain(Domain domain)    { this.domain = domain; }
 

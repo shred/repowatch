@@ -1,4 +1,4 @@
-/* 
+/*
  * Repowatch -- A repository watcher
  *   (C) 2008 Richard "Shred" Körber
  *   http://repowatch.shredzone.org/
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * $Id: Version.java 181 2008-07-22 11:35:11Z shred $
+ * $Id: Version.java 272 2009-03-03 00:02:39Z shred $
  */
 
 package org.shredzone.repowatch.model;
@@ -34,7 +34,7 @@ import javax.persistence.TemporalType;
  * Represents a version of a package.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
+ * @version $Revision: 272 $
  */
 @Entity
 public class Version extends BaseModel {
@@ -55,7 +55,7 @@ public class Version extends BaseModel {
      * {@link Repository} this version belongs to.
      */
     @ManyToOne
-    @Basic(fetch=FetchType.LAZY, optional=false)
+    @Basic(fetch = FetchType.LAZY, optional = false)
     public Repository getRepository()          { return repo; }
     public void setRepository(Repository repo) { this.repo = repo; }
 
@@ -63,7 +63,7 @@ public class Version extends BaseModel {
      * {@link Package} this version belongs to.
      */
     @ManyToOne
-    @Basic(fetch=FetchType.LAZY, optional=false)
+    @Basic(fetch = FetchType.LAZY, optional = false)
     public Package getPackage()             { return pack; }
     public void setPackage(Package pack)    { this.pack = pack; }
 
