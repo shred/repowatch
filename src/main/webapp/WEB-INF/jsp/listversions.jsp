@@ -16,7 +16,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: listversions.jsp 238 2009-01-17 08:43:50Z shred $
+  $Id: listversions.jsp 278 2009-03-04 00:23:03Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -56,6 +56,10 @@
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="vers.lastmodified"/></td>
     <td><fmt:formatDate value="${repository.lastModifiedDate}" type="both" dateStyle="full"/></td>
+  </tr>
+  <tr class="gridrow">
+    <td class="gridlabel"><fmt:message key="vers.see"/></td>
+    <td><a href="<c:url value="/changes/${domain.name}/${domain.release}/${repository.name}/${repository.architecture}.html"/>">[<fmt:message key="vers.see.changes"/>]</a></td>
   </tr>
 </table>
 
