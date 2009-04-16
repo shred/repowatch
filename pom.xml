@@ -11,7 +11,7 @@
     <inceptionYear>2007</inceptionYear>
     <issueManagement>
         <system>Redmine</system>
-        <url>http://www.shredzone.org/projects/repowtach/issues</url>
+        <url>http://www.shredzone.org/projects/repowatch/issues</url>
     </issueManagement>
     <ciManagement>
         <system>Continuum</system>
