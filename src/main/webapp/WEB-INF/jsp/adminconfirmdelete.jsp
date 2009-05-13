@@ -19,9 +19,8 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminconfirmdelete.jsp 317 2009-05-13 21:46:21Z shred $
+  $Id: adminconfirmdelete.jsp 320 2009-05-13 22:25:09Z shred $
 --%>
-<%@ page pageEncoding="utf-8" %>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
