@@ -1,6 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <%--
   Repowatch -- A repository watcher
-    (C) 2008 Richard "Shred" Körber
+    (C) 2008 Richard "Shred" KÃ¶rber
     http://repowatch.shredzone.org/
  -----------------------------------------------------------------------
   This program is free software: you can redistribute it and/or modify
@@ -16,8 +19,9 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminconfirmdelete.jsp 271 2009-02-26 23:23:35Z shred $
+  $Id: adminconfirmdelete.jsp 317 2009-05-13 21:46:21Z shred $
 --%>
+<%@ page pageEncoding="utf-8" %>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 

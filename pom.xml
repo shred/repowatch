@@ -1,40 +1,47 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.shredzone</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../parent/pom.xml</relativePath>
+    </parent>
     <groupId>org.shredzone.repowatch</groupId>
     <artifactId>repowatch</artifactId>
-    <packaging>war</packaging>
     <name>Repowatch</name>
     <version>0.16.0-SNAPSHOT</version>
+    <packaging>war</packaging>
     <description>A yum repository watcher</description>
-    <url>http://repowatch.shredzone.org</url>
     <inceptionYear>2007</inceptionYear>
-    <issueManagement>
-        <system>Redmine</system>
-        <url>http://www.shredzone.org/projects/repowatch/issues</url>
-    </issueManagement>
-    <ciManagement>
-        <system>Continuum</system>
-        <url>http://continuum.shredzone.org</url>
-    </ciManagement>
-    <scm>
-        <connection>scm:svn:http://svn.shredzone.org/trunk/repowatch/</connection>
-        <developerConnection>scm:svn:https://svn.shredzone.org/trunk/repowatch/</developerConnection>
-        <url>http://svn.shredzone.org/</url>
-    </scm>
-    <organization>
-        <name>shredzone.org</name>
-        <url>http://www.shredzone.org</url>
-    </organization>
+    <licenses>
+        <license>
+            <name>GNU General Public License Version 3</name>
+            <url>LICENSE.txt</url>
+        </license>
+    </licenses>
     <build>
-        <resources>
-        </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <encoding>utf-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <header>src/etc/header.txt</header>
+                    <excludes>
+                        <exclude>src/main/resources/messages*.properties</exclude>
+                        <exclude>src/main/webapp/**</exclude>
+                        <exclude>src/test/resources/repodata/*</exclude>
+                        <exclude>*.txt</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -51,10 +58,6 @@
                         <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
                     </additionalBuildcommands>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-changes-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -129,19 +132,7 @@
             </dependencies>
         </profile>
     </profiles>
-    <repositories>
-    	<repository>
-    		<id>shredzone.org</id>
-    		<url>http://maven.shredzone.org</url>
-    	</repository>
-    </repositories>
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>

@@ -17,28 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.shredzone.repowatch.service;
-
-/**
- * Shows that something went wrong while synchronizing.
- * 
- * @author Richard "Shred" Körber
- * @version $Revision: 317 $
- */
-public class SynchronizerException extends Exception {
-    private static final long serialVersionUID = -6701318058608586031L;
-
-    public SynchronizerException() {
-        super();
-    }
-    
-    public SynchronizerException(String msg) {
-        super(msg);
-    }
-    
-    public SynchronizerException(String msg, Throwable cause) {
-        super(msg,cause);
-    }
-    
+a.externalLink, a.externalLink:link, a.externalLink:visited, a.externalLink:active, a.externalLink:hover {
+  background: none;
+  padding-right: 0;
 }
+
+
