@@ -27,7 +27,7 @@ import org.springframework.security.annotation.Secured;
  * Base class of all DAOs.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 321 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface BaseDAO<T extends BaseModel> {
@@ -37,7 +37,7 @@ public interface BaseDAO<T extends BaseModel> {
      * 
      * @param data     Entity to insert.
      */
-    @Secured("ROLE_ADMIN")
+     @Secured({"ROLE_ADMIN", "ROLE_CRON"})
 	public void insert(T data);
     
     /**
@@ -46,7 +46,7 @@ public interface BaseDAO<T extends BaseModel> {
      * @param data     Entity to merge.
      * @return  Merged entity.
      */
-    @Secured("ROLE_ADMIN")
+     @Secured({"ROLE_ADMIN", "ROLE_CRON"})
     public T merge(T data);
 	
 	/**
@@ -62,7 +62,7 @@ public interface BaseDAO<T extends BaseModel> {
 	 * 
 	 * @param data     Entity to be deleted.
 	 */
-	@Secured("ROLE_ADMIN")
+     @Secured({"ROLE_ADMIN", "ROLE_CRON"})
 	public void delete(T data);
 	
 }

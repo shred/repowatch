@@ -35,7 +35,7 @@ import org.springframework.security.providers.UsernamePasswordAuthenticationToke
  * A scheduler job for synchronizing the repository database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 321 $
  */
 public class RepositorySyncJob {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -72,8 +72,8 @@ public class RepositorySyncJob {
     public void doSynchronization() {
         logger.info("Synchronization job started");
         
-        Authentication auth = new UsernamePasswordAuthenticationToken(authUser, authPwd);
-        auth = authenticationManager.authenticate(auth);
+        Authentication auth = new CronAuthenticationToken(this);
+//        auth = authenticationManager.authenticate(auth);
         SecurityContextHolder.getContext().setAuthentication(auth);
         
         try {
