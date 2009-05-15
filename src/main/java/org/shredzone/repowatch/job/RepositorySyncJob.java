@@ -23,19 +23,19 @@ package org.shredzone.repowatch.job;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.shredzone.repowatch.model.Repository;
+import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.service.SyncService;
 import org.shredzone.repowatch.service.SynchronizerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
-import org.springframework.security.AuthenticationManager;
 import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
 
 /**
  * A scheduler job for synchronizing the repository database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 321 $
+ * @version $Revision: 322 $
  */
 public class RepositorySyncJob {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -44,27 +44,7 @@ public class RepositorySyncJob {
     private SyncService syncService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-    
-    private String authUser, authPwd;
-
-    /**
-     * Sets the user name for cronjob authentication.
-     * 
-     * @param authUser
-     */
-    public void setAuthUser(String authUser) {
-        this.authUser = authUser;
-    }
-
-    /**
-     * Sets the password for cronjob authentication.
-     * 
-     * @param authPwd
-     */
-    public void setAuthPwd(String authPwd) {
-        this.authPwd = authPwd;
-    }
+    private RepositoryDAO repositoryDao;
 
     /**
      * Perform the synchronization process.
@@ -73,14 +53,19 @@ public class RepositorySyncJob {
         logger.info("Synchronization job started");
         
         Authentication auth = new CronAuthenticationToken(this);
-//        auth = authenticationManager.authenticate(auth);
         SecurityContextHolder.getContext().setAuthentication(auth);
-        
         try {
-            syncService.syncAllRepositories();
+
+            for (Repository repo : repositoryDao.findAllRepositories()) {
+                try {
+                    syncService.syncRepository(repo);
+                } catch (SynchronizerException ex) {
+                    logger.log(Level.WARNING, "Synchronization job failed", ex);
+                }
+            }
+        
             logger.info("Synchronization job completed");
-        } catch (SynchronizerException ex) {
-            logger.log(Level.WARNING, "Synchronization job failed", ex);
+        
         } finally {
             SecurityContextHolder.getContext().setAuthentication(null);
         }

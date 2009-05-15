@@ -27,17 +27,10 @@ import org.shredzone.repowatch.model.Repository;
  * database in sync with the original repository database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 322 $
  */
 public interface SyncService {
 
-    /**
-     * Synchronize all repositories.
-     * 
-     * @throws  SynchronizerException   Synchronization failed
-     */
-    public void syncAllRepositories() throws SynchronizerException;
-    
     /**
      * Synchronizes only a single repository.
      * 

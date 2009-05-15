@@ -32,10 +32,11 @@ import java.io.Serializable;
  * for "ROLE_CRON".
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 321 $
+ * @version $Revision: 322 $
  */
 public final class CronAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
-    
+    private static final long serialVersionUID = -3081468569286324821L;
+
     private final static GrantedAuthority[] ROLES = {
         new GrantedAuthorityImpl("ROLE_CRON"),
     };

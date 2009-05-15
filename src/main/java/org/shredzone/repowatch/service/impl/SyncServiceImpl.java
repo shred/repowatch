@@ -21,36 +21,26 @@
 package org.shredzone.repowatch.service.impl;
 
 import org.shredzone.repowatch.model.Repository;
-import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.service.SyncService;
 import org.shredzone.repowatch.service.SynchronizerException;
 import org.shredzone.repowatch.sync.RepositorySynchronizerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A standard implementation of the {@link SyncService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 322 $
  */
 @Service
-@Transactional(rollbackFor=SynchronizerException.class)
+@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = SynchronizerException.class)
 public class SyncServiceImpl implements SyncService {
 
     @Autowired
-    private RepositoryDAO repositoryDao;
-    
-    @Autowired
     private RepositorySynchronizerFactory syncFactory;
-    
-    public void syncAllRepositories()
-    throws SynchronizerException {
-        for (Repository repo : repositoryDao.findAllRepositories()) {
-            syncRepository(repo);
-        }
-    }
     
     public void syncRepository(Repository repo)
     throws SynchronizerException {
