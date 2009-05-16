@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: showpackage.jsp 324 2009-05-16 11:05:23Z shred $
+  $Id: showpackage.jsp 325 2009-05-16 11:31:52Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -62,7 +62,9 @@
   </c:if>
 </table>
 
-<h2><fmt:message key="pack.repositories"/></h2>
+<h2><fmt:message key="pack.thisrepository">
+      <fmt:param value="${domain.name} ${domain.release}"/>
+    </fmt:message></h2>
 <table class="grid">
   <tr class="gridhead">
     <th><fmt:message key="pack.release"/></th>
@@ -82,6 +84,18 @@
       <td><fmt:formatDate value="${version.fileDate}" type="both" dateStyle="short"/></td>
     </tr>
   </c:forEach>
+</table>
+
+<c:if test="${not empty alternativeList}">
+<h2><fmt:message key="pack.repositories"/></h2>
+<table class="grid">
+  <tr class="gridhead">
+    <th><fmt:message key="pack.release"/></th>
+    <th><fmt:message key="pack.repository"/></th>
+    <th><fmt:message key="pack.version"/></th>
+    <th><fmt:message key="pack.dateadded"/></th>
+    <th><fmt:message key="pack.dateupdated"/></th>
+  </tr>
   <c:forEach var="version" items="${alternativeList}">
     <tr class="${sequence.next}">
       <td><a href="<c:url value="/package/${version.repository.domain.name}/${version.repository.domain.release}/${package.name}.html"/>"><c:out value="${version.repository.domain.name} ${version.repository.domain.release}"/></a></td>
@@ -94,5 +108,6 @@
     </tr>
   </c:forEach>
 </table>
+</c:if>
 
 <c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>
