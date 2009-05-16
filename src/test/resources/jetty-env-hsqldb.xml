@@ -28,7 +28,10 @@
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
         <Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
+        <!-- in-memory database:
         <Set name="url">jdbc:hsqldb:mem:test</Set>
+        -->
+        <Set name="url">jdbc:hsqldb:hsql://localhost/</Set>
         <Set name="username">sa</Set>
         <Set name="password"></Set>
       </New>

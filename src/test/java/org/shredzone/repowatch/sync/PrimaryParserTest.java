@@ -34,13 +34,13 @@ import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
-import org.shredzone.repowatch.service.SynchronizerException;
+import org.shredzone.repowatch.sync.SynchronizerException;
 
 /**
  * Unit tests for {@link PrimaryParser}
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 323 $
  */
 public class PrimaryParserTest {
 

@@ -20,35 +20,24 @@
 
 package org.shredzone.repowatch.sync;
 
+import javax.annotation.Resource;
+
 import org.shredzone.repowatch.model.Repository;
-import org.shredzone.repowatch.repository.BlacklistDAO;
-import org.shredzone.repowatch.repository.ChangeDAO;
-import org.shredzone.repowatch.repository.PackageDAO;
-import org.shredzone.repowatch.repository.VersionDAO;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Component;
 
 /**
  * A factory to create new {@link RepositorySynchronizer} objects easily
- * in a Spring context. Let Spring inject this factory to your class.
+ * in a Spring context.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 323 $
  */
 @Component
 public class RepositorySynchronizerFactory {
 
-    @Autowired
-    private PackageDAO packageDao;
-    
-    @Autowired
-    private VersionDAO versionDao;
-    
-    @Autowired
-    private ChangeDAO changeDao;
-    
-    @Autowired
-    private BlacklistDAO blacklistDao;
+    @Resource
+    private BeanFactory beanFactory;
 
     /**
      * Creates a new {@link RepositorySynchronizer} for a {@link Repository}.
@@ -57,13 +46,10 @@ public class RepositorySynchronizerFactory {
      * @return   The ready to use {@link RepositorySynchronizer}
      */
     public RepositorySynchronizer createRepositorySynchronizer(Repository repository) {
-        return new RepositorySynchronizer(
-                repository,
-                packageDao,
-                versionDao,
-                changeDao,
-                blacklistDao
-        );
+        RepositorySynchronizer result =
+                (RepositorySynchronizer) beanFactory.getBean("repositorySynchronizerImpl");
+        result.setRepository(repository);
+        return result;
     }
     
 }

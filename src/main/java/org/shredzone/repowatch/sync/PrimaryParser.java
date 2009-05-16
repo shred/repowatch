@@ -46,7 +46,6 @@ import javax.xml.stream.events.XMLEvent;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
-import org.shredzone.repowatch.service.SynchronizerException;
 
 /**
  * This beast parses a <tt>primary.xml</tt> file. It also takes care for
@@ -61,7 +60,7 @@ import org.shredzone.repowatch.service.SynchronizerException;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 323 $
  */
 public class PrimaryParser implements Iterable<Version> {
 

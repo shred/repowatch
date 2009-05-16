@@ -22,7 +22,7 @@ package org.shredzone.repowatch.service.impl;
 
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.service.SyncService;
-import org.shredzone.repowatch.service.SynchronizerException;
+import org.shredzone.repowatch.sync.SynchronizerException;
 import org.shredzone.repowatch.sync.RepositorySynchronizerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
  * A standard implementation of the {@link SyncService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 322 $
+ * @version $Revision: 323 $
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = SynchronizerException.class)

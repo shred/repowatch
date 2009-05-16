@@ -18,26 +18,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.shredzone.repowatch.service;
-
-import org.shredzone.repowatch.model.Repository;
-import org.shredzone.repowatch.sync.SynchronizerException;
+package org.shredzone.repowatch.sync;
 
 /**
- * A service providing everything that is required for keeping the
- * database in sync with the original repository database.
+ * Shows that something went wrong while synchronizing.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
+ * @version $Revision: 317 $
  */
-public interface SyncService {
+public class SynchronizerException extends Exception {
+    private static final long serialVersionUID = -6701318058608586031L;
 
-    /**
-     * Synchronizes only a single repository.
-     * 
-     * @param repo  {@link Repository} to synchronize.
-     * @throws  SynchronizerException   Synchronization failed
-     */
-    public void syncRepository(Repository repo) throws SynchronizerException;
+    public SynchronizerException() {
+        super();
+    }
+    
+    public SynchronizerException(String msg) {
+        super(msg);
+    }
+    
+    public SynchronizerException(String msg, Throwable cause) {
+        super(msg,cause);
+    }
     
 }
