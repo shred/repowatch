@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: showpackage.jsp 317 2009-05-13 21:46:21Z shred $
+  $Id: showpackage.jsp 324 2009-05-16 11:05:23Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -39,7 +39,7 @@
   <c:if test="${not empty domain}">
     <tr class="gridrow">
       <td class="gridlabel"><fmt:message key="pack.release"/></td>
-      <td><c:out value="${domain.name}"/> <c:out value="${domain.release}"/></td>
+      <td><c:out value="${domain.name} ${domain.release}"/></td>
     </tr>
   </c:if>
   <tr class="gridrow">
@@ -73,22 +73,22 @@
   </tr>
   <c:forEach var="version" items="${versionList}">
     <tr class="${sequence.next}">
-      <td><c:out value="${version.repository.domain.name}"/> <c:out value="${version.repository.domain.release}"/></td>
-      <td><a href="<c:url value="/repo/${version.repository.domain.name}/${version.repository.domain.release}/${version.repository.name}/${version.repository.architecture}.html"/>"><c:out value="${version.repository.name}"/> (<c:out value="${version.repository.architecture}"/>)</a></td>
+      <td><c:out value="${version.repository.domain.name} ${version.repository.domain.release}"/></td>
+      <td><a href="<c:url value="/repo/${version.repository.domain.name}/${version.repository.domain.release}/${version.repository.name}/${version.repository.architecture}.html"/>"><c:out value="${version.repository.name} (${version.repository.architecture})"/></a></td>
       <td><c:if test="${not empty version.repository.repoviewUrl}">
-        <a href="<c:out value="${version.repository.repoviewUrl}"/><c:out value="${package.name}"/>.html" title="<fmt:message key="pack.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
-      </c:if><c:out value="${version.ver}"/>-<c:out value="${version.rel}"/></td>
+        <a href="<c:out value="${version.repository.repoviewUrl}"/><c:out value="${package.name}.html"/>" title="<fmt:message key="pack.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
+      </c:if><c:out value="${version.ver}-${version.rel}"/></td>
       <td><fmt:formatDate value="${version.firstSeen}" type="both" dateStyle="short"/></td>
       <td><fmt:formatDate value="${version.fileDate}" type="both" dateStyle="short"/></td>
     </tr>
   </c:forEach>
   <c:forEach var="version" items="${alternativeList}">
     <tr class="${sequence.next}">
-      <td><a href="<c:url value="/package/${version.repository.domain.name}/${version.repository.domain.release}/${package.name}.html"/>"><c:out value="${version.repository.domain.name}"/> <c:out value="${version.repository.domain.release}"/></a></td>
-      <td><a href="<c:url value="/repo/${version.repository.domain.name}/${version.repository.domain.release}/${version.repository.name}/${version.repository.architecture}.html"/>"><c:out value="${version.repository.name}"/> (<c:out value="${version.repository.architecture}"/>)</a></td>
+      <td><a href="<c:url value="/package/${version.repository.domain.name}/${version.repository.domain.release}/${package.name}.html"/>"><c:out value="${version.repository.domain.name} ${version.repository.domain.release}"/></a></td>
+      <td><a href="<c:url value="/repo/${version.repository.domain.name}/${version.repository.domain.release}/${version.repository.name}/${version.repository.architecture}.html"/>"><c:out value="${version.repository.name} (${version.repository.architecture})"/></a></td>
       <td><c:if test="${not empty version.repository.repoviewUrl}">
-        <a href="<c:out value="${version.repository.repoviewUrl}"/><c:out value="${package.name}"/>.html" title="<fmt:message key="pack.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
-      </c:if><c:out value="${version.ver}"/>-<c:out value="${version.rel}"/></td>
+        <a href="<c:out value="${version.repository.repoviewUrl}${package.name}.html"/>" title="<fmt:message key="pack.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
+      </c:if><c:out value="${version.ver}-${version.rel}"/></td>
       <td><fmt:formatDate value="${version.firstSeen}" type="both" dateStyle="short"/></td>
       <td><fmt:formatDate value="${version.fileDate}" type="both" dateStyle="short"/></td>
     </tr>

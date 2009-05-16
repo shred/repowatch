@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: admindomain.jsp 317 2009-05-13 21:46:21Z shred $
+  $Id: admindomain.jsp 324 2009-05-16 11:05:23Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -51,6 +51,5 @@
     </tr>
   </table>
 </form:form>
-
 
 <c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>

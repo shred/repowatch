@@ -19,42 +19,37 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminrepo.jsp 324 2009-05-16 11:05:23Z shred $
+  $Id: admindomain.jsp 317 2009-05-13 21:46:21Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<fmt:message scope="request" var="title" key="admin.title"/>
+<fmt:message scope="request" var="title" key="login.title"/>
 <c:import url="/WEB-INF/jsp/fragments/header.jspf"/>
 
-<form:form commandName="repo">
+<c:if test="${not empty param.failed}">
+<div class="note"><fmt:message key="login.failed"/></div>
+</c:if>
+
+<form action="j_spring_security_check" method="post">
   <table>
     <tr>
-      <td><fmt:message key="admin.name"/>:</td>
-      <td><form:input path="name" /></td>
-      <td><form:errors path="name" /></td>
+      <td><fmt:message key="login.user"/>:</td>
+      <td><input type="text" name="j_username" /></td>
     </tr>
     <tr>
-      <td><fmt:message key="admin.architecture"/>:</td>
-      <td><form:input path="architecture" /></td>
-      <td><form:errors path="architecture" /></td>
-    </tr>
-    <tr>
-      <td><fmt:message key="admin.baseurl"/>:</td>
-      <td><form:input path="baseUrl" /></td>
-      <td><form:errors path="baseUrl" /></td>
-    </tr>
-    <tr>
-      <td><fmt:message key="admin.repoviewurl"/>:</td>
-      <td><form:input path="repoviewUrl" /></td>
-      <td><form:errors path="repoviewUrl" /></td>
+      <td><fmt:message key="login.password"/>:</td>
+      <td><input type="password" name="j_password" /></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
-      <td><input type="submit" value="<fmt:message key="admin.submit"/>" /></td>
-      <td><form:errors path="*" /></td>
+      <td><input type="checkbox" name="_spring_security_remember_me" /> <fmt:message key="login.rememberme"/></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" value="<fmt:message key="login.submit"/>" /></td>
     </tr>
   </table>
-</form:form>
+</form>
 
 <c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>

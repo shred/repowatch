@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: listchanges.jsp 317 2009-05-13 21:46:21Z shred $
+  $Id: listchanges.jsp 324 2009-05-16 11:05:23Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -35,11 +35,11 @@
 <table class="grid">
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="chg.release"/></td>
-    <td><c:out value="${domain.name}"/> <c:out value="${domain.release}"/></td>
+    <td><c:out value="${domain.name} ${domain.release}"/></td>
   </tr>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="chg.repository"/></td>
-    <td><c:out value="${repository.name}"/> (<c:out value="${repository.architecture}"/>)</td>
+    <td><c:out value="${repository.name} (${repository.architecture})"/></td>
   </tr>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="chg.baseurl"/></td>
@@ -75,7 +75,7 @@
   </tr>
   <tr class="gridrow">
     <td class="gridlabel"><fmt:message key="chg.see"/></td>
-    <td><a href="<c:url value="/repo/${domain.name}/${domain.release}/${repository.name}/${repository.architecture}.html"/>">[<fmt:message key="chg.see.packages"/>]</a></td>
+    <td><a href="<c:url value="/repo/${domain.name}/${domain.release}/${repository.name}/${repository.architecture}.html"/>"><fmt:message key="chg.see.packages"/></a></td>
   </tr>
 </table>
 
@@ -98,7 +98,7 @@
         <c:otherwise><td class="packupdated"><img src="${pageContext.request.contextPath}/img/updated.png" width="12" height="12" alt="<fmt:message key="chg.updated"/>" title="<fmt:message key="chg.updated"/>" /></td></c:otherwise>
       </c:choose>
       <td><a href="<c:url value="/package/${domain.name}/${domain.release}/${change.package.name}.html"/>"><c:out value="${change.package.name}"/></a></td>
-      <td><c:out value="${change.ver}"/>-<c:out value="${change.rel}"/></td>
+      <td><c:out value="${change.ver}-${change.rel}"/></td>
       <td><c:out value="${change.package.summary}"/></td>
     </tr>
   </c:forEach>

@@ -28,8 +28,10 @@
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
 
     <http auto-config="true">
+        <intercept-url pattern="/login.jsp*" filters="none"/>  
         <intercept-url pattern="/admin/**" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?failed=1"/>
     </http>
 
     <global-method-security secured-annotations="enabled" jsr250-annotations="enabled"/>
@@ -41,7 +43,7 @@
     <authentication-provider>
         <password-encoder hash="md5"/>
         <user-service>
-            <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_ADMIN" />
+            <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_ADMIN"/>
 	    </user-service>
 	</authentication-provider>
 

@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <base href="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/" />
   <link rel="stylesheet" type="text/css" href="css/style.css" />
-  <title><c:out value="${requestScope.title}"/> - repowatch</title>
+  <title><c:out value="${requestScope.title} - repowatch"/></title>
   <c:if test="${not empty requestScope.rsslink}">
     <link rel="alternate" type="application/rss+xml" title="repowatch RSS feed" href="<c:out value="${pageContext.request.contextPath}/${requestScope.rsslink}"/>" />
   </c:if>
@@ -26,5 +26,8 @@
     <a href="<c:url value="/repo.html"/>"><fmt:message key="frame.overview"/></a>
   | <a href="<c:url value="/packages.html"/>"><fmt:message key="frame.allpackages"/></a>
   | <a href="<c:url value="/search.html"/>"><fmt:message key="frame.search"/></a>
+  <sec:authorize ifNotGranted="ROLE_ANONYMOUS">
+  | <a href="<c:url value="/j_spring_security_logout"/>">Logout</a>
+  </sec:authorize>
 </div>
 <div class="content">

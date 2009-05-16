@@ -4,6 +4,7 @@
 </div>
 <address><a href="http://repowatch.shredzone.org">Repowatch</a> v0.17 beta
 &mdash; &copy; Richard "Shred" Körber
-&mdash; <a href="<c:url value="/admin/index.html"/>"><fmt:message key="frame.admin"/></a></address>
+&mdash; <a href="<c:url value="/admin/index.html"/>"><fmt:message key="frame.admin"/></a>
+</address>
 </body>
 </html>
