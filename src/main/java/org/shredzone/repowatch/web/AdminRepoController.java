@@ -29,23 +29,24 @@ import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.repository.RepositoryDAO;
+import org.shredzone.repowatch.validator.RepositoryValidator;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of the repository admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 326 $
  */
 @Controller
 @SessionAttributes("repo")
@@ -65,12 +66,6 @@ public class AdminRepoController {
 
     private final static RequestMappingResolver adminRepoEditResolver =
         new RequestMappingResolver(REPOEDIT_PATTERN);
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setAllowedFields(new String[]{ "name", "architecture", "baseUrl", "repoviewUrl" });
-        binder.setRequiredFields(new String[]{ "name", "architecture", "baseUrl" });
-    }
 
     /**
      * Prepares to add a repository.
@@ -106,12 +101,19 @@ public class AdminRepoController {
      * @param repository     {@link Repository} to be added
      */
     @RequestMapping(value=REPOADD_PATTERN, method=RequestMethod.POST)
-    public String addRepositoryFormHandler(@ModelAttribute("repo") Repository repository) {
+    public String addRepositoryFormHandler(@ModelAttribute("repo") Repository repository,
+            BindingResult result, SessionStatus status) {
+        new RepositoryValidator().validate(repository, result);
+        if (result.hasErrors()) {
+            return "adminrepo";
+        }
+        
         Domain dom = repository.getDomain();
         dom = domainDao.merge(dom);
         repository.setDomain(dom);
 
         repositoryDao.insert(repository);
+        status.setComplete();
         return "forward:/admin/index.html";
     }
 
@@ -147,8 +149,15 @@ public class AdminRepoController {
      * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=REPOEDIT_PATTERN, method=RequestMethod.POST)
-    public String editDomainFormHandler(@ModelAttribute("repo") Repository repository) {
+    public String editDomainFormHandler(@ModelAttribute("repo") Repository repository,
+            BindingResult result, SessionStatus status) {
+        new RepositoryValidator().validate(repository, result);
+        if (result.hasErrors()) {
+            return "adminrepo";
+        }
+
         repositoryDao.merge(repository);
+        status.setComplete();
         return "forward:/admin/index.html";
     }
     

@@ -27,23 +27,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.repository.DomainDAO;
+import org.shredzone.repowatch.validator.DomainValidator;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of the domain admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 326 $
  */
 @Controller
 @SessionAttributes("domain")
@@ -57,12 +58,6 @@ public class AdminDomainController {
 
     private final static RequestMappingResolver adminDomainEditResolver =
         new RequestMappingResolver(DOMAINEDIT_PATTERN);
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.setAllowedFields(new String[]{ "name", "release", "homeUrl" });
-        binder.setRequiredFields(new String[]{ "name", "release" });
-    }
 
     /**
      * Prepares to add a domain.
@@ -80,8 +75,15 @@ public class AdminDomainController {
      * @param domain        {@link Domain} to be added
      */
     @RequestMapping(value=DOMAINADD_PATTERN, method=RequestMethod.POST)
-    public String addDomainFormHandler(@ModelAttribute("domain") Domain domain) {
+    public String addDomainFormHandler(@ModelAttribute("domain") Domain domain,
+            BindingResult result, SessionStatus status) {
+        new DomainValidator().validate(domain, result);
+        if (result.hasErrors()) {
+            return "admindomain";
+        }
+
         domainDao.insert(domain);
+        status.setComplete();
         return "forward:/admin/index.html";
     }
 
@@ -117,8 +119,15 @@ public class AdminDomainController {
      * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=DOMAINEDIT_PATTERN, method=RequestMethod.POST)
-    public String editDomainFormHandler(@ModelAttribute("domain") Domain domain) {
+    public String editDomainFormHandler(@ModelAttribute("domain") Domain domain,
+            BindingResult result, SessionStatus status) {
+        new DomainValidator().validate(domain, result);
+        if (result.hasErrors()) {
+            return "admindomain";
+        }
+
         domainDao.merge(domain);
+        status.setComplete();
         return "forward:/admin/index.html";
     }
     

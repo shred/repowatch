@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminconfirmdelete.jsp 320 2009-05-13 22:25:09Z shred $
+  $Id: adminconfirmdelete.jsp 326 2009-05-16 15:46:22Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -32,7 +32,8 @@
     <fmt:message key="admin.confirm"/>
   </p>
   <input type="hidden" name="confirmed" value="true" />
-  <input type="submit" value="<fmt:message key="admin.submit"/>" />
+  <input type="submit" value="<fmt:message key="admin.delete"/>" />
+  <input type="button" value="<fmt:message key="admin.abort"/>" onclick="location.href='<c:url value="/admin/index.html"/>'" />
 </form>
 
 <c:import url="/WEB-INF/jsp/fragments/footer.jspf"/>
