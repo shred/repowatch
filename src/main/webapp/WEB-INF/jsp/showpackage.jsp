@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: showpackage.jsp 325 2009-05-16 11:31:52Z shred $
+  $Id: showpackage.jsp 329 2009-05-17 22:35:33Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -62,6 +62,7 @@
   </c:if>
 </table>
 
+<c:if test="${not empty versionList}">
 <h2><fmt:message key="pack.thisrepository">
       <fmt:param value="${domain.name} ${domain.release}"/>
     </fmt:message></h2>
@@ -85,9 +86,14 @@
     </tr>
   </c:forEach>
 </table>
+</c:if>
 
 <c:if test="${not empty alternativeList}">
+<c:choose><c:when test="${not empty domain}">
+<h2><fmt:message key="pack.alsorepositories"/></h2>
+</c:when><c:otherwise>
 <h2><fmt:message key="pack.repositories"/></h2>
+</c:otherwise></c:choose>
 <table class="grid">
   <tr class="gridhead">
     <th><fmt:message key="pack.release"/></th>
