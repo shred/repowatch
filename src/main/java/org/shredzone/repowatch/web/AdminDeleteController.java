@@ -46,7 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of deletion.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
+ * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes({"domain", "repo"})
@@ -97,9 +97,6 @@ public class AdminDeleteController {
     
     /**
      * Performs to delete a domain.
-     * 
-     * @param req           {@link HttpServletRequest}
-     * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.POST)
     public String deleteDomainFormHandler(
@@ -141,9 +138,6 @@ public class AdminDeleteController {
     
     /**
      * Performs to delete a repository.
-     * 
-     * @param req           {@link HttpServletRequest}
-     * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=REPODELETE_PATTERN, method=RequestMethod.POST)
     public String deleteRepositoryFormHandler(

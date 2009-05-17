@@ -46,7 +46,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of the repository admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
+ * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes("repo")
@@ -97,8 +97,6 @@ public class AdminRepoController {
     
     /**
      * Performs to add a repository.
-     * 
-     * @param repository     {@link Repository} to be added
      */
     @RequestMapping(value=REPOADD_PATTERN, method=RequestMethod.POST)
     public String addRepositoryFormHandler(@ModelAttribute("repo") Repository repository,
@@ -144,9 +142,6 @@ public class AdminRepoController {
     
     /**
      * Performs to edit a repository.
-     * 
-     * @param req           {@link HttpServletRequest}
-     * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=REPOEDIT_PATTERN, method=RequestMethod.POST)
     public String editDomainFormHandler(@ModelAttribute("repo") Repository repository,

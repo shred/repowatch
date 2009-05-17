@@ -44,7 +44,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of the domain admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
+ * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes("domain")
@@ -71,8 +71,6 @@ public class AdminDomainController {
     
     /**
      * Performs to add a domain.
-     * 
-     * @param domain        {@link Domain} to be added
      */
     @RequestMapping(value=DOMAINADD_PATTERN, method=RequestMethod.POST)
     public String addDomainFormHandler(@ModelAttribute("domain") Domain domain,
@@ -114,9 +112,6 @@ public class AdminDomainController {
     
     /**
      * Performs to edit a domain.
-     * 
-     * @param req           {@link HttpServletRequest}
-     * @param resp          {@link HttpServletResponse}
      */
     @RequestMapping(value=DOMAINEDIT_PATTERN, method=RequestMethod.POST)
     public String editDomainFormHandler(@ModelAttribute("domain") Domain domain,
