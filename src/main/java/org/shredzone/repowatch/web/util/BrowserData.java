@@ -26,7 +26,7 @@ import java.util.Iterator;
  * Contains all data required to show a page browser.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 public class BrowserData {
     private int pagecount;
@@ -82,7 +82,7 @@ public class BrowserData {
     /**
      * Gets the number of entries of the result. This is only used as
      * information to the user, and has no direct impact to the browser.
-     *  
+     * 
      * @return Number of entries
      */
     public long getResultcount()                 { return resultcount; }
@@ -202,7 +202,7 @@ public class BrowserData {
         /**
          * Propose the next general page. This is the next page of the given
          * step rate. (E.g. if the current page is 184 and the step rate is 100,
-         * the next proposed page is 200). 
+         * the next proposed page is 200).
          * 
          * @param current   Current page
          * @return  Next proposed page

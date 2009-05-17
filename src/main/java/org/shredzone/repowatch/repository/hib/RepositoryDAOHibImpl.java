@@ -32,18 +32,20 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link RepositoryDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
 public class RepositoryDAOHibImpl extends BaseDAOHibImpl<Repository> implements RepositoryDAO {
 
     @Transactional(readOnly = true)
+    @Override
     public Repository fetch(long id) {
         return (Repository) getCurrentSession().get(Repository.class, id);
     }
     
     @Transactional(readOnly = true)
+    @Override
     public Repository findRepository(Domain domain, String name, String architecture) {
         Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r" +
@@ -57,6 +59,7 @@ public class RepositoryDAOHibImpl extends BaseDAOHibImpl<Repository> implements 
     }
     
     @SuppressWarnings("unchecked")
+    @Override
     public List<Repository> findAllRepositories() {
         Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r" +
@@ -67,6 +70,7 @@ public class RepositoryDAOHibImpl extends BaseDAOHibImpl<Repository> implements 
     }
 
     @SuppressWarnings("unchecked")
+    @Override
     public List<Repository> findRepositories(Domain domain) {
         Query q = getCurrentSession().createQuery(
                         "FROM Repository AS r WHERE r.domain=:domain" +

@@ -42,6 +42,7 @@
     <Arg>
       <New class="java.util.Properties">
         <Put name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</Put>
+        <Put name="hibernate.show_sql">true</Put>
         <Put name="hibernate.hbm2ddl.auto">update</Put>
       </New>
     </Arg>

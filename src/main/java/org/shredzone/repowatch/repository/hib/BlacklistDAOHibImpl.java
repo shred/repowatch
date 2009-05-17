@@ -31,19 +31,21 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link BlacklistDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Repository
 @Transactional
 public class BlacklistDAOHibImpl extends BaseDAOHibImpl<Blacklist> implements BlacklistDAO {
 
     @Transactional(readOnly = true)
+    @Override
     public Blacklist fetch(long id) {
         return (Blacklist) getCurrentSession().get(Blacklist.class, id);
     }
     
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Blacklist> findAllBlacklists() {
         return getCurrentSession().createQuery("FROM Blacklist AS d").list();
     }

@@ -23,6 +23,7 @@ package org.shredzone.repowatch.web;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,7 +35,6 @@ import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,28 +43,28 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of showing details of packages.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Controller
 public class PackageDetailController {
     
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
     
-    @Autowired
+    @Resource
     private VersionDAO versionDao;
     
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
     
     
     private final static String SHOWPACKAGE_PATTERN = "/package/*.html";
-    private final static RequestMappingResolver showpackageResolver = 
+    private final static RequestMappingResolver showpackageResolver =
             new RequestMappingResolver(SHOWPACKAGE_PATTERN);
 
     /**
      * Shows the details of a package.
-     *  
+     * 
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.
@@ -100,12 +100,12 @@ public class PackageDetailController {
 
     
     private final static String SHOWSINGLEPACKAGE_PATTERN = "/package/*/*/*.html";
-    private final static RequestMappingResolver showSinglePackageResolver = 
+    private final static RequestMappingResolver showSinglePackageResolver =
             new RequestMappingResolver(SHOWSINGLEPACKAGE_PATTERN);
 
     /**
      * Shows the details of a package, in the context of a certain domain.
-     *  
+     * 
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.

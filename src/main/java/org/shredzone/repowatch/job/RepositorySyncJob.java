@@ -23,11 +23,12 @@ package org.shredzone.repowatch.job;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
+
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.service.SyncService;
 import org.shredzone.repowatch.sync.SynchronizerException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
@@ -35,15 +36,15 @@ import org.springframework.security.context.SecurityContextHolder;
  * A scheduler job for synchronizing the repository database.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
+ * @version $Revision: 328 $
  */
 public class RepositorySyncJob {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
-    @Autowired
+    @Resource
     private SyncService syncService;
 
-    @Autowired
+    @Resource
     private RepositoryDAO repositoryDao;
 
     /**

@@ -22,6 +22,7 @@ package org.shredzone.repowatch.web;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +31,6 @@ import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.validator.DomainValidator;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,13 +44,13 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of the domain admin masks.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 326 $
+ * @version $Revision: 328 $
  */
 @Controller
 @SessionAttributes("domain")
 public class AdminDomainController {
     
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
     
     private final static String DOMAINADD_PATTERN = "/admin/domain/add.html";

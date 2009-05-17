@@ -27,7 +27,7 @@ package org.shredzone.repowatch.config;
  * application context.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 public class PropertyConfigurationBean implements Configuration {
     
@@ -72,18 +72,22 @@ public class PropertyConfigurationBean implements Configuration {
         this.searchTermMinLength = value;
     }
 
+    @Override
     public int getEntriesPerPage() {
         return entriesPerPage;
     }
 
+    @Override
     public int getRssMaxNumberOfDays() {
         return rssMaxNumberOfDays;
     }
 
+    @Override
     public int getRssMaxNumberOfEntries() {
         return rssMaxNumberOfEntries;
     }
 
+    @Override
     public int getSearchTermMinLength() {
         return searchTermMinLength;
     }

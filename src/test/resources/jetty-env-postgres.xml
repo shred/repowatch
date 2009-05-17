@@ -40,6 +40,7 @@
       <New class="java.util.Properties">
         <Put name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</Put>
         <Put name="hibernate.hbm2ddl.auto">update</Put>
+        <Put name="hibernate.show_sql">true</Put>
       </New>
     </Arg>
     <Arg type="boolean">false</Arg>

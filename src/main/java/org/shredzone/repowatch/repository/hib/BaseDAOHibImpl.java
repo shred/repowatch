@@ -20,11 +20,12 @@
 
 package org.shredzone.repowatch.repository.hib;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.BaseModel;
 import org.shredzone.repowatch.repository.BaseDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public abstract class BaseDAOHibImpl<T extends BaseModel> implements BaseDAO<T> {
 
-    @Autowired
+    @Resource
     private SessionFactory sessionFactory;
     
     /**
@@ -49,18 +50,19 @@ public abstract class BaseDAOHibImpl<T extends BaseModel> implements BaseDAO<T> 
     protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
-    
+
+    @Override
     public void insert(T data) {
         getCurrentSession().persist(data);
     }
     
     @SuppressWarnings("unchecked")
+    @Override
     public T merge(T data) {
-        // Requires Spring's IdTransferringMergeEventListener
-        // TODO : is this still required?
         return (T) getCurrentSession().merge(data);
     }
 
+    @Override
     public void delete(T data) {
         getCurrentSession().delete(data);
     }

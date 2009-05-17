@@ -20,19 +20,19 @@
 
 package org.shredzone.repowatch.job;
 
+import java.io.Serializable;
+
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.providers.AbstractAuthenticationToken;
-
-import java.io.Serializable;
 
 /**
  * An {@link Authentication} that allows a cron job to invoke methods that are secured
  * for "ROLE_CRON".
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 322 $
+ * @version $Revision: 328 $
  */
 public final class CronAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
     private static final long serialVersionUID = -3081468569286324821L;

@@ -24,10 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.RepositoryDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,15 +37,15 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of listing repositories.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Controller
 public class RepositoryListController {
     
-    @Autowired
+    @Resource
     private RepositoryDAO repositoryDao;
     
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
     
 

@@ -20,11 +20,12 @@
 
 package org.shredzone.repowatch.service.impl;
 
+import javax.annotation.Resource;
+
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.service.SyncService;
-import org.shredzone.repowatch.sync.SynchronizerException;
 import org.shredzone.repowatch.sync.RepositorySynchronizerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.shredzone.repowatch.sync.SynchronizerException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,15 +34,16 @@ import org.springframework.transaction.annotation.Transactional;
  * A standard implementation of the {@link SyncService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
+ * @version $Revision: 328 $
  */
 @Service
 @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = SynchronizerException.class)
 public class SyncServiceImpl implements SyncService {
 
-    @Autowired
+    @Resource
     private RepositorySynchronizerFactory syncFactory;
     
+    @Override
     public void syncRepository(Repository repo)
     throws SynchronizerException {
         syncFactory.createRepositorySynchronizer(repo).doSynchronize();

@@ -20,7 +20,8 @@
 
 package org.shredzone.repowatch.service.impl;
 
-import org.hibernate.SessionFactory;
+import javax.annotation.Resource;
+
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.ChangeDAO;
@@ -29,7 +30,6 @@ import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
 import org.shredzone.repowatch.service.DeleteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,28 +37,25 @@ import org.springframework.transaction.annotation.Transactional;
  * A standard implementation of the {@link DeleteService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 327 $
+ * @version $Revision: 328 $
  */
 @Service
 @Transactional
 public class DeleteServiceImpl implements DeleteService {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
 
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
 
-    @Autowired
+    @Resource
     private RepositoryDAO repositoryDao;
 
-    @Autowired
+    @Resource
     private ChangeDAO changeDao;
 
-    @Autowired
+    @Resource
     private VersionDAO versionDao;
     
     @Override
@@ -69,9 +66,6 @@ public class DeleteServiceImpl implements DeleteService {
             deleteRepository(repo);
         }
         packageDao.deleteAllPackagesForDomain(domain);
-        
-        sessionFactory.getCurrentSession().flush();
-        
         domainDao.delete(attachedDomain);
     }
 
@@ -81,9 +75,6 @@ public class DeleteServiceImpl implements DeleteService {
         
         changeDao.deleteAllChangesForRepository(attachedRepository);
         versionDao.deleteAllVersionsForRepository(attachedRepository);
-
-        sessionFactory.getCurrentSession().flush();
-        
         repositoryDao.delete(attachedRepository);
     }
 

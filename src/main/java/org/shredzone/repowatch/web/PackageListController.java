@@ -22,12 +22,12 @@ package org.shredzone.repowatch.web;
 
 import java.util.SortedMap;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.shredzone.repowatch.config.Configuration;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.web.util.BrowserData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,21 +37,21 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of listing packages.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Controller
 public class PackageListController {
     
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
     
-    @Autowired
+    @Resource
     private Configuration config;
     
 
     /**
      * Lists all known packages.
-     *  
+     * 
      * @param req           {@link HttpServletRequest}
      * @param page          Browser page to be shown, or <code>null</code>
      * @return  {@link ModelAndView} for rendering.

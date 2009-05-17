@@ -22,6 +22,7 @@ package org.shredzone.repowatch.web;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -32,7 +33,6 @@ import org.shredzone.repowatch.repository.DomainDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.SearchDTO;
 import org.shredzone.repowatch.web.util.BrowserData;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,24 +43,24 @@ import org.springframework.web.util.WebUtils;
  * This controller takes care of all search operations.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Controller
 public class SearchController {
     
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
     
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
     
-    @Autowired
+    @Resource
     private Configuration config;
 
     
     /**
      * Lists all changes of a repository, in a human readable form.
-     *  
+     * 
      * @param req           {@link HttpServletRequest}
      * @param session       {@link HttpSession}
      * @param doFlag        Flag asking to perform a new search
@@ -141,7 +141,7 @@ public class SearchController {
                 browser.getPage() * entriesPerPage,
                 entriesPerPage);
 
-        mav.setViewName("searchresult");        
+        mav.setViewName("searchresult");
         mav.addObject("packageList", result);
         mav.addObject("browser", browser);
         return mav;

@@ -31,19 +31,21 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link DomainDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // class name collision!
 @Transactional
 public class DomainDAOHibImpl extends BaseDAOHibImpl<Domain> implements DomainDAO {
 
     @Transactional(readOnly = true)
+    @Override
     public Domain fetch(long id) {
         return (Domain) getCurrentSession().get(Domain.class, id);
     }
     
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Domain> findAllDomains() {
         Query q = getCurrentSession().createQuery(
                         "FROM Domain AS d" +
@@ -53,6 +55,7 @@ public class DomainDAOHibImpl extends BaseDAOHibImpl<Domain> implements DomainDA
     }
 
     @Transactional(readOnly = true)
+    @Override
     public Domain findDomain(String name, String release) {
         Query q = getCurrentSession().createQuery(
                         "FROM Domain AS d" +

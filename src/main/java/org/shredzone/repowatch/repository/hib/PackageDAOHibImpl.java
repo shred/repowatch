@@ -41,28 +41,31 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link PackageDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
 public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements PackageDAO {
 
     @Transactional(readOnly = true)
+    @Override
     public Package fetch(long id) {
         return (Package) getCurrentSession().get(Package.class, id);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public long countPackages(Repository repo) {
         Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(*) FROM Version" +
                         " WHERE repository=:repo AND deleted=false")
                 .setParameter("repo", repo);
 
-        return ((Long) q.iterate().next()).longValue();
+        return ((Long) q.uniqueResult()).longValue();
     }
 
     @Transactional(readOnly = true)
+    @Override
     public Package findPackage(Domain domain, String name) {
         Query q = getCurrentSession().createQuery(
                         "FROM Package AS p" +
@@ -74,6 +77,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
     }
     
     @Transactional(readOnly = true)
+    @Override
     public Package findLatestPackage(String name) {
         Query q = getCurrentSession().createQuery(
                         "SELECT p FROM Version AS v" +
@@ -87,15 +91,17 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
     }
 
     @Transactional(readOnly = true)
+    @Override
     public long countAllPackages() {
         Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(DISTINCT p.name) FROM Package AS p");
 
-        return ((Long) q.iterate().next()).longValue();
+        return ((Long) q.uniqueResult()).longValue();
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public SortedMap<String,String> findAllPackages(int start, int limit) {
         /*TODO: Currently only the summary with the maximal alphanumerical
          * value is returned. It would be better to return the summary of
@@ -120,12 +126,14 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<Package> findAllPackagesForDomain(Domain domain) {
         return findAllPackages(domain, 0, -1);
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Package> findAllPackages(Domain domain, int start, int limit) {
         Query q = getCurrentSession().createQuery(
                         "FROM Package AS p" +
@@ -141,6 +149,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
     }
  
     @Transactional(readOnly = true)
+    @Override
     public long countSearchResult(SearchDTO data) {
         Criteria crit = createCriteria(data);
         crit.setProjection(Projections.rowCount());
@@ -149,6 +158,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
     
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Package> findSearchResult(SearchDTO data, int start, int limit) {
         Criteria crit = createCriteria(data);
         crit.addOrder(Order.asc("name"));
@@ -194,9 +204,11 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         return crit;
     }
     
+    @Override
     public void deleteAllPackagesForDomain(Domain domain) {
         getCurrentSession().createQuery(
                 "DELETE FROM Package AS p WHERE p.domain=:domain")
-                .setParameter("domain", domain);
+                .setParameter("domain", domain)
+                .executeUpdate();
     }
 }

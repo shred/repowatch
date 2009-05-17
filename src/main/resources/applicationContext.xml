@@ -37,13 +37,6 @@
     <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
     <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
     <property name="hibernateProperties" ref="dataSourceProperties"/>
-    <property name="eventListeners">
-      <map>
-        <entry key="merge">
-          <bean class="org.springframework.orm.hibernate3.support.IdTransferringMergeEventListener"/>
-        </entry>
-      </map>
-    </property>
   </bean>
 
   <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"

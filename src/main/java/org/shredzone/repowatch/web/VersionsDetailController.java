@@ -23,6 +23,7 @@ package org.shredzone.repowatch.web;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,7 +38,6 @@ import org.shredzone.repowatch.repository.VersionDAO;
 import org.shredzone.repowatch.web.util.BrowserData;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,34 +47,34 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of showing details of a package version.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @Controller
 public class VersionsDetailController {
     
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
     
-    @Autowired
+    @Resource
     private RepositoryDAO repositoryDao;
     
-    @Autowired
+    @Resource
     private PackageDAO packageDao;
     
-    @Autowired
+    @Resource
     private VersionDAO versionDao;
     
-    @Autowired
+    @Resource
     private Configuration config;
     
     
     private final static String LISTVERSIONS_PATTERN = "/repo/*/*/*/*.html";
-    private final static RequestMappingResolver listVersionsResolver = 
+    private final static RequestMappingResolver listVersionsResolver =
             new RequestMappingResolver(LISTVERSIONS_PATTERN);
 
     /**
      * Lists all package versions of a repository.
-     *  
+     * 
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @param page          Browser page to be shown, or <code>null</code>

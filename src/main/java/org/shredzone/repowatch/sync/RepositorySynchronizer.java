@@ -27,13 +27,13 @@ import org.shredzone.repowatch.model.Repository;
  * database with the repository's databases.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
+ * @version $Revision: 328 $
  */
 public interface RepositorySynchronizer {
 
     /**
      * Sets the {@link Repository} to be synchronized.
-     */    
+     */
     public void setRepository(Repository repository);
     
     /**

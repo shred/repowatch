@@ -22,6 +22,7 @@ package org.shredzone.repowatch.web;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,7 +33,6 @@ import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.service.DeleteService;
 import org.shredzone.repowatch.web.util.RequestMappingResolver;
 import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,19 +46,19 @@ import org.springframework.web.servlet.ModelAndView;
  * This controller takes care of deletion.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 327 $
+ * @version $Revision: 328 $
  */
 @Controller
 @SessionAttributes({"domain", "repo"})
 public class AdminDeleteController {
     
-    @Autowired
+    @Resource
     private DeleteService deleteService;
     
-    @Autowired
+    @Resource
     private DomainDAO domainDao;
 
-    @Autowired
+    @Resource
     private RepositoryDAO repositoryDao;
 
     private final static String REPODELETE_PATTERN = "/admin/repo/delete/*.html";

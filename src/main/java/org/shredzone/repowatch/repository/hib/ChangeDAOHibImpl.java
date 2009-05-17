@@ -33,23 +33,26 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link ChangeDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // class name collision!
 @Transactional
 public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDAO {
     
     @Transactional(readOnly = true)
+    @Override
     public Change fetch(long id) {
         return (Change) getCurrentSession().get(Change.class, id);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public long countChanges(Repository repo) {
         return countChanges(repo, true);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public long countChanges(Repository repo, boolean updates) {
         Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(*) FROM Change" +
@@ -59,21 +62,24 @@ public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDA
                 .setParameter("updates", updates)
                 .setParameter("typeupdated", Change.Type.UPDATED);
         
-        return ((Long) q.iterate().next()).longValue();
+        return ((Long) q.uniqueResult()).longValue();
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChanges(Repository repo) {
         return findAllChanges(repo, 0, -1);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChanges(Repository repo, int start, int limit) {
         return findAllChanges(repo, true, start, limit);
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Change> findAllChanges(Repository repo, boolean updates, int start, int limit) {
         Query q = getCurrentSession().createQuery(
                         "FROM Change AS c" +
@@ -92,12 +98,14 @@ public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDA
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<Change> findAllChangesUntil(Repository repo, Date limit, int maxrows) {
         return findAllChangesUntil(repo, true, limit, maxrows);
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Change> findAllChangesUntil(Repository repo, boolean updates, Date limit, int maxrows) {
         Query q = getCurrentSession().createQuery(
                         "FROM Change AS c" +
@@ -117,10 +125,12 @@ public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDA
         return q.list();
     }
 
+    @Override
     public void deleteAllChangesForRepository(Repository repository) {
         getCurrentSession().createQuery(
                 "DELETE FROM Change AS c WHERE c.repository=:repository")
-                .setParameter("repository", repository);
+                .setParameter("repository", repository)
+                .executeUpdate();
     }
 
 }

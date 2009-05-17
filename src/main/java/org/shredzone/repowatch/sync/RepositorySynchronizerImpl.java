@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+
 import javax.annotation.Resource;
 
 import org.shredzone.repowatch.model.Blacklist;
@@ -41,7 +42,6 @@ import org.shredzone.repowatch.repository.ChangeDAO;
 import org.shredzone.repowatch.repository.PackageDAO;
 import org.shredzone.repowatch.repository.RepositoryDAO;
 import org.shredzone.repowatch.repository.VersionDAO;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -86,7 +86,8 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
 
     /**
      * Sets the {@link Repository} to be synchronized.
-     */    
+     */
+    @Override
     public void setRepository(Repository repository) {
         this.repository = repositoryDao.merge(repository);;
     }
@@ -96,6 +97,7 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
      * 
      * @throws SynchronizerException  Synchronization failed for various reasons
      */
+    @Override
     public void doSynchronize() throws SynchronizerException {
         now = new Date();
         

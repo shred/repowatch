@@ -34,24 +34,27 @@ import org.springframework.transaction.annotation.Transactional;
  * A Hibernate implementation of {@link VersionDAO}.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
 public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements VersionDAO {
 
     @Transactional(readOnly = true)
+    @Override
     public Version fetch(long id) {
         return (Version) getCurrentSession().get(Version.class, id);
     }
     
     @Transactional(readOnly = true)
+    @Override
     public List<Version> findAllVersions(Repository repo) {
         return findAllVersions(repo, 0, -1);
     }
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Version> findAllVersions(Repository repo, int start, int limit) {
         Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
@@ -68,6 +71,7 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Version> findAllVersions(Package pack) {
         Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
@@ -80,6 +84,7 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Version> findAllVersionsForName(String name) {
         Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
@@ -94,6 +99,7 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Version> findAllVersionsExcept(String name, Package pack) {
         Query q = getCurrentSession().createQuery(
                         "FROM Version AS v" +
@@ -110,6 +116,7 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
 
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
+    @Override
     public List<Version> findLastSeenBefore(Repository repo, Date now) {
         Query q = getCurrentSession().createQuery(
                 "FROM Version AS v" +
@@ -123,10 +130,12 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
         return q.list();
     }
 
+    @Override
     public void deleteAllVersionsForRepository(Repository repository) {
         getCurrentSession().createQuery(
                 "DELETE FROM Version AS v WHERE v.repository=:repository")
-                .setParameter("repository", repository);
+                .setParameter("repository", repository)
+                .executeUpdate();
     }
 
 }
