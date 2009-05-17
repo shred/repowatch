@@ -20,6 +20,7 @@
 
 package org.shredzone.repowatch.service.impl;
 
+import org.hibernate.SessionFactory;
 import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.repository.ChangeDAO;
@@ -36,11 +37,14 @@ import org.springframework.transaction.annotation.Transactional;
  * A standard implementation of the {@link DeleteService} service.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 327 $
  */
 @Service
 @Transactional
 public class DeleteServiceImpl implements DeleteService {
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Autowired
     private DomainDAO domainDao;
@@ -59,24 +63,28 @@ public class DeleteServiceImpl implements DeleteService {
     
     @Override
     public void deleteDomain(Domain domain) {
-        for (Repository repo : repositoryDao.findRepositories(domain)) {
+        Domain attachedDomain = domainDao.merge(domain);
+        
+        for (Repository repo : repositoryDao.findRepositories(attachedDomain)) {
             deleteRepository(repo);
         }
         packageDao.deleteAllPackagesForDomain(domain);
         
-        // I don't know why it is required to reattach the domain here.
-        Domain mergedDomain = domainDao.merge(domain);
-        domainDao.delete(mergedDomain);
+        sessionFactory.getCurrentSession().flush();
+        
+        domainDao.delete(attachedDomain);
     }
 
     @Override
     public void deleteRepository(Repository repository) {
-        changeDao.deleteAllChangesForRepository(repository);
-        versionDao.deleteAllVersionsForRepository(repository);
+        Repository attachedRepository = repositoryDao.merge(repository);
+        
+        changeDao.deleteAllChangesForRepository(attachedRepository);
+        versionDao.deleteAllVersionsForRepository(attachedRepository);
 
-        // I don't know why it is required to reattach the domain here.
-        Repository mergedRepository = repositoryDao.merge(repository);
-        repositoryDao.delete(mergedRepository);
+        sessionFactory.getCurrentSession().flush();
+        
+        repositoryDao.delete(attachedRepository);
     }
 
 }

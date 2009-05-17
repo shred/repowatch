@@ -39,13 +39,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of deletion.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 327 $
  */
 @Controller
 @SessionAttributes({"domain", "repo"})
@@ -103,11 +104,12 @@ public class AdminDeleteController {
     @RequestMapping(value=DOMAINDELETE_PATTERN, method=RequestMethod.POST)
     public String deleteDomainFormHandler(
             @ModelAttribute("domain") Domain domain,
-            @RequestParam("confirmed") boolean confirmed
+            @RequestParam("confirmed") boolean confirmed,
+            SessionStatus status
     ) {
         if (confirmed) {
-            Domain mergedDomain = domainDao.merge(domain);
-            deleteService.deleteDomain(mergedDomain);
+            deleteService.deleteDomain(domain);
+            status.setComplete();
         }
         return "forward:/admin/index.html";
     }
@@ -146,11 +148,12 @@ public class AdminDeleteController {
     @RequestMapping(value=REPODELETE_PATTERN, method=RequestMethod.POST)
     public String deleteRepositoryFormHandler(
             @ModelAttribute("repo") Repository repository,
-            @RequestParam("confirmed") boolean confirmed
+            @RequestParam("confirmed") boolean confirmed,
+            SessionStatus status
     ) {
         if (confirmed) {
-            Repository mergedRepository = repositoryDao.merge(repository);
-            deleteService.deleteRepository(mergedRepository);
+            deleteService.deleteRepository(repository);
+            status.setComplete();
         }
         return "forward:/admin/index.html";
     }
