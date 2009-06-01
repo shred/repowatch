@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.shredzone</groupId>
@@ -10,7 +9,7 @@
     <groupId>org.shredzone.repowatch</groupId>
     <artifactId>repowatch</artifactId>
     <name>Repowatch</name>
-    <version>0.16.0-SNAPSHOT</version>
+    <version>0.17</version>
     <packaging>war</packaging>
     <description>A yum repository watcher</description>
     <inceptionYear>2007</inceptionYear>
@@ -68,8 +67,7 @@
                     <scanIntervalSeconds>5</scanIntervalSeconds>
                     <jettyEnvXml>${jetty.env.file}</jettyEnvXml>
                     <connectors>
-                        <connector
-                            implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
                             <port>8090</port>
                             <host>0.0.0.0</host>
                         </connector>
@@ -296,4 +294,10 @@
             <scope>runtime</scope>
         </dependency>
     </dependencies>
+
+  <scm>
+    <connection>scm:svn:http://svn.shredzone.org/tags/repowatch/v0.17</connection>
+    <developerConnection>scm:svn:https://svn.shredzone.org/tags/repowatch/v0.17</developerConnection>
+    <url>http://svn.shredzone.org/tags/repowatch/v0.17</url>
+  </scm>
 </project>
