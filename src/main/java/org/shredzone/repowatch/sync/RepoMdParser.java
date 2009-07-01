@@ -22,6 +22,9 @@ package org.shredzone.repowatch.sync;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +43,13 @@ import javax.xml.stream.events.XMLEvent;
  * Parses the repomd.xml file of a repository.
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
+ * @version $Revision: 341 $
  */
 public class RepoMdParser {
 
+    private static final BigDecimal BD_THOUSAND = new BigDecimal(1000);
+    private static final MathContext BD_CONTEXT = new MathContext(0, RoundingMode.DOWN);
+    
     private final Map<String,DatabaseLocation> databaseMap = new HashMap<String,DatabaseLocation>();
     private final URL baseUrl;
 
@@ -55,7 +61,7 @@ public class RepoMdParser {
     
     private final QName QNA_TYPE = new QName("type");
     private final QName QNA_HREF = new QName("href");
-
+    
     /**
      * Creates a RepoMdParser. No network connection is opened yet.
      * 
@@ -148,7 +154,9 @@ public class RepoMdParser {
                         
                     } else if (tag.equals(QN_TIMESTAMP)) {
                         assert stringbuilder != null;
-                        currentLocation.setTimestamp(Long.parseLong(stringbuilder.toString().trim()) * 1000L);
+                        BigDecimal ts = new BigDecimal(stringbuilder.toString().trim());
+                        ts = ts.multiply(BD_THOUSAND, BD_CONTEXT);
+                        currentLocation.setTimestamp(ts.longValueExact());
                         stringbuilder = null;
                     }
                     
