@@ -19,7 +19,7 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  
-  $Id: adminindex.jsp 324 2009-05-16 11:05:23Z shred $
+  $Id: adminindex.jsp 342 2009-07-01 22:11:38Z shred $
 --%>
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 <%@ page import="org.shredzone.repowatch.web.util.Sequencer" %>
@@ -40,14 +40,16 @@
       <td><c:out value="${domain.name} ${domain.release}"/></td>
       <td>&nbsp;</td>
       <td><a href="<c:url value="/admin/domain/edit/${domain.id}.html"/>"><fmt:message key="admin.edit"/></a>
-        | <a href="<c:url value="/admin/domain/delete/${domain.id}.html"/>"><fmt:message key="admin.delete"/></a></td>
+        | <a href="<c:url value="/admin/domain/delete/${domain.id}.html"/>"><fmt:message key="admin.delete"/></a>
+        | <a href="<c:url value="/admin/resync/domain/${domain.id}.html"/>"><fmt:message key="admin.resync"/></a></td>
     </tr>
     <c:forEach var="repo" items="${repoMap[domain]}">
       <tr class="${sequence.next}">
         <td>&nbsp;</td>
         <td><c:out value="${repo.name} (${repo.architecture})"/></td>
         <td><a href="<c:url value="/admin/repo/edit/${repo.id}.html"/>"><fmt:message key="admin.edit"/></a>
-          | <a href="<c:url value="/admin/repo/delete/${repo.id}.html"/>"><fmt:message key="admin.delete"/></a></td>
+          | <a href="<c:url value="/admin/repo/delete/${repo.id}.html"/>"><fmt:message key="admin.delete"/></a>
+          | <a href="<c:url value="/admin/resync/repo/${repo.id}.html"/>"><fmt:message key="admin.resync"/></a></td>
       </tr>
     </c:forEach>
     <tr class="${sequence.next}">
@@ -59,7 +61,7 @@
   <tr class="gridhead">
     <td><a href="<c:url value="/admin/domain/add.html"/>"><fmt:message key="admin.add"/></a></td>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td><a href="<c:url value="/admin/resync/all.html"/>"><fmt:message key="admin.resyncall"/></a></td>
   </tr>
 </table>
 

@@ -181,6 +181,14 @@ address {
   white-space: nowrap;
 }
 
+.resyncgood {
+  color: #00C000;
+}
+
+.resyncbad {
+  color: #C00000;
+}
+
 .note {
   margin: 5px;
   padding: 5px;
