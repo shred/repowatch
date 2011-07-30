@@ -29,13 +29,12 @@ import org.springframework.validation.Validator;
  * Validates a {@link Domain} entity.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 326 $
+ * @version $Revision: 583 $
  */
 public class DomainValidator implements Validator {
 
-    @SuppressWarnings("unchecked")
     @Override
-    public boolean supports(Class clazz) {
+    public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {
         return Domain.class.equals(clazz);
     }
 

@@ -60,7 +60,7 @@ import org.shredzone.repowatch.model.Version;
  * or when an exception occured!
  * 
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
+ * @version $Revision: 583 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -316,11 +316,13 @@ public class PrimaryParser implements Iterable<Version> {
      * 
      * @return Iterator
      */
+    @Override
     public Iterator<Version> iterator() {
         return new Iterator<Version>() {
             private boolean retrieved = true;
             private Version iteratorCurrentVersion = null;
             
+            @Override
             public boolean hasNext() {
                 if (retrieved) {
                     retrieved = false;
@@ -333,6 +335,7 @@ public class PrimaryParser implements Iterable<Version> {
                 return iteratorCurrentVersion != null;
             }
 
+            @Override
             public Version next() {
                 if (hasNext()) {
                     retrieved = true;
@@ -342,6 +345,7 @@ public class PrimaryParser implements Iterable<Version> {
                 }
             }
 
+            @Override
             public void remove() {
                 throw new UnsupportedOperationException();
             }
