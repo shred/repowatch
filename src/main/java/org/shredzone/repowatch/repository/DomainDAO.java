@@ -27,28 +27,27 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the domain management.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface DomainDAO extends BaseDAO<Domain> {
- 
+
     /**
      * Returns a list of all domains registered with the database.
-     * 
+     *
      * @return  List of all {@link Domain} entities.
      */
     public List<Domain> findAllDomains();
 
     /**
      * Finds a domain with the given name and release string.
-     * 
+     *
      * @param name      Name of the domain
      * @param release   Release string
      * @return  {@link Domain} with that name and release, or <code>null</code>
      *          if there is none.
      */
     public Domain findDomain(String name, String release);
-    
+
 }

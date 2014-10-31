@@ -30,9 +30,8 @@ import org.springframework.security.providers.AbstractAuthenticationToken;
 /**
  * An {@link Authentication} that allows a cron job to invoke methods that are secured
  * for "ROLE_CRON".
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 public final class CronAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
     private static final long serialVersionUID = -3081468569286324821L;
@@ -40,7 +39,7 @@ public final class CronAuthenticationToken extends AbstractAuthenticationToken i
     private final static GrantedAuthority[] ROLES = {
         new GrantedAuthorityImpl("ROLE_CRON"),
     };
-    
+
     private final Object principal;
 
     /**
@@ -63,7 +62,7 @@ public final class CronAuthenticationToken extends AbstractAuthenticationToken i
     public Object getPrincipal() {
         return principal;
     }
-    
+
     @Override
     public Object getCredentials() {
         return "";

@@ -25,9 +25,8 @@ import org.shredzone.repowatch.model.Repository;
 /**
  * This is the heart of the synchronizer. It synchronizes the repowatch
  * database with the repository's databases.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 public interface RepositorySynchronizer {
 
@@ -35,12 +34,12 @@ public interface RepositorySynchronizer {
      * Sets the {@link Repository} to be synchronized.
      */
     public void setRepository(Repository repository);
-    
+
     /**
      * Starts the synchronization process.
-     * 
+     *
      * @throws SynchronizerException  Synchronization failed for various reasons
      */
     public void doSynchronize() throws SynchronizerException;
-    
+
 }

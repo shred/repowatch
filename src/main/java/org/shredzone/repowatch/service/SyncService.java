@@ -26,18 +26,17 @@ import org.shredzone.repowatch.sync.SynchronizerException;
 /**
  * A service providing everything that is required for keeping the
  * database in sync with the original repository database.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
  */
 public interface SyncService {
 
     /**
      * Synchronizes only a single repository.
-     * 
+     *
      * @param repo  {@link Repository} to synchronize.
      * @throws  SynchronizerException   Synchronization failed
      */
     public void syncRepository(Repository repo) throws SynchronizerException;
-    
+
 }

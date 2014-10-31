@@ -27,16 +27,15 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the domain management.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 205 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface BlacklistDAO extends BaseDAO<Blacklist> {
- 
+
     /**
      * Returns a set of all blacklists.
-     * 
+     *
      * @return  List of all {@link Blacklist} entities.
      */
     public List<Blacklist> findAllBlacklists();

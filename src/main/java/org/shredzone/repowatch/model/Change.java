@@ -37,17 +37,16 @@ import org.hibernate.annotations.Index;
 
 /**
  * Represents a changelog entry.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Entity
 @Table(name="Changelog")
 public class Change extends BaseModel {
     private static final long serialVersionUID = 8648618861114240913L;
-    
+
     public static enum Type { ADDED, UPDATED, REMOVED };
-    
+
     private Date timestamp = new Date();
     private Repository repo;
     private Package pack;
@@ -101,7 +100,7 @@ public class Change extends BaseModel {
 
     /**
      * Change type.
-     * 
+     *
      * @see Type
      */
     @Column(name="type")

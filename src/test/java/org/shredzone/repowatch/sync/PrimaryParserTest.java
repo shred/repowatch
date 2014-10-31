@@ -20,11 +20,7 @@
 
 package org.shredzone.repowatch.sync;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.util.Date;
 
@@ -34,13 +30,11 @@ import org.shredzone.repowatch.model.Domain;
 import org.shredzone.repowatch.model.Package;
 import org.shredzone.repowatch.model.Repository;
 import org.shredzone.repowatch.model.Version;
-import org.shredzone.repowatch.sync.SynchronizerException;
 
 /**
  * Unit tests for {@link PrimaryParser}
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
  */
 public class PrimaryParserTest {
 
@@ -62,7 +56,7 @@ public class PrimaryParserTest {
         dom.setRelease("development");
         return dom;
     }
-    
+
     private Repository createMockRepository() {
         Repository repo = new Repository();
         repo.setId(2);
@@ -72,7 +66,7 @@ public class PrimaryParserTest {
         repo.setArchitecture("i386");
         return repo;
     }
-    
+
     private DatabaseLocation createMockDatabaseLocation() {
         DatabaseLocation loc = new DatabaseLocation();
         loc.setLocation("repodata/primary.xml.gz");
@@ -82,7 +76,7 @@ public class PrimaryParserTest {
         loc.setChecksum("3e63bf9ece3c0c0a6b322ffdebe26e6a6b0a9d3c");
         return loc;
     }
-    
+
     @Test
     public void testPrimaryParser() {
         PrimaryParser parser = new PrimaryParser(repository, dbLoc);
@@ -90,14 +84,14 @@ public class PrimaryParserTest {
             Version version;
 
             parser.parse();
-            
+
             version = parser.readNextVersion();
             assertNotNull(version);
             checkVersion(version);
-            
+
             version = parser.readNextVersion();
             assertNull(version);
-            
+
         } catch (SynchronizerException ex) {
             ex.printStackTrace();
             fail(ex.getMessage());
@@ -105,13 +99,13 @@ public class PrimaryParserTest {
             parser.discard();
         }
     }
-    
+
     @Test
     public void testPrimaryParserIterator() {
         PrimaryParser parser = new PrimaryParser(repository, dbLoc);
         try {
             parser.parse();
-            
+
             int ix = 0;
             for (Version version : parser) {
                 assertNotNull(version);
@@ -119,7 +113,7 @@ public class PrimaryParserTest {
                 ix++;
             }
             assertEquals(1, ix);
-            
+
         } catch (SynchronizerException ex) {
             ex.printStackTrace();
             fail(ex.getMessage());
@@ -135,11 +129,11 @@ public class PrimaryParserTest {
         PrimaryParser parser = new PrimaryParser(repository, dbLoc);
         try {
             parser.parse();
-            
+
             assertNotNull(parser.readNextVersion());
             assertNull(parser.readNextVersion());
             fail("Bad checksum was not detected!");
-            
+
         } catch (SynchronizerException ex) {
             if ("Bad digest checksum!".equals(ex.getMessage())) {
                 // Bad checksum was discovered. Success!
@@ -157,14 +151,14 @@ public class PrimaryParserTest {
         assertNotNull(version);
         Package pack = version.getPackage();
         assertNotNull(pack);
-        
+
         assertSame(domain, pack.getDomain());
         assertEquals("foo", pack.getName());
         assertEquals("A very special software", pack.getSummary());
         assertEquals("Foo is a very\nspecial software package.", pack.getDescription());
         assertEquals("http://www.foo.example/foo.html", pack.getHomeUrl());
         assertEquals("System Environment/Libraries", pack.getPackGroup());
-        
+
         assertSame(repository, version.getRepository());
         assertEquals("0", version.getEpoch());
         assertEquals("1.2.3", version.getVer());

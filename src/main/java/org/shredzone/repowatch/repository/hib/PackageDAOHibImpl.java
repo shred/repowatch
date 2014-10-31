@@ -39,9 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link PackageDAO}.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -75,7 +74,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
 
         return (Package) q.uniqueResult();
     }
-    
+
     @Transactional(readOnly = true)
     @Override
     public Package findLatestPackage(String name) {
@@ -86,7 +85,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
                         " ORDER BY v.ver, v.rel")
                 .setParameter("name", name)
                 .setMaxResults(1);
-        
+
         return (Package) q.uniqueResult();
     }
 
@@ -116,12 +115,12 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         if (limit >= 0) {
             q.setFirstResult(start).setMaxResults(limit);
         }
-        
+
         SortedMap<String,String> result = new TreeMap<String,String>();
         for (Object[] data : (List<Object[]>) q.list()) {
             result.put(data[0].toString(), data[1].toString());
         }
-        
+
         return result;
     }
 
@@ -140,14 +139,14 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
                         " WHERE p.domain=:domain" +
                         " ORDER BY p.name")
                 .setParameter("domain", domain);
-        
+
         if (limit >= 0) {
             q.setFirstResult(start).setMaxResults(limit);
         }
-        
+
         return q.list();
     }
- 
+
     @Transactional(readOnly = true)
     @Override
     public long countSearchResult(SearchDTO data) {
@@ -155,7 +154,7 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         crit.setProjection(Projections.rowCount());
         return ((Number) crit.uniqueResult()).longValue();
     }
-    
+
     @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     @Override
@@ -165,24 +164,24 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         crit.createCriteria("domain")
             .addOrder(Order.asc("name"))
             .addOrder(Order.desc("release"));
-        
+
         if (limit >= 0) {
             crit.setFirstResult(start).setMaxResults(limit);
         }
-        
+
         return crit.list();
     }
 
     /**
      * Creates a {@link Query} from the parameters stored in {@link SearchDTO}.
-     * 
+     *
      * @param data
      *            {@link SearchDTO} containing the search parameters.
      * @return {@link Criteria} object.
      */
     private Criteria createCriteria(SearchDTO data) {
         Criteria crit = getCurrentSession().createCriteria(Package.class);
-        
+
         String liketerm = data.getTerm().replaceAll("(%|_)", "\\\\$1");
         if (data.isDescriptions()) {
             crit.add(Restrictions.or(
@@ -195,15 +194,15 @@ public class PackageDAOHibImpl extends BaseDAOHibImpl<Package> implements Packag
         } else {
             crit.add(Restrictions.ilike("name", liketerm, MatchMode.ANYWHERE));
         }
-        
+
         Domain dom = data.getDomainOnly();
         if (dom != null) {
             crit.add(Restrictions.eq("domain", dom));
         }
-        
+
         return crit;
     }
-    
+
     @Override
     public void deleteAllPackagesForDomain(Domain domain) {
         getCurrentSession().createQuery(

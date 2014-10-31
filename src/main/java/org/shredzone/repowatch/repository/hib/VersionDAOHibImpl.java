@@ -32,9 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link VersionDAO}.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // dang, a name collision
 @Transactional
@@ -45,7 +44,7 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
     public Version fetch(long id) {
         return (Version) getCurrentSession().get(Version.class, id);
     }
-    
+
     @Transactional(readOnly = true)
     @Override
     public List<Version> findAllVersions(Repository repo) {
@@ -61,11 +60,11 @@ public class VersionDAOHibImpl extends BaseDAOHibImpl<Version> implements Versio
                         " WHERE v.repository=:repository AND v.deleted=false" +
                         " ORDER BY v.package.name")
                 .setParameter("repository", repo);
-        
+
         if (limit >= 0) {
             q.setFirstResult(start).setMaxResults(limit);
         }
-        
+
         return q.list();
     }
 

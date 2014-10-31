@@ -31,14 +31,13 @@ import javax.persistence.TemporalType;
 
 /**
  * Represents a version of a package.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Entity
 public class Version extends BaseModel {
     private static final long serialVersionUID = 4538841339588675524L;
-    
+
     private Repository repo;
     private Package pack;
     private String epoch;
@@ -49,7 +48,7 @@ public class Version extends BaseModel {
     private Date fileDate;
     private String fileLocation;
     private boolean deleted;
-    
+
     /**
      * {@link Repository} this version belongs to.
      */
@@ -110,12 +109,12 @@ public class Version extends BaseModel {
      */
     public String getFileLocation()         { return fileLocation; }
     public void setFileLocation(String fileLocation) {  this.fileLocation = fileLocation; }
-    
+
     /**
      * Has the package been remove from the repository.
      */
     @Basic(optional=false)
     public boolean isDeleted()              { return deleted; }
     public void setDeleted(boolean deleted) { this.deleted = deleted; }
-    
+
 }

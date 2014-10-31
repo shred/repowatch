@@ -25,12 +25,11 @@ package org.shredzone.repowatch.config;
  * sensible default values which can be changed by the setter methods.
  * Use this to configure the Configuration values in Spring's
  * application context.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 public class PropertyConfigurationBean implements Configuration {
-    
+
     private int entriesPerPage = 25;
     private int rssMaxNumberOfDays = 5;
     private int rssMaxNumberOfEntries = 50;
@@ -38,34 +37,34 @@ public class PropertyConfigurationBean implements Configuration {
 
     /**
      * Sets the number of entries to be shown per page of a browser list.
-     * 
+     *
      * @param value     Value
      */
     public void setEntriesPerPage(int value) {
         this.entriesPerPage = value;
     }
-    
+
     /**
      * Sets the maximum number of days to look back in a RSS feed.
-     * 
+     *
      * @param value     Value
      */
     public void setRssMaxNumberOfDays(int value) {
         this.rssMaxNumberOfDays = value;
     }
-    
+
     /**
      * Sets the maximum number of entries in a RSS feed.
-     * 
+     *
      * @param value     Value
      */
     public void setRssMaxNumberOfEntries(int value) {
         this.rssMaxNumberOfEntries = value;
     }
-    
+
     /**
      * Sets the minimum number of characters in a valid search term.
-     * 
+     *
      * @param value     Value
      */
     public void setSearchTermMinLength(int value) {

@@ -30,16 +30,15 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the package management.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface PackageDAO extends BaseDAO<Package> {
-    
+
     /**
      * Counts all packages that belong to the given {@link Repository}.
-     * 
+     *
      * @param repo      A {@link Repository}
      * @return  Number of packages belonging to the repository.
      */
@@ -47,24 +46,24 @@ public interface PackageDAO extends BaseDAO<Package> {
 
     /**
      * Counts all packages known.
-     * 
+     *
      * @return  Number of all packages.
      */
     public long countAllPackages();
 
     /**
      * Finds a package with the given name, in the given {@link Domain}.
-     * 
+     *
      * @param domain    {@link Domain} to find the package in.
      * @param name      Name of the package.
      * @return  {@link Package} matching the name, or <code>null</code> if
      *          there is none.
      */
     public Package findPackage(Domain domain, String name);
-    
+
     /**
      * Finds the latest version of a package with the given name.
-     * 
+     *
      * @param name      Name of the package
      * @return  Latest {@link Package} matching the name, or <code>null</code>
      *          if there is no package with that name at all.
@@ -73,7 +72,7 @@ public interface PackageDAO extends BaseDAO<Package> {
 
     /**
      * Finds all packages for a {@link Domain}.
-     * 
+     *
      * @param domain    A {@link Domain}
      * @return  A list of all {@link Package}s belonging to that {@link Domain}.
      */
@@ -81,18 +80,18 @@ public interface PackageDAO extends BaseDAO<Package> {
 
     /**
      * Finds all packages for a {@link Domain}, within certain limits.
-     * 
+     *
      * @param domain    A {@link Domain}
      * @param start     The first entity to start with
      * @param limit     The maximum number of returned entities
      * @return  A list of all {@link Package}s belonging to that {@link Domain}.
      */
     public List<Package> findAllPackages(Domain domain, int start, int limit);
-    
+
     /**
      * Finds all packages for a {@link Domain}, within certain limits. Returns
      * the package name along with a package description.
-     * 
+     *
      * @param start     The first entity to start with
      * @param limit     The maximum number of returned entities
      * @return  A sorted map of all {@link Package} names belonging to that
@@ -103,7 +102,7 @@ public interface PackageDAO extends BaseDAO<Package> {
 
     /**
      * Counts the number of returned packages matching the given search.
-     * 
+     *
      * @param data      {@link SearchDTO} with the search parameters
      * @return  Number of packages that were found.
      */
@@ -111,17 +110,17 @@ public interface PackageDAO extends BaseDAO<Package> {
 
     /**
      * Returns the packages matching the given search.
-     * 
+     *
      * @param data      {@link SearchDTO} with the search parameters
      * @param start     The first entity to start with
      * @param limit     The maximum number of returned entities
      * @return  A list of all {@link Package}s matching the search.
      */
     public List<Package> findSearchResult(SearchDTO data, int start, int limit);
-    
+
     /**
      * Deletes all packages refering to the given domain.
-     * 
+     *
      * @param domain    {@link Domain} to delete all packages of.
      */
     @Secured("ROLE_ADMIN")

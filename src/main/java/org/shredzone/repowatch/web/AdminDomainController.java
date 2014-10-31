@@ -42,17 +42,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of the domain admin masks.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes("domain")
 public class AdminDomainController {
-    
+
     @Resource
     private DomainDAO domainDao;
-    
+
     private final static String DOMAINADD_PATTERN = "/admin/domain/add.html";
     private final static String DOMAINEDIT_PATTERN = "/admin/domain/edit/*.html";
 
@@ -68,7 +67,7 @@ public class AdminDomainController {
         mav.addObject("domain", new Domain());
         return mav;
     }
-    
+
     /**
      * Performs to add a domain.
      */
@@ -98,18 +97,18 @@ public class AdminDomainController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Domain domain = domainDao.fetch(Integer.parseInt(parts.getPart(0)));
         if (domain == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         ModelAndView mav = new ModelAndView("admindomain");
         mav.addObject("domain", domain);
         return mav;
     }
-    
+
     /**
      * Performs to edit a domain.
      */
@@ -125,5 +124,5 @@ public class AdminDomainController {
         status.setComplete();
         return "forward:/admin/index.html";
     }
-    
+
 }

@@ -35,23 +35,22 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of listing packages.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class PackageListController {
-    
+
     @Resource
     private PackageDAO packageDao;
-    
+
     @Resource
     private Configuration config;
-    
+
 
     /**
      * Lists all known packages.
-     * 
+     *
      * @param req           {@link HttpServletRequest}
      * @param page          Browser page to be shown, or <code>null</code>
      * @return  {@link ModelAndView} for rendering.
@@ -62,23 +61,23 @@ public class PackageListController {
             @RequestParam(value="page", required=false) Integer page
     ) {
         ModelAndView mav = new ModelAndView("listpackages");
-        
+
         BrowserData browser = new BrowserData();
         browser.setBaseurl(req.getServletPath());
-        
+
         int entriesPerPage = config.getEntriesPerPage();
         long count = packageDao.countAllPackages();
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));
         browser.setPage(page != null ? page : 0);
-        
+
         SortedMap<String,String> packages = packageDao.findAllPackages(
                 browser.getPage() * entriesPerPage,
                 entriesPerPage);
-        
+
         mav.addObject("packageList", packages);
         mav.addObject("browser", browser);
         return mav;
     }
-    
+
 }

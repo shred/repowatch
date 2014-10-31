@@ -35,19 +35,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of listing repositories.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class RepositoryListController {
-    
+
     @Resource
     private RepositoryDAO repositoryDao;
-    
+
     @Resource
     private PackageDAO packageDao;
-    
+
 
     /**
      * Lists all repositories.
@@ -56,17 +55,17 @@ public class RepositoryListController {
     @RequestMapping("/repo.html")
     public ModelAndView repoHandler() {
         ModelAndView mav = new ModelAndView("listrepositories");
-        
+
         List<Repository> repositories = repositoryDao.findAllRepositories();
 
         Map<Repository,Long> counter = new HashMap<Repository,Long>();
         for (Repository repo : repositories) {
             counter.put(repo, packageDao.countPackages(repo));
         }
-        
+
         mav.addObject(repositories);
         mav.addObject("counterMap", counter);
         return mav;
     }
-    
+
 }

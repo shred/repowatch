@@ -34,9 +34,8 @@ import org.springframework.security.context.SecurityContextHolder;
 
 /**
  * A scheduler job for synchronizing the repository database.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 public class RepositorySyncJob {
     private final Logger logger = Logger.getLogger(getClass().getName());
@@ -52,7 +51,7 @@ public class RepositorySyncJob {
      */
     public void doSynchronization() {
         logger.info("Synchronization job started");
-        
+
         Authentication auth = new CronAuthenticationToken(this);
         SecurityContextHolder.getContext().setAuthentication(auth);
         try {
@@ -64,12 +63,12 @@ public class RepositorySyncJob {
                     logger.log(Level.WARNING, "Synchronization job failed", ex);
                 }
             }
-        
+
             logger.info("Synchronization job completed");
-        
+
         } finally {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
     }
-    
+
 }

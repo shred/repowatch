@@ -48,10 +48,10 @@
   <context:component-scan base-package="org.shredzone.repowatch" />
 
   <bean id="repowatchConfiguration" class="org.shredzone.repowatch.config.PropertyConfigurationBean">
-  	<property name="entriesPerPage" value="25"/>
-	<property name="rssMaxNumberOfDays" value="5"/>
-	<property name="rssMaxNumberOfEntries" value="50"/>
-	<property name="searchTermMinLength" value="3"/>
+    <property name="entriesPerPage" value="25"/>
+    <property name="rssMaxNumberOfDays" value="5"/>
+    <property name="rssMaxNumberOfEntries" value="50"/>
+    <property name="searchTermMinLength" value="3"/>
   </bean>
 
 </beans>

@@ -31,14 +31,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A Hibernate implementation of {@link ChangeDAO}.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @org.springframework.stereotype.Repository      // class name collision!
 @Transactional
 public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDAO {
-    
+
     @Transactional(readOnly = true)
     @Override
     public Change fetch(long id) {
@@ -56,12 +55,12 @@ public class ChangeDAOHibImpl extends BaseDAOHibImpl<Change> implements ChangeDA
     public long countChanges(Repository repo, boolean updates) {
         Query q = getCurrentSession().createQuery(
                         "SELECT COUNT(*) FROM Change" +
-                		" WHERE repository=:repo" +
+                        " WHERE repository=:repo" +
                         " AND (:updates=true OR change<>:typeupdated)")
                 .setParameter("repo", repo)
                 .setParameter("updates", updates)
                 .setParameter("typeupdated", Change.Type.UPDATED);
-        
+
         return ((Long) q.uniqueResult()).longValue();
     }
 

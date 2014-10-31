@@ -27,9 +27,8 @@ import org.shredzone.repowatch.web.util.RequestMappingResolver.RequestParts;
 
 /**
  * Unit tests for {@link RequestMappingResolver}
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class RequestMappingResolverTest {
 
@@ -37,19 +36,19 @@ public class RequestMappingResolverTest {
     public void testGetRequestParts() {
         RequestMappingResolver resolver;
         RequestParts parts;
-        
+
         //--- Mappings without wildcard ---
         resolver = new RequestMappingResolver("/foo.html");
         parts = resolver.getRequestParts("/foo.html");
         assertNotNull(parts);
         assertFalse(parts.hasParts());
         assertEquals(0, parts.partCount());
-        
+
         parts = resolver.getRequestParts("/bar.html");
         assertNotNull(parts);
         assertFalse(parts.hasParts());
         assertEquals(0, parts.partCount());
-        
+
         //--- Mappings with single wildcard ---
         resolver = new RequestMappingResolver("/foo/*.html");
         parts = resolver.getRequestParts("/foo.html");
@@ -67,7 +66,7 @@ public class RequestMappingResolverTest {
         assertNotNull(parts);
         assertFalse(parts.hasParts());
         assertEquals(0, parts.partCount());
-        
+
         parts = resolver.getRequestParts("/foo/abc/def.html");
         assertNotNull(parts);
         assertFalse(parts.hasParts());

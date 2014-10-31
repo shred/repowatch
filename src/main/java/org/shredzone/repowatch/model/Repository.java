@@ -33,14 +33,13 @@ import javax.persistence.Transient;
 
 /**
  * Represents a yum repository.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Entity
 public class Repository extends BaseModel {
     private static final long serialVersionUID = 4678802328900240584L;
-    
+
     private Domain domain;
     private String name;
     private String architecture;
@@ -49,7 +48,7 @@ public class Repository extends BaseModel {
     private Date firstScanned;
     private Date lastScanned;
     private long lastModified;
-    
+
     /**
      * {@link Domain} this repository belongs to
      */
@@ -112,10 +111,10 @@ public class Repository extends BaseModel {
     public Date getLastModifiedDate() {
         return new Date(getLastModified());
     }
-    
+
     /**
      * Returns a human readable string for the repository.
-     * 
+     *
      * @return  Human readable string, e.g. "<tt>fedora f7 updates (i386)</tt>".
      */
     @Override
@@ -127,5 +126,5 @@ public class Repository extends BaseModel {
         sb.append("(").append(getArchitecture()).append(")");
         return sb.toString();
     }
-    
+
 }

@@ -45,36 +45,35 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of showing details of a package version.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class VersionsDetailController {
-    
+
     @Resource
     private DomainDAO domainDao;
-    
+
     @Resource
     private RepositoryDAO repositoryDao;
-    
+
     @Resource
     private PackageDAO packageDao;
-    
+
     @Resource
     private VersionDAO versionDao;
-    
+
     @Resource
     private Configuration config;
-    
-    
+
+
     private final static String LISTVERSIONS_PATTERN = "/repo/*/*/*/*.html";
     private final static RequestMappingResolver listVersionsResolver =
             new RequestMappingResolver(LISTVERSIONS_PATTERN);
 
     /**
      * Lists all package versions of a repository.
-     * 
+     *
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @param page          Browser page to be shown, or <code>null</code>
@@ -92,7 +91,7 @@ public class VersionsDetailController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         String domName    = parts.getPart(0);
         String domRelease = parts.getPart(1);
         String repoName   = parts.getPart(2);
@@ -125,7 +124,7 @@ public class VersionsDetailController {
                 repository,
                 browser.getPage() * entriesPerPage,
                 entriesPerPage);
-        
+
         mav.addObject("domain", domain);
         mav.addObject("repository", repository);
         mav.addObject("versionList", versions);

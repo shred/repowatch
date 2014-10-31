@@ -28,18 +28,17 @@ import javax.persistence.Entity;
  * Represents a domain. A domain is a project or a site that offers one or
  * more repositories which logically belong together. E.g. "Fedora Project"
  * or "Freshrpms".
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Entity
 public class Domain extends BaseModel {
     private static final long serialVersionUID = 4370772533550604837L;
-    
+
     private String name;
     private String release;
     private String homeUrl;
-    
+
     /**
      * Name of the domain. (e.g. "fedora")
      */

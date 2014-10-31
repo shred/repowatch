@@ -28,17 +28,16 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the repository part of the database.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface RepositoryDAO extends BaseDAO<Repository> {
-    
+
     /**
      * Finds a repository in the {@link Domain} with the given name and
      * architecture.
-     * 
+     *
      * @param domain        {@link Domain} to search for the repository.
      * @param name          Name of the repository (e.g. "updates")
      * @param architecture  Architecture string (e.g. "i386")
@@ -46,10 +45,10 @@ public interface RepositoryDAO extends BaseDAO<Repository> {
      *      if there was none.
      */
     public Repository findRepository(Domain domain, String name, String architecture);
-    
+
     /**
      * Returns a list of all repositories.
-     * 
+     *
      * @return  List of all {@link Repository} entities.
      */
     public List<Repository> findAllRepositories();

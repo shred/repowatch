@@ -26,24 +26,23 @@ import org.shredzone.repowatch.model.Repository;
 /**
  * A service for deleting repositories and entire domains. The service takes care for
  * recursively deleting all dependent entities.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public interface DeleteService {
 
     /**
      * Deletes a {@link Repository}.
-     * 
+     *
      * @param repository    {@link Repository} to be deleted.
      */
     public void deleteRepository(Repository repository);
-    
+
     /**
      * Deletes a {@link Domain}.
-     * 
+     *
      * @param domain        {@link Domain} to be deleted.
      */
     public void deleteDomain(Domain domain);
-    
+
 }

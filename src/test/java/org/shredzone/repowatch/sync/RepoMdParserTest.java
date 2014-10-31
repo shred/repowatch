@@ -30,21 +30,20 @@ import org.junit.Test;
 
 /**
  * Unit tests for {@link RepoMdParser}
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class RepoMdParserTest {
 
     @Test
     public void testParse() throws IOException {
         DatabaseLocation dbLocation;
-        
+
         URL testfile = RepoMdParserTest.class.getResource("/");
 
         RepoMdParser parser = new RepoMdParser(testfile);
         parser.parse();
-            
+
         dbLocation = parser.getDatabaseLocation("primary");
         assertNotNull(dbLocation);
         assertEquals("primary", dbLocation.getType());
@@ -64,7 +63,7 @@ public class RepoMdParserTest {
         assertEquals("md5", dbLocation.getChecksumType());
         assertEquals(1216447007000L, dbLocation.getTimestamp());
         assertEquals(new Date(1216447007000L), dbLocation.getTimestampAsDate());
-        
+
         dbLocation = parser.getDatabaseLocation("filelists");
         assertNotNull(dbLocation);
         assertEquals("filelists", dbLocation.getType());
@@ -74,7 +73,7 @@ public class RepoMdParserTest {
         assertNull(dbLocation.getChecksumType());
         assertEquals(1216447007000L, dbLocation.getTimestamp());
         assertEquals(new Date(1216447007000L), dbLocation.getTimestampAsDate());
-        
+
         dbLocation = parser.getDatabaseLocation("foobar");
         assertNull(dbLocation);
     }

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 package org.shredzone.repowatch.repository;
 
 import java.util.Date;
@@ -29,26 +29,25 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the changelog part of the database.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface ChangeDAO extends BaseDAO<Change> {
-	
+
     /**
      * Counts all changes logged for a {@link Repository}. Updates are counted.
-     * 
+     *
      * @param repo
      *            Repository to count the changes of.
      * @return Number of changes
      */
     public long countChanges(Repository repo);
-    
+
     /**
      * Counts all changes logged for a {@link Repository}. Only additions and
      * removals are counted unless the updates option is set.
-     * 
+     *
      * @param repo
      *            Repository to count the changes of.
      * @param updates
@@ -56,20 +55,20 @@ public interface ChangeDAO extends BaseDAO<Change> {
      * @return Number of changes
      */
     public long countChanges(Repository repo, boolean updates);
-    
+
     /**
      * Finds all changes logged for a {@link Repository}.
-     * 
+     *
      * @param repo
      *            Repository to find changes for.
      * @return List of {@link Change} objects containing all changes.
      */
     public List<Change> findAllChanges(Repository repo);
-    
+
     /**
      * Finds all changes logged for a {@link Repository}. Only the given
      * range is returned. Updates are included.
-     * 
+     *
      * @param repo
      *            Repository to find changes for.
      * @param start
@@ -80,12 +79,12 @@ public interface ChangeDAO extends BaseDAO<Change> {
      * @return List of {@link Change} objects containing all changes.
      */
     public List<Change> findAllChanges(Repository repo, int start, int limit);
-    
+
     /**
      * Finds all changes logged for a {@link Repository}. Only the given
      * range is returned. Only additions and removals are returned unless
      * the updates option is set.
-     * 
+     *
      * @param repo
      *            Repository to find changes for.
      * @param updates
@@ -98,11 +97,11 @@ public interface ChangeDAO extends BaseDAO<Change> {
      * @return List of {@link Change} objects containing all changes.
      */
     public List<Change> findAllChanges(Repository repo, boolean updates, int start, int limit);
-    
+
     /**
      * Finds all changes logged since a certain date. No more than a maximum
      * number of rows will be returned. Updates are included.
-     * 
+     *
      * @param repo
      *            Repository to find changes for.
      * @param limit
@@ -113,12 +112,12 @@ public interface ChangeDAO extends BaseDAO<Change> {
      * @return List of {@link Change} objects containing all changes.
      */
     public List<Change> findAllChangesUntil(Repository repo, Date limit, int maxrows);
-    
+
     /**
      * Finds all changes logged since a certain date. No more than a maximum
      * number of rows will be returned. Only additions and removals are returned
      * unless the updates option is set.
-     * 
+     *
      * @param repo
      *            Repository to find changes for.
      * @param updates
@@ -134,7 +133,7 @@ public interface ChangeDAO extends BaseDAO<Change> {
 
     /**
      * Deletes all changes refering to the given repository.
-     * 
+     *
      * @param repo      {@link Repository} to delete all changes of.
      */
     @Secured("ROLE_ADMIN")

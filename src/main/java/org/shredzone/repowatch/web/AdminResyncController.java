@@ -23,6 +23,7 @@ package org.shredzone.repowatch.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,13 +43,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of manual resynchronizing.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 330 $
  */
 @Controller
 public class AdminResyncController {
-    
+
     @Resource
     private SyncService syncService;
 
@@ -74,7 +74,7 @@ public class AdminResyncController {
     @RequestMapping(value=RESYNC_ALL_PATTERN, method=RequestMethod.GET)
     public ModelAndView resyncAllHandler() {
         List<SyncResult> resultList = new ArrayList<SyncResult>();
-        
+
         for (Repository repo : repositoryDao.findAllRepositories()) {
             SyncResult result = new SyncResult(repo);
             try {
@@ -112,9 +112,9 @@ public class AdminResyncController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         List<SyncResult> resultList = new ArrayList<SyncResult>();
-        
+
         for (Repository repo : repositoryDao.findRepositories(domain)) {
             SyncResult result = new SyncResult(repo);
             try {
@@ -152,7 +152,7 @@ public class AdminResyncController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         List<SyncResult> resultList = new ArrayList<SyncResult>();
         SyncResult result = new SyncResult(repo);
         try {
@@ -178,19 +178,19 @@ public class AdminResyncController {
         private SynchronizerException exception;
         private long startTimestamp;
         private long stopTimestamp;
-        
+
         public SyncResult(Repository repository) {
             this.repository = repository;
         }
-        
+
         public void failed(SynchronizerException ex) {
             this.exception = ex;
         }
-        
+
         public void startTimer() {
             startTimestamp = System.currentTimeMillis();
         }
-        
+
         public void stopTimer() {
             stopTimestamp = System.currentTimeMillis();
         }
@@ -198,11 +198,11 @@ public class AdminResyncController {
         public Repository getRepository() {
             return repository;
         }
-        
+
         public SynchronizerException getException() {
             return exception;
         }
-        
+
         public long getRequiredTime() {
             return stopTimestamp - startTimestamp;
         }

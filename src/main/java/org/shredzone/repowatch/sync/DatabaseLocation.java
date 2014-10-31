@@ -24,9 +24,8 @@ import java.util.Date;
 
 /**
  * Contains all information about a repository database and it's location.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class DatabaseLocation {
 
@@ -39,24 +38,24 @@ public class DatabaseLocation {
 
     /**
      * Gets the database type ("primary", "filelists", "other", ...)
-     * 
+     *
      * @return Database type
      */
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
-    
+
     /**
      * Gets the database location. This is a relative URL to the repository
      * base URL (e.g. "repodata/primary.xml.gz").
-     * 
+     *
      * @return Database location
      */
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-    
+
     /**
      * Gets the checksum of the database.
-     * 
+     *
      * @return Checksum
      */
     public String getChecksum() { return checksum; }
@@ -64,7 +63,7 @@ public class DatabaseLocation {
 
     /**
      * Gets the checksum type ("sha")
-     * 
+     *
      * @return Checksum type
      */
     public String getChecksumType() { return checksumType; }
@@ -72,7 +71,7 @@ public class DatabaseLocation {
 
     /**
      * Gets the timestamp of the last modification (milliseconds since epoch).
-     * 
+     *
      * @return Timestamp
      */
     public long getTimestamp() { return timestamp; }
@@ -80,7 +79,7 @@ public class DatabaseLocation {
 
     /**
      * Gets a {@link Date} representation of {@link #getTimestamp()}.
-     * 
+     *
      * @return Timestamp as {@link Date}
      */
     public Date getTimestampAsDate() {
@@ -90,10 +89,10 @@ public class DatabaseLocation {
     /**
      * Returns <code>true</code> if the database XML file is gz compressed,
      * false if it's plaintext.
-     * 
+     *
      * @return <code>true</code>: gz compressed database
      */
     public boolean isCompressed() { return compressed; }
     public void setCompressed(boolean compressed) { this.compressed = compressed; }
-    
+
 }

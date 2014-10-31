@@ -34,9 +34,8 @@ package org.shredzone.repowatch.web.util;
  *   &lt;/tr>
  * &lt;/c:forEach>
  * </pre>
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class Sequencer {
     private int pos = 0;
@@ -44,7 +43,7 @@ public class Sequencer {
 
     /**
      * Creates a new Sequencer with the given sequence.
-     * 
+     *
      * @param sequence  The sequence of strings to be used. Must have at least
      *      one entry.
      */
@@ -59,12 +58,12 @@ public class Sequencer {
     /**
      * Gets the next entry of the sequence. If the last entry was returned,
      * it will start again with the first entry.
-     * 
+     *
      * @return  Sequence entry
      */
     public String getNext() {
         if (pos >= sequence.length) pos = 0;
         return sequence[pos++];
     }
-        
+
 }

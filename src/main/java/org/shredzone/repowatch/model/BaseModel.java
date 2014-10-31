@@ -29,14 +29,13 @@ import javax.persistence.MappedSuperclass;
 /**
  * Represents the superclass of all other models. It contains the
  * primary key.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @MappedSuperclass
 public abstract class BaseModel implements Serializable {
 	private static final long serialVersionUID = 5425419410430446701L;
-	
+
 	protected long id;
 
     /**
@@ -50,7 +49,7 @@ public abstract class BaseModel implements Serializable {
     /**
      * Compares two model entities. The entities are considered equal if they
      * are of the same type and contain the same primary key ID.
-     * 
+     *
      * @param   obj     Object to compare with
      * @return  true if the entities are deemed to be equal
      */
@@ -60,13 +59,13 @@ public abstract class BaseModel implements Serializable {
         if (! this.getClass().isAssignableFrom(obj.getClass())) return false;
 
         assert obj instanceof BaseModel;
-        
+
         return ((BaseModel) obj).getId() == this.getId();
     }
 
     /**
      * Creates a hash code for this model entity.
-     * 
+     *
      * @return      hash code
      */
     @Override

@@ -36,22 +36,21 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of the admin masks.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class AdminController {
-    
+
     @Resource
     private RepositoryDAO repositoryDao;
-    
+
     @Resource
     private DomainDAO domainDao;
-    
+
     /**
      * Lists all changes of a repository, in a human readable form.
-     * 
+     *
      * @return  {@link ModelAndView} for rendering.
      */
     @RequestMapping("/admin/index.html")
@@ -65,10 +64,10 @@ public class AdminController {
             List<Repository> repoList = repositoryDao.findRepositories(domain);
             repoMap.put(domain, repoList);
         }
-        
+
         mav.addObject("domainList", domainList);
         mav.addObject("repoMap", repoMap);
         return mav;
     }
-    
+
 }

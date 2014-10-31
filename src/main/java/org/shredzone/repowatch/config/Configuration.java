@@ -22,36 +22,35 @@ package org.shredzone.repowatch.config;
 
 /**
  * Implementations of this interface return basic configuration settings.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public interface Configuration {
 
     /**
      * The number of entries to be shown per page of a browser list.
-     * 
+     *
      * @return Value
      */
     public int getEntriesPerPage();
-    
+
     /**
      * The maximum number of days to look back in a RSS feed.
-     * 
+     *
      * @return Value
      */
     public int getRssMaxNumberOfDays();
-    
+
     /**
      * The maximum number of entries in a RSS feed.
-     * 
+     *
      * @return Value
      */
     public int getRssMaxNumberOfEntries();
-    
+
     /**
      * The minimum number of characters in a valid search term.
-     * 
+     *
      * @return Value
      */
     public int getSearchTermMinLength();

@@ -41,30 +41,29 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of showing details of packages.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class PackageDetailController {
-    
+
     @Resource
     private PackageDAO packageDao;
-    
+
     @Resource
     private VersionDAO versionDao;
-    
+
     @Resource
     private DomainDAO domainDao;
-    
-    
+
+
     private final static String SHOWPACKAGE_PATTERN = "/package/*.html";
     private final static RequestMappingResolver showpackageResolver =
             new RequestMappingResolver(SHOWPACKAGE_PATTERN);
 
     /**
      * Shows the details of a package.
-     * 
+     *
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.
@@ -83,29 +82,29 @@ public class PackageDetailController {
 
         ModelAndView mav = new ModelAndView("showpackage");
         String packname = parts.getPart(0);
-        
+
         Package pack = packageDao.findLatestPackage(packname);
         if (pack == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         List<Version> alternatives = versionDao.findAllVersionsForName(packname);
-        
+
         mav.addObject("package", pack);
         mav.addObject("versionList", null);
         mav.addObject("alternativeList", alternatives);
         return mav;
     }
 
-    
+
     private final static String SHOWSINGLEPACKAGE_PATTERN = "/package/*/*/*.html";
     private final static RequestMappingResolver showSinglePackageResolver =
             new RequestMappingResolver(SHOWSINGLEPACKAGE_PATTERN);
 
     /**
      * Shows the details of a package, in the context of a certain domain.
-     * 
+     *
      * @param req           {@link HttpServletRequest}
      * @param resp          {@link HttpServletResponse}
      * @return  {@link ModelAndView} for rendering.
@@ -121,24 +120,24 @@ public class PackageDetailController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         ModelAndView mav = new ModelAndView("showpackage");
         String domName = parts.getPart(0);
         String domRelease = parts.getPart(1);
         String packName = parts.getPart(2);
-        
+
         Domain domain = domainDao.findDomain(domName, domRelease);
         if (domain == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Package pack = packageDao.findPackage(domain, packName);
         if (pack == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         List<Version> alternatives = versionDao.findAllVersionsExcept(packName, pack);
         List<Version> versions = versionDao.findAllVersions(pack);
 
@@ -146,7 +145,7 @@ public class PackageDetailController {
         mav.addObject("package", pack);
         mav.addObject("versionList", versions);
         mav.addObject("alternativeList", alternatives);
-        
+
         return mav;
     }
 

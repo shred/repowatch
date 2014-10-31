@@ -44,17 +44,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of deletion.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes({"domain", "repo"})
 public class AdminDeleteController {
-    
+
     @Resource
     private DeleteService deleteService;
-    
+
     @Resource
     private DomainDAO domainDao;
 
@@ -83,18 +82,18 @@ public class AdminDeleteController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Domain domain = domainDao.fetch(Integer.parseInt(parts.getPart(0)));
         if (domain == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         ModelAndView mav = new ModelAndView("adminconfirmdelete");
         mav.addObject("domain", domain);
         return mav;
     }
-    
+
     /**
      * Performs to delete a domain.
      */
@@ -110,7 +109,7 @@ public class AdminDeleteController {
         }
         return "forward:/admin/index.html";
     }
-    
+
     /**
      * Prepares to delete a repository.
      */
@@ -124,18 +123,18 @@ public class AdminDeleteController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Repository repository = repositoryDao.fetch(Integer.parseInt(parts.getPart(0)));
         if (repository == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         ModelAndView mav = new ModelAndView("adminconfirmdelete");
         mav.addObject("repo", repository);
         return mav;
     }
-    
+
     /**
      * Performs to delete a repository.
      */
@@ -151,5 +150,5 @@ public class AdminDeleteController {
         }
         return "forward:/admin/index.html";
     }
-    
+
 }

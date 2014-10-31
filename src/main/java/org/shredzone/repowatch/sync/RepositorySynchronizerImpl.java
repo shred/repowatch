@@ -53,9 +53,8 @@ import org.springframework.transaction.annotation.Transactional;
  * <p>
  * This bean is prototype scoped. Use {@link RepositorySynchronizerFactory}
  * to generate a new instance of this bean.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -68,18 +67,18 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
 
     @Resource
     private PackageDAO packageDao;
-    
+
     @Resource
     private VersionDAO versionDao;
-    
+
     @Resource
     private ChangeDAO changeDao;
-    
+
     @Resource
     private BlacklistDAO blacklistDao;
 
     private Repository repository;
-    
+
     private URL baseUrl;
     private RepoMdParser repomd;
     private Date now;
@@ -91,16 +90,16 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
     public void setRepository(Repository repository) {
         this.repository = repositoryDao.merge(repository);;
     }
-    
+
     /**
      * Starts the synchronization process.
-     * 
+     *
      * @throws SynchronizerException  Synchronization failed for various reasons
      */
     @Override
     public void doSynchronize() throws SynchronizerException {
         now = new Date();
-        
+
         try {
             this.baseUrl = new URL(repository.getBaseUrl());
         } catch (MalformedURLException ex) {
@@ -110,11 +109,11 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
         readRepoMd();
         readPrimary();
     }
-    
+
     /**
      * Reads the repomd.xml file and fills the {@link RepoMdParser} with
      * {@link DatabaseLocation} entities.
-     * 
+     *
      * @throws SynchronizerException
      */
     private void readRepoMd() throws SynchronizerException {
@@ -126,28 +125,28 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
             throw new SynchronizerException("Could not read repomd.xml", ex);
         }
     }
-    
+
     /**
      * Reads and processes the primary.xml database. This could take some
      * time and some amount of heap memory.
-     * 
+     *
      * @throws SynchronizerException
      */
     private void readPrimary() throws SynchronizerException {
         logger.fine("Reading primary.xml");
         boolean firstTime = false;
-        
+
         DatabaseLocation location = repomd.getDatabaseLocation("primary");
         if (location == null) {
             throw new SynchronizerException("primary database not defined!");
         }
-        
+
         //--- Reading for the first time? ---
         if (repository.getFirstScanned() == null) {
             repository.setFirstScanned(now);
             firstTime = true;
         }
-        
+
         //--- Update available? ---
         long localModifiedSince = repository.getLastModified();
         long remoteModifiedSince = location.getTimestamp();
@@ -158,13 +157,13 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
         }
 
         repository.setLastModified(remoteModifiedSince);
-        
+
         //--- Create a Version cache ---
         Map<String,Version> versionCache = new HashMap<String,Version>();
         for (Version version : versionDao.findAllVersions(repository)) {
             versionCache.put(version.getPackage().getName(), version);
         }
-        
+
         //--- Get the Blacklist ---
         Set<String> blacklist = new HashSet<String>();
         for (Blacklist bl : blacklistDao.findAllBlacklists()) {
@@ -176,23 +175,23 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
         int versionCounter = 0;
         int changeCounter = 0;
         int deleteCounter = 0;
-        
+
         PrimaryParser parser = new PrimaryParser(repository, location);
         try {
             parser.parse();
-            
+
             for (Version version : parser) {
                 if (blacklist.contains(version.getPackage().getName())) {
                     continue;
                 }
 
                 versionCounter++;
-                
+
                 Date fileDate = version.getFileDate();
                 if (fileDate == null || fileDate.after(now)) {
                     fileDate = now;
                 }
-                
+
                 if (! firstTime) {
                     version.setFirstSeen(fileDate);
                 }
@@ -208,7 +207,7 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
         } finally {
             parser.discard();
         }
-        
+
         //--- Create "removed" entries ---
         for (Version version : versionDao.findLastSeenBefore(repository, now)) {
             Change change = new Change();
@@ -223,19 +222,19 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
             version.setDeleted(true);
             deleteCounter++;
         }
-        
+
         //--- Successfully scanned ---
         repository.setLastScanned(now);
         logger.info("Repository " + repository.toString() +
                 " successfully updated (" +
-        		versionCounter + " seen, " +
-        		changeCounter + " changed, " +
-        		deleteCounter + " deleted)");
+                versionCounter + " seen, " +
+                changeCounter + " changed, " +
+                deleteCounter + " deleted)");
     }
-    
+
     /**
      * Synchronizes a {@link Version} entity with the database.
-     * 
+     *
      * @param version   Entity to sync with. Must be transient.
      * @param versionCache   Cache of all Versions of a repository, indexed by
      *      their Package names.
@@ -248,19 +247,19 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
         change.setEpoch(version.getEpoch());
         change.setVer(version.getVer());
         change.setRel(version.getRel());
-        
+
         //--- Find the Verison in Version cache ---
         Version dbversion = versionCache.get(version.getPackage().getName());
 
         if (dbversion != null) {
             // The version (and the package) does already exist in database.
             // This might be an update.
-            
+
             dbversion.setLastSeen(version.getLastSeen());
             if (dbversion.getFileDate() == null
                     || version.getFileDate() == null
                     || version.getFileDate().after(dbversion.getFileDate())) {
-                
+
                 dbversion.setEpoch(version.getEpoch());
                 dbversion.setVer(version.getVer());
                 dbversion.setRel(version.getRel());
@@ -275,7 +274,7 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
                     return null;
                 }
             }
-            
+
         } else {
             // Version is not yet in the database. We need to add it.
             // The package might be in the database, though.
@@ -283,24 +282,24 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
                     version.getPackage().getDomain(),
                     version.getPackage().getName()
             );
-            
+
             if (newdbpack != null) {
                 // There is a package, so it is the first time for this
                 // Version to appear in this repository.
-                
+
                 newdbpack.setSummary(version.getPackage().getSummary());
                 newdbpack.setDescription(version.getPackage().getDescription());
                 newdbpack.setHomeUrl(version.getPackage().getHomeUrl());
                 newdbpack.setPackGroup(version.getPackage().getPackGroup());
-                
+
                 version.setPackage(newdbpack);
                 versionDao.insert(version);
                 versionCache.put(version.getPackage().getName(), version);
-                
+
                 change.setChange(Change.Type.ADDED);
                 change.setPackage(newdbpack);
                 return change;
-                
+
             } else {
                 // Package was not found, which means that also the Version
                 // entity is not persisted yet. Persist the Version entity
@@ -312,12 +311,12 @@ public class RepositorySynchronizerImpl implements RepositorySynchronizer {
                 change.setChange(Change.Type.ADDED);
                 change.setPackage(version.getPackage());
                 return change;
-                
+
             }
         }
-        
+
         // Nothing has changed
         return null;
     }
-    
+
 }

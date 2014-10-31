@@ -22,7 +22,7 @@
     <issueManagement>
         <system>Redmine</system>
         <url>http://www.shredzone.org/projects/repowatch/issues</url>
-    </issueManagement>   
+    </issueManagement>
     <developers>
         <developer>
             <id>shred</id>

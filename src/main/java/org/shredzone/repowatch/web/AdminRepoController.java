@@ -44,14 +44,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This controller takes care of the repository admin masks.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 330 $
  */
 @Controller
 @SessionAttributes("repo")
 public class AdminRepoController {
-    
+
     @Resource
     private DomainDAO domainDao;
 
@@ -80,21 +79,21 @@ public class AdminRepoController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Domain domain = domainDao.fetch(Integer.parseInt(parts.getPart(0)));
         if (domain == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Repository repo = new Repository();
         repo.setDomain(domain);
-        
+
         ModelAndView mav = new ModelAndView("adminrepo");
         mav.addObject("repo", repo);
         return mav;
     }
-    
+
     /**
      * Performs to add a repository.
      */
@@ -105,7 +104,7 @@ public class AdminRepoController {
         if (result.hasErrors()) {
             return "adminrepo";
         }
-        
+
         Domain dom = repository.getDomain();
         dom = domainDao.merge(dom);
         repository.setDomain(dom);
@@ -128,18 +127,18 @@ public class AdminRepoController {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         Repository repository = repositoryDao.fetch(Integer.parseInt(parts.getPart(0)));
         if (repository == null) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
             return null;
         }
-        
+
         ModelAndView mav = new ModelAndView("adminrepo");
         mav.addObject("repo", repository);
         return mav;
     }
-    
+
     /**
      * Performs to edit a repository.
      */
@@ -155,5 +154,5 @@ public class AdminRepoController {
         status.setComplete();
         return "forward:/admin/index.html";
     }
-    
+
 }

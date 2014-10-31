@@ -26,16 +26,15 @@ import javax.persistence.Entity;
 /**
  * Represents a blacklist entry. Packages with a name in this blacklist
  * will never show up on the web site.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 181 $
  */
 @Entity
 public class Blacklist extends BaseModel {
     private static final long serialVersionUID = 2177832459706690711L;
-    
+
     private String name;
-    
+
     /**
      * Name of the blacklisted package.
      */

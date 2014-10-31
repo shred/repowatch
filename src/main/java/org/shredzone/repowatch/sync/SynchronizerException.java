@@ -22,9 +22,8 @@ package org.shredzone.repowatch.sync;
 
 /**
  * Shows that something went wrong while synchronizing.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class SynchronizerException extends Exception {
     private static final long serialVersionUID = -6701318058608586031L;
@@ -32,13 +31,13 @@ public class SynchronizerException extends Exception {
     public SynchronizerException() {
         super();
     }
-    
+
     public SynchronizerException(String msg) {
         super(msg);
     }
-    
+
     public SynchronizerException(String msg, Throwable cause) {
         super(msg,cause);
     }
-    
+
 }

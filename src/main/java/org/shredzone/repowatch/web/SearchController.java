@@ -41,26 +41,25 @@ import org.springframework.web.util.WebUtils;
 
 /**
  * This controller takes care of all search operations.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Controller
 public class SearchController {
-    
+
     @Resource
     private PackageDAO packageDao;
-    
+
     @Resource
     private DomainDAO domainDao;
-    
+
     @Resource
     private Configuration config;
 
-    
+
     /**
      * Lists all changes of a repository, in a human readable form.
-     * 
+     *
      * @param req           {@link HttpServletRequest}
      * @param session       {@link HttpSession}
      * @param doFlag        Flag asking to perform a new search
@@ -84,16 +83,16 @@ public class SearchController {
     ) {
         ModelAndView mav = new ModelAndView("search");
         mav.addObject("domainList", domainDao.findAllDomains());
-        
+
         SearchDTO search =  (SearchDTO) WebUtils.getOrCreateSessionAttribute(
                 session, "searchData", SearchDTO.class);
         mav.addObject("searchData", search);
-        
+
         if (doFlag != null && doFlag.booleanValue() == true) {
             search.setPage(0);
 
             search.setDescriptions(descFlag != null && descFlag.booleanValue() == true);
-            
+
             if (domainonlyFlag != null && domainonlyFlag.booleanValue() == true && domainId != null) {
                 Domain dom = domainDao.fetch(domainId);
                 // If the domain was not found, null is returned, which is a valid
@@ -108,34 +107,34 @@ public class SearchController {
                 search.setTerm(term.trim());
             }
         }
-        
+
         if (search.getTerm() == null) {
             return mav;
         }
-        
+
         if (page != null) {
             search.setPage(page);
         }
-        
+
         //--- Validate search ---
         if (search.getTerm().length() < config.getSearchTermMinLength()) {
             mav.addObject("message", "search.error.minlength");
             return mav;
         }
-        
+
         int entriesPerPage = config.getEntriesPerPage();
         long count = packageDao.countSearchResult(search);
         if (count == 0) {
             mav.addObject("message", "search.error.empty");
             return mav;
         }
-        
+
         BrowserData browser = new BrowserData();
         browser.setBaseurl(req.getServletPath());
         browser.setResultcount(count);
         browser.setPagecount((int) Math.ceil((double)count / entriesPerPage));
         browser.setPage(search.getPage());
-        
+
         List<Package> result = packageDao.findSearchResult(
                 search,
                 browser.getPage() * entriesPerPage,
@@ -146,5 +145,5 @@ public class SearchController {
         mav.addObject("browser", browser);
         return mav;
     }
-    
+
 }

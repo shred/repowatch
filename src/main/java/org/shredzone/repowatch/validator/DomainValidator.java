@@ -29,7 +29,6 @@ import org.springframework.validation.Validator;
  * Validates a {@link Domain} entity.
  *
  * @author Richard "Shred" Körber
- * @version $Revision: 583 $
  */
 public class DomainValidator implements Validator {
 

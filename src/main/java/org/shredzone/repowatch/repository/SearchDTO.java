@@ -26,13 +26,12 @@ import org.shredzone.repowatch.model.Domain;
 
 /**
  * A <i>Data Transport Object</i> for search parameters.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class SearchDTO implements Serializable {
     private static final long serialVersionUID = 1311197118497286370L;
-    
+
     private String term;
     private int page;
     private boolean desc;
@@ -40,7 +39,7 @@ public class SearchDTO implements Serializable {
 
     /**
      * Gets the page currently shown in the search result.
-     * 
+     *
      * @return Page number
      */
     public int getPage()                    { return page; }
@@ -48,7 +47,7 @@ public class SearchDTO implements Serializable {
 
     /**
      * Gets the search term.
-     * 
+     *
      * @return Search term
      */
     public String getTerm()                 { return term; }
@@ -56,16 +55,16 @@ public class SearchDTO implements Serializable {
 
     /**
      * Checks if the summary and description are to be searched as well.
-     * 
+     *
      * @return true: also search in summary and description
      */
     public boolean isDescriptions()         { return desc; }
     public void setDescriptions(boolean desc) { this.desc = desc; }
-   
+
     /**
      * Limits the search to the given {@link Domain}. If <code>null</code>,
      * all domains will be searched.
-     * 
+     *
      * @return  {@link Domain} to limit the search to
      */
     public Domain getDomainOnly()           { return domainOnly; }

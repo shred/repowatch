@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
  * Base implementation of {@link BaseDAO}.
  *
  * @param <T> Type of entity
- * @author Richard "Shred" Körber
  */
 @Repository
 @Transactional
@@ -41,10 +40,10 @@ public abstract class BaseDAOHibImpl<T extends BaseModel> implements BaseDAO<T> 
 
     @Resource
     private SessionFactory sessionFactory;
-    
+
     /**
      * Gets the current {@link Session}.
-     * 
+     *
      * @return Current {@link Session}
      */
     protected Session getCurrentSession() {
@@ -55,7 +54,7 @@ public abstract class BaseDAOHibImpl<T extends BaseModel> implements BaseDAO<T> 
     public void insert(T data) {
         getCurrentSession().persist(data);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public T merge(T data) {

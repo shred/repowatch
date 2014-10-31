@@ -30,16 +30,15 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Gives access to the repository part of the database.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface VersionDAO extends BaseDAO<Version> {
-    
+
     /**
      * Returns all versions of a {@link Repository}.
-     * 
+     *
      * @param repo      {@link Repository}
      * @return  A list of all {@link Version} entities.
      */
@@ -47,7 +46,7 @@ public interface VersionDAO extends BaseDAO<Version> {
 
     /**
      * Returns all versions of a {@link Repository}.
-     * 
+     *
      * @param repo      {@link Repository}
      * @param start     First index to be returned
      * @param limit     Maximum number of entities to be returned
@@ -57,7 +56,7 @@ public interface VersionDAO extends BaseDAO<Version> {
 
     /**
      * Returns all versions for a {@link Package}.
-     * 
+     *
      * @param pack      {@link Package}
      * @return  A list of all {@link Version} entities.
      */
@@ -65,7 +64,7 @@ public interface VersionDAO extends BaseDAO<Version> {
 
     /**
      * Finds all versions for a given package name.
-     * 
+     *
      * @param name      Package name
      * @return  A list of all {@link Version} entities.
      */
@@ -74,26 +73,26 @@ public interface VersionDAO extends BaseDAO<Version> {
     /**
      * Finds all versions for a given package name, but keeps out the given
      * package.
-     * 
+     *
      * @param name      Package name
      * @param pack      {@link Package} to be ignored
      * @return  A list of all {@link Version} entities.
      */
     public List<Version> findAllVersionsExcept(String name, Package pack);
-    
+
     /**
      * Finds all versions for a given {@link Repository} which are not
      * deleted and were last seen before the given date.
-     * 
+     *
      * @param repo      {@link Repository}
      * @param now       Date limit
      * @return  A list of all {@link Version} entities.
      */
     public List<Version> findLastSeenBefore(Repository repo, Date now);
-    
+
     /**
      * Deletes all versions refering to the given repository.
-     * 
+     *
      * @param repo      {@link Repository} to delete all versions of.
      */
     @Secured("ROLE_ADMIN")

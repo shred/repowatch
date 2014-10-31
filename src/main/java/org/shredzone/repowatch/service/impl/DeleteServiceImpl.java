@@ -35,9 +35,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A standard implementation of the {@link DeleteService} service.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Service
 @Transactional
@@ -57,11 +56,11 @@ public class DeleteServiceImpl implements DeleteService {
 
     @Resource
     private VersionDAO versionDao;
-    
+
     @Override
     public void deleteDomain(Domain domain) {
         Domain attachedDomain = domainDao.merge(domain);
-        
+
         for (Repository repo : repositoryDao.findRepositories(attachedDomain)) {
             deleteRepository(repo);
         }
@@ -72,7 +71,7 @@ public class DeleteServiceImpl implements DeleteService {
     @Override
     public void deleteRepository(Repository repository) {
         Repository attachedRepository = repositoryDao.merge(repository);
-        
+
         changeDao.deleteAllChangesForRepository(attachedRepository);
         versionDao.deleteAllVersionsForRepository(attachedRepository);
         repositoryDao.delete(attachedRepository);

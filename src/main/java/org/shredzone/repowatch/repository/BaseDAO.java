@@ -25,44 +25,47 @@ import org.springframework.security.annotation.Secured;
 
 /**
  * Base class of all DAOs.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 328 $
  */
 @Secured("IS_AUTHENTICATED_ANONYMOUSLY")
 public interface BaseDAO<T extends BaseModel> {
-	
+
     /**
      * Inserts a new entity.
-     * 
-     * @param data     Entity to insert.
+     *
+     * @param data
+     *            Entity to insert.
      */
-    @Secured({"ROLE_ADMIN", "ROLE_CRON"})
-	public void insert(T data);
-    
+    @Secured({ "ROLE_ADMIN", "ROLE_CRON" })
+    public void insert(T data);
+
     /**
      * Merges a detached entity.
-     * 
-     * @param data     Entity to merge.
-     * @return  Merged entity.
+     *
+     * @param data
+     *            Entity to merge.
+     * @return Merged entity.
      */
-    @Secured({"ROLE_ADMIN", "ROLE_CRON"})
+    @Secured({ "ROLE_ADMIN", "ROLE_CRON" })
     public T merge(T data);
-	
-	/**
-	 * Fetches the entity with the given ID.
-	 * 
-	 * @param id       Entity ID
-	 * @return  Entity
-	 */
-	public T fetch(long id);
 
-	/**
-	 * Deletes an entity.
-	 * 
-	 * @param data     Entity to be deleted.
-	 */
-    @Secured({"ROLE_ADMIN", "ROLE_CRON"})
-	public void delete(T data);
-	
+    /**
+     * Fetches the entity with the given ID.
+     *
+     * @param id
+     *            Entity ID
+     * @return Entity
+     */
+    public T fetch(long id);
+
+    /**
+     * Deletes an entity.
+     *
+     * @param data
+     *            Entity to be deleted.
+     */
+    @Secured({ "ROLE_ADMIN", "ROLE_CRON" })
+    public void delete(T data);
+
 }

@@ -58,9 +58,8 @@ import org.shredzone.repowatch.model.Version;
  * processed on the fly, so the memory footprint is rather small even for
  * large xml files. <em>Always</em> invoke {@link #discard()} after processing
  * or when an exception occured!
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 583 $
  */
 public class PrimaryParser implements Iterable<Version> {
 
@@ -74,27 +73,27 @@ public class PrimaryParser implements Iterable<Version> {
     private final QName QN_DESCRIPTION = new QName("http://linux.duke.edu/metadata/common", "description");
     private final QName QN_URL = new QName("http://linux.duke.edu/metadata/common", "url");
     private final QName QN_RPM_GROUP = new QName("http://linux.duke.edu/metadata/rpm", "group");
- 
+
     private final QName QNA_EPOCH = new QName("epoch");
     private final QName QNA_VER = new QName("ver");
     private final QName QNA_REL = new QName("rel");
     private final QName QNA_FILE = new QName("file");
     private final QName QNA_HREF = new QName("href");
-    
+
     private final DatabaseLocation location;
     private final Repository repository;
-    
+
     private InputStream in;
     private MessageDigest digest;
     private XMLEventReader xmlreader;
     private List<StringBuilder> stringStack = new LinkedList<StringBuilder>();
     private Package currentPackage;
     private Version currentVersion;
-    
+
     /**
      * Creates a new PrimaryParser. The parser is just created, no network
      * connection is opened yet.
-     * 
+     *
      * @param repository    {@link Repository} to parse
      * @param location      {@link DatabaseLocation} with details for the
      *      database to be read.
@@ -103,7 +102,7 @@ public class PrimaryParser implements Iterable<Version> {
         this.repository = repository;
         this.location = location;
     }
-    
+
     /**
      * Parses the database. A network connection is opened and the xml file
      * is read and processed. The content is available by invoking
@@ -111,7 +110,7 @@ public class PrimaryParser implements Iterable<Version> {
      * <p>
      * <em>Always invoke {@link #discard()} after completion!</em> Also invoke
      * {@link #discard()} if an exception occured.
-     * 
+     *
      * @throws SynchronizerException  An error occured while parsing.
      */
     public void parse() throws SynchronizerException {
@@ -136,13 +135,13 @@ public class PrimaryParser implements Iterable<Version> {
             throw new SynchronizerException("Could not compute checksum", ex);
         }
     }
-    
+
     /**
      * Reads the next {@link Version} entity found in the xml file. If there
      * are no more entries, <code>null</code> is returned.
      * <p>
      * Note that a bad checksum is only reported after the last entry was read.
-     * 
+     *
      * @return  Next {@link Version} entity that was found, or <code>null</code>
      *   if the last entity was processed.
      * @throws SynchronizerException  An error occured while reading.
@@ -151,20 +150,20 @@ public class PrimaryParser implements Iterable<Version> {
         try {
             while (xmlreader.hasNext()) {
                 XMLEvent event = xmlreader.nextEvent();
-                
+
                 if (event.isStartElement()) {
                     stringStack.add(0, new StringBuilder());
-                    
+
                     StartElement element = (StartElement) event;
                     parseStartElement(element, element.getName());
- 
+
                 } else if (event.isEndElement()) {
                     String str = stringStack.remove(0).toString().trim();
-                    
+
                     EndElement element = (EndElement) event;
                     Version v = parseEndElement(element.getName(), str);
                     if (v != null) return v;
-                    
+
                 } else if (event.isCharacters()) {
                     Characters characters = (Characters) event;
                     if (! stringStack.isEmpty()) {
@@ -183,7 +182,7 @@ public class PrimaryParser implements Iterable<Version> {
             if (hash.length * 2 != cmp.length()) {
                 throw new SynchronizerException("Bad digest checksum!");
             }
-            
+
             for (byte element : hash) {
                 String hex = String.format("%02x", element);
                 if (! cmp.startsWith(hex)) {
@@ -193,10 +192,10 @@ public class PrimaryParser implements Iterable<Version> {
             }
             assert cmp.length() == 0;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Frees all resources bound by the parser. Always invoke this method
      * when you are done reading the xml file. You can safely invoke it
@@ -219,7 +218,7 @@ public class PrimaryParser implements Iterable<Version> {
 
     /**
      * Converts a Python-esque digest code to a {@link MessageDigest} digest code.
-     * 
+     *
      * @param digest
      *            digest code as used in Python's {@code hashlib}
      * @return {@link MessageDigest} compliant digest code
@@ -232,10 +231,10 @@ public class PrimaryParser implements Iterable<Version> {
             return uppercode;
         }
     }
-    
+
     /**
      * A starting element was found in the XML stream.
-     * 
+     *
      * @param element   Element that was found
      * @param tag       QName of the element's tag.
      * @throws XMLStreamException
@@ -245,14 +244,14 @@ public class PrimaryParser implements Iterable<Version> {
             assert currentPackage == null;
             currentPackage = new Package();
             currentPackage.setDomain(repository.getDomain());
-            
+
             assert currentVersion == null;
             currentVersion = new Version();
             currentVersion.setRepository(repository);
             currentVersion.setPackage(currentPackage);
         } else if (tag.equals(QN_VERSION)) {
             assert currentVersion != null;
-            
+
             Attribute attr = element.getAttributeByName(QNA_EPOCH);
             if (attr != null) currentVersion.setEpoch(attr.getValue());
             attr = element.getAttributeByName(QNA_VER);
@@ -274,46 +273,46 @@ public class PrimaryParser implements Iterable<Version> {
             if (attr != null) currentVersion.setFileLocation(attr.getValue());
         }
     }
-    
+
     /**
      * An ending element was found in the XML stream.
-     * 
+     *
      * @param tag       QName of the element's tag.
      * @param body      Text found in the element's body.
      * @throws XMLStreamException
      */
     private Version parseEndElement(QName tag, String body) {
         if (currentPackage == null) return null;
-        
+
         if (tag.equals(QN_PACKAGE)) {
             Version result = currentVersion;
             currentPackage = null;
             currentVersion = null;
             return result;
-            
+
         } else if (tag.equals(QN_NAME)) {
             currentPackage.setName(body);
-            
+
         } else if (tag.equals(QN_SUMMARY)) {
             currentPackage.setSummary(body);
-            
+
         } else if (tag.equals(QN_DESCRIPTION)) {
             currentPackage.setDescription(body);
-            
+
         } else if (tag.equals(QN_URL)) {
             currentPackage.setHomeUrl(body);
-            
+
         } else if (tag.equals(QN_RPM_GROUP)) {
             currentPackage.setPackGroup(body);
         }
-        
+
         return null;
     }
-    
+
     /**
      * Returns an iterator over the {@link Version} entities found.
      * {@link #parse()} must be invoked prior to this method.
-     * 
+     *
      * @return Iterator
      */
     @Override
@@ -321,7 +320,7 @@ public class PrimaryParser implements Iterable<Version> {
         return new Iterator<Version>() {
             private boolean retrieved = true;
             private Version iteratorCurrentVersion = null;
-            
+
             @Override
             public boolean hasNext() {
                 if (retrieved) {

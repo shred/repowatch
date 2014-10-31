@@ -41,15 +41,14 @@ import javax.xml.stream.events.XMLEvent;
 
 /**
  * Parses the repomd.xml file of a repository.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 341 $
  */
 public class RepoMdParser {
 
     private static final BigDecimal BD_THOUSAND = new BigDecimal(1000);
     private static final MathContext BD_CONTEXT = new MathContext(0, RoundingMode.DOWN);
-    
+
     private final Map<String,DatabaseLocation> databaseMap = new HashMap<String,DatabaseLocation>();
     private final URL baseUrl;
 
@@ -58,13 +57,13 @@ public class RepoMdParser {
     private final QName QN_LOCATION = new QName("http://linux.duke.edu/metadata/repo", "location");
     private final QName QN_CHECKSUM = new QName("http://linux.duke.edu/metadata/repo", "checksum");
     private final QName QN_TIMESTAMP = new QName("http://linux.duke.edu/metadata/repo", "timestamp");
-    
+
     private final QName QNA_TYPE = new QName("type");
     private final QName QNA_HREF = new QName("href");
-    
+
     /**
      * Creates a RepoMdParser. No network connection is opened yet.
-     * 
+     *
      * @param baseUrl   Base URL of the repository.
      */
     public RepoMdParser(URL baseUrl) {
@@ -74,7 +73,7 @@ public class RepoMdParser {
     /**
      * Gets the {@link DatabaseLocation} for the given database type.
      * {@link #parse()} must be invoked once prior to this method call.
-     * 
+     *
      * @param type  Database type (like "primary", "filelists", "other")
      * @return  {@link DatabaseLocation} to this database, or <code>null</code>
      *      if there was none of that type.
@@ -82,34 +81,34 @@ public class RepoMdParser {
     public DatabaseLocation getDatabaseLocation(String type) {
         return databaseMap.get(type);
     }
-    
+
     /**
      * Parses the repomd file. This method creates an actual internet
      * connection and parses the XML file. It must be invoked exactly once
      * before {@link #getDatabaseLocation(String)}.
-     * 
+     *
      * @throws IOException  The xml file could not be read or parsed for
      *  various reasons.
      */
     public void parse() throws IOException {
         databaseMap.clear();
         DatabaseLocation currentLocation = null;
-        
+
         URL url = new URL(baseUrl, "repodata/repomd.xml");
         InputStream in = url.openStream();
-        
+
         try {
             XMLInputFactory xmlfactory = XMLInputFactory.newInstance();
             XMLEventReader xmlreader = xmlfactory.createXMLEventReader(in);
             StringBuilder stringbuilder = null;
-            
+
             while (xmlreader.hasNext()) {
                 XMLEvent event = xmlreader.nextEvent();
-                
+
                 if (event.isStartElement()) {
                     StartElement element = (StartElement) event;
                     QName tag = element.getName();
-                    
+
                     if (tag.equals(QN_DATA)) {
                         Attribute attr = element.getAttributeByName(QNA_TYPE);
                         if (attr != null) {
@@ -117,7 +116,7 @@ public class RepoMdParser {
                             currentLocation = new DatabaseLocation();
                             currentLocation.setType(attr.getValue());
                         }
-                        
+
                     } else if (tag.equals(QN_LOCATION)) {
                         Attribute attr = element.getAttributeByName(QNA_HREF);
                         if (currentLocation != null && attr != null) {
@@ -125,7 +124,7 @@ public class RepoMdParser {
                             currentLocation.setLocation(href);
                             currentLocation.setCompressed(href.endsWith(".gz"));
                         }
-                        
+
                     } else if (tag.equals(QN_CHECKSUM)) {
                         Attribute attr = element.getAttributeByName(QNA_TYPE);
                         if (currentLocation != null && attr != null) {
@@ -133,25 +132,25 @@ public class RepoMdParser {
                         }
                         assert stringbuilder == null;
                         stringbuilder = new StringBuilder();
-                        
+
                     } else if (tag.equals(QN_TIMESTAMP)) {
                         assert stringbuilder == null;
                         stringbuilder = new StringBuilder();
                     }
-                    
+
                 } else if (event.isEndElement() && currentLocation != null) {
                     EndElement element = (EndElement) event;
                     QName tag = element.getName();
-                    
+
                     if (tag.equals(QN_DATA)) {
                         databaseMap.put(currentLocation.getType(), currentLocation);
                         currentLocation = null;
-                        
+
                     } else if (tag.equals(QN_CHECKSUM)) {
                         assert stringbuilder != null;
                         currentLocation.setChecksum(stringbuilder.toString().trim());
                         stringbuilder = null;
-                        
+
                     } else if (tag.equals(QN_TIMESTAMP)) {
                         assert stringbuilder != null;
                         BigDecimal ts = new BigDecimal(stringbuilder.toString().trim());
@@ -159,13 +158,13 @@ public class RepoMdParser {
                         currentLocation.setTimestamp(ts.longValueExact());
                         stringbuilder = null;
                     }
-                    
+
                 } else if (event.isCharacters() && stringbuilder != null) {
                     Characters characters = (Characters) event;
                     stringbuilder.append(characters.getData());
                 }
             }
-        
+
         } catch (XMLStreamException ex) {
             throw (IOException) new IOException("Could not read repomd.xml").initCause(ex);
         } finally {

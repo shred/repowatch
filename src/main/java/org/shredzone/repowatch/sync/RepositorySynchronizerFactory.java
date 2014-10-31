@@ -29,9 +29,8 @@ import org.springframework.stereotype.Component;
 /**
  * A factory to create new {@link RepositorySynchronizer} objects easily
  * in a Spring context.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 323 $
  */
 @Component
 public class RepositorySynchronizerFactory {
@@ -41,7 +40,7 @@ public class RepositorySynchronizerFactory {
 
     /**
      * Creates a new {@link RepositorySynchronizer} for a {@link Repository}.
-     * 
+     *
      * @param repository    {@link Repository} to create the synchronizer for
      * @return   The ready to use {@link RepositorySynchronizer}
      */
@@ -51,5 +50,5 @@ public class RepositorySynchronizerFactory {
         result.setRepository(repository);
         return result;
     }
-    
+
 }

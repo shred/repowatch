@@ -34,20 +34,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * <href="http://jira.springframework.org/browse/SPR-4451">here</a> .
  * If it is available, this class should be removed and replaced by
  * the official solution.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 public class RequestMappingResolver {
     /*TODO: Check if this class can be removed because Spring brings
      * its functionality.
      */
-    
+
     private final Pattern pattern;
 
     /**
      * Creates a new RequestMappingResolver.
-     * 
+     *
      * @param url       The URL given to the corresponding
      *      {@link RequestMapping} annotation.
      */
@@ -56,28 +55,28 @@ public class RequestMappingResolver {
         regexp += "(?:[?#;].*)?";       // Ignore jsession attachments and more
         pattern = Pattern.compile(regexp);
     }
-    
+
     /**
      * Gets the {@link RequestParts} object for the given request.
-     * 
+     *
      * @param req   {@link HttpServletRequest}
      * @return  {@link RequestParts} with the results
      */
     public RequestParts getRequestParts(HttpServletRequest req) {
         String context = req.getContextPath();
         String request = req.getRequestURI();
-        
+
         if (request.startsWith(context)) {
             // Remove the context path
             request = request.substring(context.length());
         }
-        
+
         return getRequestParts(request);
     }
 
     /**
      * Gets the {@link RequestParts} object for the given request.
-     * 
+     *
      * @param request   Request part (requestURI minus contextPath).
      * @return  {@link RequestParts} with the results
      */
@@ -99,10 +98,10 @@ public class RequestMappingResolver {
      */
     public static class RequestParts {
         private final String[] parts;
-        
+
         /**
          * Creates a new RequestParts object.
-         * 
+         *
          * @param parts     The single request parts.
          */
         public RequestParts(String[] parts) {
@@ -112,7 +111,7 @@ public class RequestMappingResolver {
         /**
          * Checks if this RequestParts contains any parts. If false, the
          * URL usually did not match the {@link RequestMapping} pattern.
-         * 
+         *
          * @return  true: Request matched, false: Request did not match
          */
         public boolean hasParts() {
@@ -121,7 +120,7 @@ public class RequestMappingResolver {
 
         /**
          * Counts the number of parts.
-         * 
+         *
          * @return  Number of parts
          */
         public int partCount() {
@@ -132,7 +131,7 @@ public class RequestMappingResolver {
          * Gets the part with a given index. This is the number of the
          * desired '*' in the {@link RequestMapping} pattern, starting
          * from 0.
-         * 
+         *
          * @param index     Number of part, starting from 0.
          * @return      Part string.
          */
@@ -140,5 +139,5 @@ public class RequestMappingResolver {
             return parts[index];
         }
     }
-    
+
 }

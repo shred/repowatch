@@ -31,21 +31,20 @@ import org.hibernate.annotations.Index;
 /**
  * Represents a package. A package is unique within a domain, but can have
  * different versions in the repositories of that domain.
- * 
+ *
  * @author Richard "Shred" Körber
- * @version $Revision: 317 $
  */
 @Entity
 public class Package extends BaseModel {
     private static final long serialVersionUID = 5899312192749814283L;
-    
+
     private Domain domain;
     private String name;
     private String summary;
     private String description;
     private String packGroup;
     private String homeUrl;
-    
+
     /**
      * {@link Domain} this package belongs to.
      */
