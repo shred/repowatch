@@ -1,56 +1,43 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.shredzone</groupId>
-        <artifactId>parent</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../parent/pom.xml</relativePath>
-    </parent>
     <groupId>org.shredzone.repowatch</groupId>
     <artifactId>repowatch</artifactId>
-    <name>Repowatch</name>
     <version>0.18-SNAPSHOT</version>
     <packaging>war</packaging>
+    <name>Repowatch</name>
     <description>A yum repository watcher</description>
+    <url>http://repowatch.shredzone.org</url>
     <inceptionYear>2007</inceptionYear>
     <licenses>
         <license>
             <name>GNU General Public License Version 3</name>
-            <url>LICENSE.txt</url>
+            <url>LICENSE-GPL.txt</url>
         </license>
     </licenses>
+    <scm>
+        <url>scm:git:git@github.com:shred/repowatch.git</url>
+        <connection>scm:git:git@github.com:shred/repowatch.git</connection>
+        <developerConnection>scm:git:git@github.com:shred/repowatch.git</developerConnection>
+    </scm>
+    <issueManagement>
+        <system>Redmine</system>
+        <url>http://www.shredzone.org/projects/repowatch/issues</url>
+    </issueManagement>   
+    <developers>
+        <developer>
+            <id>shred</id>
+            <name>Richard Körber</name>
+        </developer>
+    </developers>
+    <properties>
+        <junit.version>[4,)</junit.version>
+        <quartz.version>1.6.1</quartz.version>
+        <spring.version>2.5.6</spring.version>
+        <springsecurity.version>2.0.4</springsecurity.version>
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    </properties>
     <build>
         <plugins>
-            <plugin>
-                <groupId>com.google.code.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.9.0</version>
-                <configuration>
-                    <header>src/etc/header.txt</header>
-                    <excludes>
-                        <exclude>src/main/resources/messages*.properties</exclude>
-                        <exclude>src/main/webapp/**</exclude>
-                        <exclude>src/test/resources/repodata/*</exclude>
-                        <exclude>*.txt</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.8</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <wtpversion>2.0</wtpversion>
-                    <downloadSources>true</downloadSources>
-                    <additionalProjectnatures>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                    </additionalProjectnatures>
-                    <additionalBuildcommands>
-                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-                    </additionalBuildcommands>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -73,14 +60,85 @@
                     </systemProperties>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/.gitignore</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-    <properties>
-        <junit.version>[4,)</junit.version>
-        <quartz.version>1.6.1</quartz.version>
-        <spring.version>2.5.6</spring.version>
-        <springsecurity.version>2.0.4</springsecurity.version>
-    </properties>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>2.7</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>summary</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>2.17</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <links>
+                        <link>http://docs.oracle.com/javase/6/docs/api/</link>
+                        <link>http://docs.oracle.com/javaee/6/api/</link>
+                    </links>
+                    <charset>UTF-8</charset>
+                    <linksource>true</linksource>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
     <profiles>
         <profile>
             <id>postgres</id>
@@ -128,19 +186,16 @@
             <groupId>org.hibernate</groupId>
             <artifactId>ejb3-persistence</artifactId>
             <version>1.0.2.GA</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
             <version>3.4.0.GA</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-commons-annotations</artifactId>
             <version>3.3.0.ga</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.hibernate</groupId>
@@ -152,19 +207,16 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>3.3.1.GA</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -176,7 +228,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${spring.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -188,7 +239,6 @@
             <groupId>org.opensymphony.quartz</groupId>
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
@@ -206,13 +256,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>${springsecurity.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core-tiger</artifactId>
             <version>${springsecurity.version}</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -228,19 +276,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
             <version>${springsecurity.version}</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.interceptor</groupId>
-            <artifactId>interceptor-api</artifactId>
-            <version>1.0</version>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -252,13 +293,11 @@
             <groupId>taglibs</groupId>
             <artifactId>standard</artifactId>
             <version>1.1.2</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>taglibs</groupId>
             <artifactId>string</artifactId>
             <version>[1.1,)</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -286,11 +325,12 @@
             <version>3.8.0.GA</version>
             <scope>runtime</scope>
         </dependency>
-    </dependencies>
 
-  <scm>
-    <connection>scm:svn:http://svn.shredzone.org/tags/repowatch/v0.17</connection>
-    <developerConnection>scm:svn:https://svn.shredzone.org/tags/repowatch/v0.17</developerConnection>
-    <url>http://svn.shredzone.org/tags/repowatch/v0.17</url>
-  </scm>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>[4,)</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
