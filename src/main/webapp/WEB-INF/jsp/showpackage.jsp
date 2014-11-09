@@ -57,7 +57,7 @@
   <c:if test="${not empty package.homeUrl}">
     <tr class="gridrow">
       <td class="gridlabel"><fmt:message key="pack.homepage"/></td>
-      <td><c:out value="${package.homeUrl}"/></td>
+      <td><a href="<c:out value="${package.homeUrl}"/>" class="ext"><c:out value="${package.homeUrl}"/></a></td>
     </tr>
   </c:if>
 </table>
