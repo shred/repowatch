@@ -20,10 +20,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
 
-<Configure id="wac" class="org.mortbay.jetty.webapp.WebAppContext">
-  <New id="repowatchds" class="org.mortbay.jetty.plus.naming.Resource">
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+  <New id="repowatchds" class="org.eclipse.jetty.plus.jndi.Resource">
     <Arg>jdbc/RepowatchDS</Arg>
     <Arg>
       <New class="org.apache.commons.dbcp.BasicDataSource">
@@ -34,7 +35,8 @@
       </New>
     </Arg>
   </New>
-  <New id="repowatchprops" class="org.mortbay.jetty.plus.naming.EnvEntry">
+
+  <New id="repowatchprops" class="org.eclipse.jetty.plus.jndi.EnvEntry">
     <Arg>hibernate/RepowatchDS</Arg>
     <Arg>
       <New class="java.util.Properties">
@@ -45,5 +47,5 @@
     </Arg>
     <Arg type="boolean">false</Arg>
   </New>
-</Configure> 
 
+</Configure>
