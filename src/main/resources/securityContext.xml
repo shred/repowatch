@@ -44,7 +44,7 @@
         <password-encoder hash="md5"/>
         <user-service>
             <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_ADMIN"/>
-	    </user-service>
-	</authentication-provider>
+        </user-service>
+    </authentication-provider>
 
 </beans:beans>

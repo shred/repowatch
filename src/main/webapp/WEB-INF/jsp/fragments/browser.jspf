@@ -6,7 +6,7 @@
 <div class="browse">
 <c:choose>
   <c:when test="${browser.page gt 0}">
-  	<a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page-1}"/></c:url>"><fmt:message key="browser.previous"/></a>
+    <a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page-1}"/></c:url>"><fmt:message key="browser.previous"/></a>
   </c:when>
   <c:otherwise>
     <span class="browsedisabled"><fmt:message key="browser.previous"/></span>
@@ -29,7 +29,7 @@
 
 <c:choose>
   <c:when test="${browser.page lt browser.pagecount-1}">
-  	<a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page+1}"/></c:url>"><fmt:message key="browser.next"/></a>
+    <a href="<c:url value="${browser.baseurl}"><c:param name="${browser.pageparam}" value="${browser.page+1}"/></c:url>"><fmt:message key="browser.next"/></a>
   </c:when>
   <c:otherwise>
     <span class="browsedisabled"><fmt:message key="browser.next"/></span>

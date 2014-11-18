@@ -31,7 +31,7 @@
             http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 
   <bean id="repositorySyncJob" class="org.shredzone.repowatch.job.RepositorySyncJob"/>
-  
+
   <bean id="repositorySyncJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="targetObject" ref="repositorySyncJob"/>
     <property name="targetMethod" value="doSynchronization"/>
@@ -41,7 +41,7 @@
   <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="repositorySyncJobDetail"/>
     <!-- sec min hour DoM month DoW -->
-	<property name="cronExpression" value="0 0 */6 * * ?"/>
+    <property name="cronExpression" value="0 0 */6 * * ?"/>
   </bean>
 
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
