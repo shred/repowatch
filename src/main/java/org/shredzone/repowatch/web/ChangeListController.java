@@ -238,7 +238,7 @@ public class ChangeListController {
                 xw.writeEndElement();
 
                 xw.writeStartElement("link");
-                xw.writeCharacters("${basepath}");
+                xw.writeCharacters(basepath.toString());
                 xw.writeEndElement();
 
                 xw.writeStartElement("description");
