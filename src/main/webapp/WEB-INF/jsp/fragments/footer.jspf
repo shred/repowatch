@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jsp/fragments/includes.jspf" %>
 </div>
 </div>
-<address><a href="http://repowatch.shredzone.org">Repowatch</a> v0.17 beta
+<address><a href="http://repowatch.shredzone.org">Repowatch</a> v0.18 beta
 &mdash; &copy; Richard "Shred" Körber
 &mdash; <a href="<c:url value="/admin/index.html"/>"><fmt:message key="frame.admin"/></a>
 </address>
