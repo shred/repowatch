@@ -91,7 +91,7 @@ public class PackageDetailController {
 
         List<Version> alternatives = versionDao.findAllVersionsForName(packname);
 
-        mav.addObject("package", pack);
+        mav.addObject("pack", pack);
         mav.addObject("versionList", null);
         mav.addObject("alternativeList", alternatives);
         return mav;
@@ -142,7 +142,7 @@ public class PackageDetailController {
         List<Version> versions = versionDao.findAllVersions(pack);
 
         mav.addObject("domain", domain);
-        mav.addObject("package", pack);
+        mav.addObject("pack", pack);
         mav.addObject("versionList", versions);
         mav.addObject("alternativeList", alternatives);
 

@@ -35,11 +35,11 @@
     <th><fmt:message key="search.package"/></th>
     <th><fmt:message key="search.summary"/></th>
   </tr>
-  <c:forEach var="package" items="${packageList}">
+  <c:forEach var="pack" items="${packageList}">
     <tr class="${sequence.next}">
-      <td><c:out value="${package.domain.name} ${package.domain.release}"/></td>
-      <td><a href="<c:url value="/package/${package.domain.name}/${package.domain.release}/${package.name}.html"/>"><c:out value="${package.name}"/></a></td>
-      <td><c:out value="${package.summary}"/></td>
+      <td><c:out value="${pack.domain.name} ${pack.domain.release}"/></td>
+      <td><a href="<c:url value="/package/${pack.domain.name}/${pack.domain.release}/${pack.name}.html"/>"><c:out value="${pack.name}"/></a></td>
+      <td><c:out value="${pack.summary}"/></td>
     </tr>
   </c:forEach>
 </table>

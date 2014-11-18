@@ -33,10 +33,10 @@
     <th><fmt:message key="allp.package"/></th>
     <th><fmt:message key="allp.summary"/></th>
   </tr>
-  <c:forEach var="package" items="${packageList}">
+  <c:forEach var="pack" items="${packageList}">
     <tr class="${sequence.next}">
-      <td><a href="<c:url value="/package/${package.key}.html"/>"><c:out value="${package.key}"/></a></td>
-      <td><c:out value="${package.value}"/></td>
+      <td><a href="<c:url value="/package/${pack.key}.html"/>"><c:out value="${pack.key}"/></a></td>
+      <td><c:out value="${pack.value}"/></td>
     </tr>
   </c:forEach>
 </table>

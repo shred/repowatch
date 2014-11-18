@@ -95,9 +95,9 @@
         <c:when test="${change.change eq 'REMOVED'}"><td class="packremoved"><img src="${pageContext.request.contextPath}/img/removed.png" width="12" height="12" alt="<fmt:message key="chg.removed"/>" title="<fmt:message key="chg.removed"/>" /></td></c:when>
         <c:otherwise><td class="packupdated"><img src="${pageContext.request.contextPath}/img/updated.png" width="12" height="12" alt="<fmt:message key="chg.updated"/>" title="<fmt:message key="chg.updated"/>" /></td></c:otherwise>
       </c:choose>
-      <td><a href="<c:url value="/package/${domain.name}/${domain.release}/${change.package.name}.html"/>"><c:out value="${change.package.name}"/></a></td>
+      <td><a href="<c:url value="/package/${domain.name}/${domain.release}/${change['package'].name}.html"/>"><c:out value="${change['package'].name}"/></a></td>
       <td><c:out value="${change.ver}-${change.rel}"/></td>
-      <td><c:out value="${change.package.summary}"/></td>
+      <td><c:out value="${change['package'].summary}"/></td>
     </tr>
   </c:forEach>
 </table>

@@ -76,11 +76,11 @@
   </tr>
   <c:forEach var="version" items="${versionList}">
     <tr class="${sequence.next}">
-      <td><a href="<c:url value="/package/${domain.name}/${domain.release}/${version.package.name}.html"/>"><c:out value="${version.package.name}"/></a></td>
+      <td><a href="<c:url value="/package/${domain.name}/${domain.release}/${version['package'].name}.html"/>"><c:out value="${version['package'].name}"/></a></td>
       <td><c:if test="${not empty version.repository.repoviewUrl}">
-        <a href="<c:out value="${version.repository.repoviewUrl}${version.package.name}.html"/>" title="<fmt:message key="vers.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
+        <a href="<c:out value="${version.repository.repoviewUrl}${version['package'].name}.html"/>" title="<fmt:message key="vers.showrepoview"/>"><img src="<c:url value="/img/info.png"/>" width="14" height="14" alt="repoview" border="0" /></a>
       </c:if><c:out value="${version.ver}-${version.rel}"/></td>
-      <td><c:out value="${version.package.summary}"/></td>
+      <td><c:out value="${version['package'].summary}"/></td>
     </tr>
   </c:forEach>
 </table>

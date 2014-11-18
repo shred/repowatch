@@ -40,7 +40,7 @@
         <div class="resyncbad">
           <strong><c:out value="${result.exception.message}"/></strong><br />
           <c:if test="${not empty result.exception.cause}">
-            <c:out value="${result.exception.cause.class.name}: ${result.exception.cause.message}"/>
+            <c:out value="${result.exception.cause['class'].name}: ${result.exception.cause.message}"/>
           </c:if>
         </div>
       </c:if><c:if test="${empty result.exception}">
