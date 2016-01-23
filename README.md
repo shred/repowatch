@@ -30,6 +30,11 @@ RepoWatch expects two JNDI resources:
 
 Use Hibernate to initialize the database. There is no need for further initialization steps at the moment.
 
+## Contribute
+
+* Fork the [Source code at GitHub](https://github.com/shred/repowatch). Feel free to send pull requests.
+* Found a bug? [File a bug report!](https://github.com/shred/repowatch/issues)
+
 ## License
 
 `RepoWatch` is distributed under [GPLv3](http://www.gnu.org/licenses/gpl-3.0.html).
