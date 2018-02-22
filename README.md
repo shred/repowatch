@@ -2,8 +2,6 @@
 
 RepoWatch is a Java web site for watching the changes of yum repositories.
 
-[See RepoWatch in Action!](https://repowatch.shredzone.net/)
-
 ## Features
 
 * Watches a number of yum repositories for changes.
